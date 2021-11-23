@@ -8,6 +8,8 @@ Group Members:
 - <a href="nicholas.knapton@ucalgary.ca">Nicholas Knapton</a>
 - <a href="brian.kramer@ucalgary.ca">Brian Kramer</a>
 
+*push to main*
+
 > Please, for the love of all that is our sanity, **do not push to main** unless we are _certain_ that our code is good. 
 
 ```text
