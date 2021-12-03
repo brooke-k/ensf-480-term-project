@@ -58,7 +58,7 @@ public class Connection {
     }
 
     public Connection(){
-        this.db
+        //this.db;
     }
 
     public static void main(String[] args) {
@@ -79,7 +79,7 @@ public class Connection {
         try (MongoClient mongoClient = MongoClients.create(connectionString)) {
             MongoDatabase db = mongoClient.getDatabase("480project");
             MongoCollection users = db.getCollection("Users");
-            MongoCollection properties = db.getCollection("Properties")
+            MongoCollection properties = db.getCollection("Properties");
             Document renter = new Document("_id", new ObjectId());
             renter.append("username", "nick").append("password", "niceTry");
             users.insertOne(renter);
