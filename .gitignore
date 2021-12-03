@@ -8,3 +8,5 @@
 */dataSources.local.xml
 # Editor-based HTTP Client requests
 */httpRequests/
+
+.app/src/main/java/com/mongodb/quickstart/connection.txt
