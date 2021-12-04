@@ -72,8 +72,8 @@ public class LoginForm implements Form{
         submitButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent evt){
                 if(evt.getSource() == submitButton){
-                    username = usernameField.getText();
-                    password = passwordField.getText();
+                    setUsername(usernameField.getText());
+                    setPassword(passwordField.getText());
                     login();
                 }
             }
