@@ -54,7 +54,6 @@
   - Login
   - signup (all)
   - search
-  - property
 
 # State Diagrams
 
