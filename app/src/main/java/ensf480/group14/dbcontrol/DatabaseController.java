@@ -204,10 +204,52 @@ public class DatabaseController implements DatabaseSubject {
 
     private void removeUserFromDatabase(String email) {
         BasicDBObject searchQuery = new BasicDBObject();
-        System.out.println("Removing user from with the email address \"" + email + "\" from database");
+        System.out.println("Removing user with the email address \"" + email + "\" from database");
         usersCollection.deleteOne(Filters.eq("email", email));
         emailCollection.deleteOne(Filters.eq("email", email));
         System.out.println("User with the email address \"" + email + "\" has been removed from the database");
+    }
+
+    // public void addPropertyToDatabase(Property property) {
+    // BasicDBObject searchQuery = new BasicDBObject();
+    // searchQuery.put("address", property.getAddress());
+    // FindIterable<Document> findIter = propertiesCollection.find(searchQuery);
+    // MongoCursor<Document> resultCursor = findIter.iterator();
+    // if (resultCursor.hasNext()) { // Meaning the property already exists in the
+    // database and should
+    // // not be added as a duplicate
+    // System.out.println("A property with the address \"" + property.getAddress() +
+    // "\" already exists.");
+    // System.out.println(
+    // "The property with address \"" + property.getAddress() + "\" was not added to
+    // the database.");
+    // resultCursor.close();
+    // return;
+    // }
+
+    // resultCursor.close();
+
+    // Document newProperty = new Document("address", property.getAddress());
+    // newProperty.append("bedrooms", property.getNumBedrooms().toString());
+    // newProperty.append("bathrooms", property.getNumBathrooms().toString());
+    // newProperty.append("furnished", (property.isFurnished()) ? "yes" : "no");
+    // newProperty.append("cityQuad", property.getCityQuad());
+    // newProperty.append("price", property.getPrice().toString());
+    // newProperty.append("visibleToRenters", (property.isVisibleToRenters()) ?
+    // "yes" : "no");
+    // newProperty.append("landlordID", property.getLandlordID());
+    // newProperty.append("landlordName", property.getLandlordName());
+    // newProperty.append("dateLastListed", property.getDateLastListed());
+    // newProperty.append("dateRented", property.getDateRented());
+
+    // propertiesCollection.insertOne(newProperty);
+    // }
+
+    private void removePropertyFromDatabase(String address) {
+        BasicDBObject searchQuery = new BasicDBObject();
+        System.out.println("Removing property with the address \"" + address + "\" from database");
+        propertiesCollection.deleteOne(Filters.eq("address", address));
+        System.out.println("Property with the address \"" + address + "\" has been removed from the database");
     }
 
     // public ArrayList<Property> getMatchingProperties(Search searchInfo) {
