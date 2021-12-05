@@ -19,6 +19,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -100,6 +101,10 @@ public class DatabaseController implements DatabaseSubject {
             addUserToDatabase("notASock3", "IAMNOTASOCKTHATHASGAINEDSENTIENCE", "mrlefty1996@lostdryer.void", "renter");
 
             printUsers();
+
+            removeUserFromDatabase("generic1@emaildomain.com");
+
+            printEmail();
 
         }
     }
@@ -195,6 +200,14 @@ public class DatabaseController implements DatabaseSubject {
 
         System.out.println("User with email \"" + email + "\" added to the database.");
 
+    }
+
+    private void removeUserFromDatabase(String email) {
+        BasicDBObject searchQuery = new BasicDBObject();
+        System.out.println("Removing user from with the email address \"" + email + "\" from database");
+        usersCollection.deleteOne(Filters.eq("email", email));
+        emailCollection.deleteOne(Filters.eq("email", email));
+        System.out.println("User with the email address \"" + email + "\" has been removed from the database");
     }
 
     // public ArrayList<Property> getMatchingProperties(Search searchInfo) {
