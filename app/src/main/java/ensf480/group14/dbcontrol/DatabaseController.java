@@ -47,6 +47,8 @@ public class DatabaseController implements DatabaseSubject {
     private static MongoCollection propertiesCollection;
     private static MongoCollection emailCollection;
 
+    private ArrayList<DatabaseObserver> observers;
+
     public DatabaseController() {
         mongoClient = null;
         createConnection();
@@ -111,19 +113,19 @@ public class DatabaseController implements DatabaseSubject {
 
     @Override
     public void addObserver(DatabaseObserver dbo) {
-        // TODO Auto-generated method stub
-
+        observers.add(dbo);
     }
 
     @Override
     public void removeObserver(DatabaseObserver dbo) {
-        // TODO Auto-generated method stub
-
+        observers.remove(dbo);
     }
 
     @Override
     public void notifiyAllObservers() {
-        // TODO Auto-generated method stub
+        for (DatabaseObserver o : observers) {
+            o.getNotifiedOfDBChange();
+        }
 
     }
 
