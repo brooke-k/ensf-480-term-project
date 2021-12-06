@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class BillingSystem {
     private double feeAmount;
+    private String periodDuration;
     private Date paymentDate;
     private String paymentType;
     private Landlord landlord;
@@ -23,6 +24,14 @@ public class BillingSystem {
 
     public void setFeeAmount(double feeAmount) {
         this.feeAmount = feeAmount;
+    }
+
+    public String getPeriodDuration() {
+        return this.periodDuration;
+    }
+
+    public void setPeriodDuration(String periodDuration) {
+        this.periodDuration = periodDuration;
     }
 
     public Date getPaymentDate() {
