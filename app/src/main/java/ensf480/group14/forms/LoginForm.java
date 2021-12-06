@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -59,6 +61,16 @@ public class LoginForm implements Form {
 
         panel.add(new JLabel("Username"));
         JTextField usernameField = new JTextField();
+        usernameField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+
+            }
+
+            public void focusLost(FocusEvent e) {
+                System.out.println("test");
+                setUsername(usernameField.getText());
+            }
+        });
         usernameField.setSize(190, 20);
         usernameField.setMaximumSize(new Dimension(190, 20));
         panel.add(usernameField);
@@ -66,6 +78,15 @@ public class LoginForm implements Form {
         panel.add(new JLabel("Password"));
         JTextField passwordField = new JTextField();
         passwordField.setMaximumSize(new Dimension(190, 20));
+        passwordField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+
+            }
+
+            public void focusLost(FocusEvent e) {
+                setPassword(passwordField.getText());
+            }
+        });
         panel.add(passwordField);
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
