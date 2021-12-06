@@ -6,16 +6,20 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ensf480.group14.eventListeners.LoginListener;
-import ensf480.group14.forms.Form;
-import ensf480.group14.forms.LoginForm;
-import ensf480.group14.forms.RenterSignUpForm;
+import ensf480.group14.eventListeners.Listener;
+import ensf480.group14.forms.*;
 
 import java.awt.event.ActionEvent;
 
 enum FormState {
     LOGIN,
-    SIGNUP,
+    RENTER_SIGNUP,
+    CONTACT,
+    PREFERENCE,
+    LANDLORD_SIGNUP,
+    SEARCH,
+    PROPERTY_APPLICATION,
+    ERROR;
 }
 
 public class Driver {
@@ -29,13 +33,22 @@ public class Driver {
         frame = new JPanel(cardLayout);
         frame1 = new JFrame();
 
-        LoginListener loginListener = new LoginListener();
+        Listener listener = new Listener();
 
-        LoginForm loginForm = LoginForm.getOnlyInstance(loginListener);
+        LoginForm loginForm = LoginForm.getOnlyInstance(listener);
         RenterSignUpForm signUp = new RenterSignUpForm();
+        ContactForm contact = new ContactForm();
+        PreferenceForm preferenceForm = new PreferenceForm();
+        LandlordSignUpForm landlordSign = new LandlordSignUpForm();
+        Search searchForm = new Search();
+        PropertyApplication propertyApp = new PropertyApplication();
 
         frame.add(loginForm.display(), "loginForm");
         frame.add(signUp.display(), "renterSignUpForm");
+        frame.add(contact.display(), "contactForm");
+        frame.add(preferenceForm.display(), "preferencesForm");
+        frame.add(searchForm.display(), "searchForm");
+        frame.add(landlordSign.display(), "landlordSignUpForm");
 
         frame1.add(frame);
         frame1.pack();
@@ -44,9 +57,12 @@ public class Driver {
         frame1.setVisible(true);
 
         while (true) {
-            if (loginListener.getStringEvent().equals("Or Sign Up")) {
+            String page = listener.getPageToShow();
+            if (page.equals("SignInPage")) {
                 cardLayout.show(frame, "renterSignUpForm");
                 System.out.println(loginForm.getUsername() + ", " + loginForm.getPassword());
+            } else if (page.equals("LoginPage")) {
+                cardLayout.show(frame, "loginForm");
             } else {
                 cardLayout.show(frame, "loginForm");
             }
