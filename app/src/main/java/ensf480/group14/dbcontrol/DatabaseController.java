@@ -97,17 +97,6 @@ public class DatabaseController implements DatabaseSubject {
             propertiesCollection = dbMongo.getCollection("Properties");
             emailCollection = dbMongo.getCollection("email");
 
-            addUserToDatabase("userOne", "badPassword", "generic1@emaildomain.com", "renter");
-            addUserToDatabase("secondUser", "securityExpert", "embarassing_middleschool_email@nearlyobsolete.com",
-                    "landlord");
-            addUserToDatabase("notASock3", "IAMNOTASOCKTHATHASGAINEDSENTIENCE", "mrlefty1996@lostdryer.void", "renter");
-
-            printUsers();
-
-            removeUserFromDatabase("generic1@emaildomain.com");
-
-            printEmail();
-
         }
     }
 

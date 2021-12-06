@@ -12,7 +12,7 @@ public class Property {
 	private String dateRented;
 	private Integer numBedrooms;
 	private Double numBathrooms;
-	private String landlordID;
+	private String landlordEmail;
 	private Double listingPrice;
 	private Double rentCost;
 	private Boolean visibleToRenters;
@@ -27,7 +27,7 @@ public class Property {
 		this.dateRented = property.dateRented;
 		this.numBedrooms = property.numBedrooms;
 		this.numBathrooms = property.numBathrooms;
-		this.landlordID = property.landlordID;
+		this.landlordEmail = property.landlordEmail;
 		this.listingPrice = property.listingPrice;
 		this.rentCost = property.rentCost;
 		this.visibleToRenters = property.visibleToRenters;
@@ -45,7 +45,7 @@ public class Property {
 
 		numBedrooms = null;
 		numBathrooms = null;
-		landlordID = null;
+		landlordEmail = null;
 
 		listingPrice = null;
 		rentCost = null;
@@ -68,7 +68,7 @@ public class Property {
 		returnProp.cityQuad = propertyDoc.get("city_quad", String.class);
 		returnProp.rentalState = propertyDoc.get("rental_state", String.class);
 		returnProp.landlordName = propertyDoc.get("landlord_name", String.class);
-		returnProp.landlordID = propertyDoc.get("landlord_id", String.class);
+		returnProp.landlordEmail = propertyDoc.get("landlord_email", String.class);
 		returnProp.dateLastListed = propertyDoc.get("date_last_listed", String.class);
 		returnProp.dateRented = propertyDoc.get("date_rented", String.class);
 		returnProp.numBedrooms = propertyDoc.get("bedrooms", Integer.class);
@@ -86,7 +86,7 @@ public class Property {
 		propDoc.append("city_quad", prop.getCityQuad());
 		propDoc.append("rental_state", prop.getRentalState());
 		propDoc.append("landlord_name", prop.getLandlordName());
-		propDoc.append("landlord_id", prop.getLandlordName());
+		propDoc.append("landlord_email", prop.getLandlordName());
 		propDoc.append("date_last_listed", prop.getDateLastListed());
 		propDoc.append("date_rented", prop.getDateRented());
 		propDoc.append("bedrooms", prop.getNumBathrooms());
@@ -170,11 +170,11 @@ public class Property {
 	}
 
 	public String getLandlordID() {
-		return landlordID;
+		return landlordEmail;
 	}
 
-	public void setLandlordID(String landlordID) {
-		this.landlordID = landlordID;
+	public void setLandlordID(String landlordEmail) {
+		this.landlordEmail = landlordEmail;
 	}
 
 	public Double getListingPrice() {
@@ -213,7 +213,7 @@ public class Property {
 		asString = asString + "Date last listed: " + dateLastListed + "\n\r";
 		asString = asString + "Date rented: " + dateRented + "\n\r";
 		asString = asString + "Name of landlord: " + landlordName + "\n\r";
-		asString = asString + "ID of landlord: " + landlordID + "\n\r";
+		asString = asString + "ID of landlord: " + landlordEmail + "\n\r";
 		asString = asString + "Listing price: " + listingPrice + "\n\r";
 		asString = asString + "Visible to public search: " + ((visibleToRenters.booleanValue()) ? "Yes" : "No")
 				+ "\n\r";
