@@ -218,7 +218,7 @@ public class DatabaseController implements DatabaseSubject {
         newProperty.append("bathrooms", property.getNumBathrooms().toString());
         newProperty.append("furnished", (property.isFurnished()) ? "yes" : "no");
         newProperty.append("cityQuad", property.getCityQuad());
-        newProperty.append("price", property.getPrice().toString());
+        newProperty.append("price", property.getListingPrice().toString());
         newProperty.append("visibleToRenters", (property.isVisibleToRenters()) ? "yes" : "no");
         newProperty.append("landlordID", property.getLandlordID());
         newProperty.append("landlordName", property.getLandlordName());
@@ -278,7 +278,7 @@ public class DatabaseController implements DatabaseSubject {
     // }
 
     public ArrayList<String> getAllProperties() {
-        return Property.
+        // return Property.
         return null;
     }
 
