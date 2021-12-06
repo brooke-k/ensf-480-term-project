@@ -16,43 +16,43 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class LoginForm implements Form{
+public class LoginForm implements Form {
     private static LoginForm onlyInstance;
     private String username;
     private String password;
     private ActionListener listener;
 
-    private LoginForm(ActionListener listen){
+    public LoginForm(ActionListener listen) {
         username = new String();
         password = new String();
         listener = listen;
     }
 
-    public static LoginForm getOnlyInstance(){
-        if(onlyInstance == null){
-            onlyInstance = new LoginForm();
+    public static LoginForm getOnlyInstance(ActionListener loginListener) {
+        if (onlyInstance == null) {
+            onlyInstance = new LoginForm(loginListener);
         }
         return onlyInstance;
     }
 
-    public JPanel display(){
+    public JPanel display() {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
-        panel.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
-        panel.setLayout(new GridLayout(0,1));
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        panel.setLayout(new GridLayout(0, 1));
 
         panel.setPreferredSize(expectDimension);
         panel.setMaximumSize(expectDimension);
         panel.setMinimumSize(expectDimension);
 
         panel.setBackground(Color.GRAY);
-        
+
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel loginLabel = new JLabel("Login");
         loginLabel.setFont(new Font("Serif", Font.BOLD, 35));
-        loginLabel.setSize(40,40);
+        loginLabel.setSize(40, 40);
         panel.add(loginLabel);
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
@@ -81,7 +81,7 @@ public class LoginForm implements Form{
         return panel;
     }
 
-    public void login(){
+    public void login() {
         // This should query the db to verify password, ideally in the db controller?
     }
 
@@ -102,12 +102,14 @@ public class LoginForm implements Form{
     }
 
     // For testing
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        LoginForm login = getOnlyInstance();
-        frame.add(login.display());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
+    /*
+     * public static void main(String[] args) {
+     * JFrame frame = new JFrame();
+     * // LoginForm login = getOnlyInstance();
+     * frame.add(login.display());
+     * frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+     * frame.pack();
+     * frame.setVisible(true);
+     * }
+     */
 }
