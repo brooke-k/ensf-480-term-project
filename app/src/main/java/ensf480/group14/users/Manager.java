@@ -81,6 +81,11 @@ public class Manager extends BillingSystem{
         setFeeAmount(newFee);
     }
 
+    public void changeDuration() {
+        String newDuration "Extra 10 Days";
+        setPeriodDuration(newDuration);
+    }
+
     public void changeStatus() {
         String newStatus = "Listed";
         setStatus(newStatus);
