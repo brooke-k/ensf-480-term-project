@@ -15,6 +15,7 @@ public class Property {
 	private String landlordEmail;
 	private Double listingPrice;
 	private Double rentCost;
+	private Boolean furnished;
 	private Boolean visibleToRenters;
 
 	private Property(Property property) {
@@ -223,6 +224,14 @@ public class Property {
 
 	public void print() {
 		System.out.println(this.toString());
+	}
+
+	public Boolean isFurnished() {
+		return furnished.booleanValue();
+	}
+
+	public void setFurnished(boolean furnished) {
+		this.furnished = Boolean.valueOf(furnished);
 	}
 
 }
