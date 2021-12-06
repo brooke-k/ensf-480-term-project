@@ -20,10 +20,12 @@ public class LoginForm implements Form{
     private static LoginForm onlyInstance;
     private String username;
     private String password;
+    private ActionListener listener;
 
-    private LoginForm(){
+    private LoginForm(ActionListener listen){
         username = new String();
         password = new String();
+        listener = listen;
     }
 
     public static LoginForm getOnlyInstance(){
@@ -68,17 +70,13 @@ public class LoginForm implements Form{
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
-        JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent evt){
-                if(evt.getSource() == submitButton){
-                    setUsername(usernameField.getText());
-                    setPassword(passwordField.getText());
-                    login();
-                }
-            }
-        });
-        panel.add(submitButton);
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(listener);
+        panel.add(loginButton);
+
+        JButton signUpButton = new JButton("Or Sign Up");
+        signUpButton.addActionListener(listener);
+        panel.add(signUpButton);
 
         return panel;
     }
