@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
@@ -18,6 +20,10 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import ensf480.group14.external.Property;
+import ensf480.group14.forms.PreferenceForm;
+import ensf480.group14.forms.Search;
+import ensf480.group14.users.RegisteredRenter;
+import ensf480.group14.users.User;
 
 /* import ensf480.group14.external.Property;
 import ensf480.group14.forms.Search;
@@ -139,7 +145,7 @@ public class DatabaseController implements DatabaseSubject {
 
     }
 
-    private void printProperties() {
+    protected void printProperties() {
         System.out.println();
         System.out.println("Current Properties:");
         FindIterable<Document> docIterator = propertiesCollection.find();
@@ -199,6 +205,36 @@ public class DatabaseController implements DatabaseSubject {
         System.out.println("User with the email address \"" + email + "\" has been removed from the database");
     }
 
+    public void addPreferenceFormToDatabase(PreferenceForm pf) {
+        if (pf.getID() != null) {
+            BasicDBObject searchQuery = new BasicDBObject();
+            searchQuery.put("_id", pf.getID());
+            FindIterable<Document> findIter = propertiesCollection.find(searchQuery);
+            MongoCursor<Document> resultCursor = findIter.iterator();
+            if (resultCursor.hasNext()) { // Meaning the preference form already exists in the
+                                          // database and should not be added as a duplicate
+                System.out.println("A preference form with the address \"" + pf.getID() +
+                        "\" already exists.");
+                System.out.println(
+                        "The preference form with address \"" + pf.getID() + "\" was not added to the database.");
+                resultCursor.close();
+                return;
+            }
+            resultCursor.close();
+        }
+
+        Document newPreference = new Document("building_type", pf.getBuildingType());
+        newPreference.append("bedrooms", pf.getNumOfBathrooms());
+        newPreference.append("bathrooms", pf.getNumOfBathrooms());
+        newPreference.append("furnished", (pf.isFurnished()));
+        newPreference.append("city_quadrant", pf.getCityQuadrant());
+        newPreference.append("max_price", pf.getMaxPrice());
+        newPreference.append("min_price", pf.getMinPrice());
+
+        preferenceCollection.insertOne(newPreference);
+
+    }
+
     public void addPropertyToDatabase(Property property) {
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("address", property.getAddress());
@@ -219,10 +255,10 @@ public class DatabaseController implements DatabaseSubject {
         Document newProperty = new Document("address", property.getAddress());
         newProperty.append("bedrooms", property.getNumBedrooms().toString());
         newProperty.append("bathrooms", property.getNumBathrooms().toString());
-        newProperty.append("furnished", (property.isFurnished()) ? "yes" : "no");
+        newProperty.append("furnished", (property.isFurnished());
         newProperty.append("cityQuad", property.getCityQuad());
         newProperty.append("price", property.getListingPrice().toString());
-        newProperty.append("visibleToRenters", (property.isVisibleToRenters()) ? "yes" : "no");
+        newProperty.append("visibleToRenters", property.isVisibleToRenters());
         newProperty.append("landlordID", property.getLandlordID());
         newProperty.append("landlordName", property.getLandlordName());
         newProperty.append("dateLastListed", property.getDateLastListed());
@@ -259,6 +295,30 @@ public class DatabaseController implements DatabaseSubject {
         DatabaseController.databaseOpen = databaseOpen;
     }
 
+    public String checkLogin(String email, String password) {
+        BasicDBObject query = new BasicDBObject();
+        query.append("email", email).append("password", password);
+        FindIterable<Document> docIter = usersCollection.find(query);
+        MongoCursor<Document> iter = docIter.iterator();
+        if (!iter.hasNext()) { // User with email does not exist
+            return null;
+        }
+        User user;
+        // if(renter){
+        // User user = new RegisteredRenter();
+        // else if (landlord)
+        // User user = new Landlord();
+
+        Document foundUser = docIter.first();
+        String userType = foundUser.get("type").toString();
+
+        if (userType.equals("registered_renter")) {
+            user = new RegisteredRenter();
+            // ((PreferenceForm)
+            // user).setBuildingType(foundUser.getString("building_type"));
+
+        }
+    }
     // public ArrayList<RegisteredRenter> getRegisteredRenters() {
     // return registeredRenters;
     // }
@@ -294,6 +354,8 @@ public class DatabaseController implements DatabaseSubject {
     }
 
     public static void main(String args[]) {
+        DatabaseController db = new DatabaseController();
+        db.printEmail();
         // DatabaseController dbc = new DatabaseController();
 
     }
