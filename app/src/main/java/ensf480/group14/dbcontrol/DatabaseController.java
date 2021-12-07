@@ -41,6 +41,7 @@ public class DatabaseController implements DatabaseSubject {
     private static MongoCollection usersCollection;
     private static MongoCollection propertiesCollection;
     private static MongoCollection emailCollection;
+    private static MongoCollection preferenceCollection;
 
     private ArrayList<DatabaseObserver> observers;
 
@@ -91,6 +92,7 @@ public class DatabaseController implements DatabaseSubject {
             usersCollection = dbMongo.getCollection("Users");
             propertiesCollection = dbMongo.getCollection("Properties");
             emailCollection = dbMongo.getCollection("email");
+            preferenceCollection = dbMongo.getCollection("Preferences");
 
         }
     }
@@ -182,6 +184,7 @@ public class DatabaseController implements DatabaseSubject {
         emailCollection.insertOne(newUser);
 
         newUser.append("username", username).append("password", password).append("type", userType);
+
         usersCollection.insertOne(newUser);
 
         System.out.println("User with email \"" + email + "\" added to the database.");
@@ -288,6 +291,11 @@ public class DatabaseController implements DatabaseSubject {
 
     public ArrayList<String> getAllEmails() {
         return null;
+    }
+
+    public static void main(String args[]) {
+        // DatabaseController dbc = new DatabaseController();
+
     }
 
 }
