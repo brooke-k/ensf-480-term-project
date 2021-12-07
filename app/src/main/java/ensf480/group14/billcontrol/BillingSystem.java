@@ -8,15 +8,15 @@ public class BillingSystem {
     private String paymentType;
     private Landlord landlord;
 
-    //Constructor 
-    public BillingSystem(double feeAmount, Landlord landlord, Date paymentDate, String paymentType)
-	{
-		this.feeAmount = feeAmount;
-		this.landlord = landlord;
-		this.paymentDate = paymentDate;
+    // Constructor
+    public BillingSystem(double feeAmount, Landlord landlord, Date paymentDate, String paymentType) {
+        this.feeAmount = feeAmount;
+        this.landlord = landlord;
+        this.paymentDate = paymentDate;
         this.paymentType = paymentType;
-	}
-    //Start of getters and setters 
+    }
+
+    // Start of getters and setters
     public double getFeeAmount() {
         return this.feeAmount;
     }

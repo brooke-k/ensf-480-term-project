@@ -19,6 +19,9 @@ public class Connection {
     private MongoDatabase db;
     private MongoCollection users;
     private MongoCollection properties;
+
+    private static boolean connectionExists;
+
     public MongoDatabase getDb() {
         return db;
     }
@@ -52,30 +55,66 @@ public class Connection {
     }
 
     private MongoCollection email;
-    
-    public MongoCollection getUserCollection(){
+
+    public MongoCollection getUserCollection() {
         return this.users;
     }
 
-    public Connection(){
-        //this.db;
-    }
+    public Connection() {
 
-    public static void main(String[] args) {
         File file = new File("./connection.txt");
+        if (!file.exists()) {
+            System.out.print("File \"./connection.txt\" does not exist.");
+
+            System.exit(1);
+        }
         BufferedReader br;
         String st = "";
         try {
             br = new BufferedReader(new FileReader(file));
             st = br.readLine();
         } catch (IOException e) {
-            
+
         }
 
         System.out.println(st);
-    
-        
-        String connectionString = "mongodb+srv://480team:" + st + "@cluster0.socxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
+        String connectionString = "mongodb+srv://480team:" + st
+                + "@cluster0.socxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+        try (MongoClient mongoClient = MongoClients.create(connectionString)) {
+            db = mongoClient.getDatabase("480project");
+            users = db.getCollection("Users");
+            properties = db.getCollection("Properties");
+            Document testProperty = new Document("_id", new ObjectId());
+            testProperty.append("address", "1234 Test Address, SampleCity, CA").append("quadrant", "SW");
+            properties.insertOne(testProperty);
+            Document renter = new Document("_id", new ObjectId());
+            renter.append("username", "nick").append("password", "niceTry");
+            users.insertOne(renter);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        File file = new File("./connection.txt");
+        if (!file.exists()) {
+            System.out.print("File \"./connection.txt\" does not exist.");
+
+            System.exit(1);
+        }
+        BufferedReader br;
+        String st = "";
+        try {
+            br = new BufferedReader(new FileReader(file));
+            st = br.readLine();
+        } catch (IOException e) {
+
+        }
+
+        System.out.println(st);
+
+        String connectionString = "mongodb+srv://480team:" + st
+                + "@cluster0.socxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
         try (MongoClient mongoClient = MongoClients.create(connectionString)) {
             MongoDatabase db = mongoClient.getDatabase("480project");
             MongoCollection users = db.getCollection("Users");

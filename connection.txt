@@ -1,0 +1,4 @@
+mongodb+srv://480team:
+ilovediagrams
+@cluster0.socxq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+480project

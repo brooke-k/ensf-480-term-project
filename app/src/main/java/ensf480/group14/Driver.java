@@ -6,8 +6,10 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ensf480.group14.dbcontrol.DatabaseController;
 import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.forms.*;
+import ensf480.group14.users.User;
 
 import java.awt.event.ActionEvent;
 
@@ -33,7 +35,8 @@ public class Driver {
         frame = new JPanel(cardLayout);
         frame1 = new JFrame();
 
-        Listener listener = new Listener();
+        DatabaseController controller = new DatabaseController();
+        Listener listener = new Listener(controller);
 
         LoginForm loginForm = LoginForm.getOnlyInstance(listener);
         RenterSignUpForm signUp = new RenterSignUpForm();
@@ -42,6 +45,7 @@ public class Driver {
         LandlordSignUpForm landlordSign = new LandlordSignUpForm();
         Search searchForm = new Search();
         PropertyApplication propertyApp = new PropertyApplication();
+        LoggedIn homePage = new LoggedIn(listener);
 
         frame.add(loginForm.display(), "loginForm");
         frame.add(signUp.display(), "renterSignUpForm");
@@ -49,6 +53,7 @@ public class Driver {
         frame.add(preferenceForm.display(), "preferencesForm");
         frame.add(searchForm.display(), "searchForm");
         frame.add(landlordSign.display(), "landlordSignUpForm");
+        frame.add(homePage.display(), "homePage");
 
         frame1.add(frame);
         frame1.pack();
@@ -63,8 +68,12 @@ public class Driver {
                 System.out.println(loginForm.getUsername() + ", " + loginForm.getPassword());
             } else if (page.equals("LoginPage")) {
                 cardLayout.show(frame, "loginForm");
-            } else {
-                cardLayout.show(frame, "loginForm");
+            } else if (page.equals("HomePages")) {
+                cardLayout.show(frame, "homePage");
+            }
+
+            else {
+                cardLayout.show(frame, "searchForm");
             }
         }
 
