@@ -2,6 +2,8 @@ package ensf480.group14.billcontrol;
 
 import java.util.Date;
 
+import ensf480.group14.users.Landlord;
+
 public class BillingSystem {
     private double feeAmount;
     private Date paymentDate;
@@ -41,4 +43,11 @@ public class BillingSystem {
         this.paymentType = paymentType;
     }
 
+    public Landlord getLandlord() {
+        return this.landlord;
+    }
+
+    public void setLandlord(Landlord landlord) {
+        this.landlord = landlord;
+    }
 }
