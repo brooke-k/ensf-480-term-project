@@ -24,24 +24,24 @@ public class ContactForm implements Form {
     // private String userEmailAddress;
     // private String message;
 
-    public JPanel display(){
+    public JPanel display() {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
-        panel.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
-       // panel.setLayout(new GridLayout(0,1));
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        // panel.setLayout(new GridLayout(0,1));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setPreferredSize(expectDimension);
         panel.setMaximumSize(expectDimension);
         panel.setMinimumSize(expectDimension);
 
         panel.setBackground(Color.GRAY);
-        
-        //panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel contactLabel = new JLabel("Contact");
         contactLabel.setFont(new Font("Serif", Font.BOLD, 35));
-        contactLabel.setSize(40,40);
+        contactLabel.setSize(40, 40);
         contactLabel.setAlignmentX(12);
         panel.add(contactLabel);
 
@@ -57,23 +57,22 @@ public class ContactForm implements Form {
         JLabel bodyLabel = new JLabel("Body");
         bodyLabel.setAlignmentX(16);
         panel.add(bodyLabel);
-        JTextArea emailBody = new JTextArea(50,50);
-        //JScrollPane sPane = new JScrollPane(emailBody);
+        JTextArea emailBody = new JTextArea(50, 50);
+        // JScrollPane sPane = new JScrollPane(emailBody);
         emailBody.setSize(300, 60);
         emailBody.setMaximumSize(new Dimension(300, 60));
         emailBody.setColumns(300);
         emailBody.setLineWrap(true);
         panel.add(emailBody);
 
-
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
         JButton sendButton = new JButton("Send");
-        sendButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent evt){
-                if(evt.getSource() == sendButton){
-                    parseEmail(emailBody.getText(),userEmail.getText());
-                    
+        sendButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource() == sendButton) {
+                    parseEmail(emailBody.getText(), userEmail.getText());
+
                 }
             }
         });
@@ -82,39 +81,21 @@ public class ContactForm implements Form {
         return panel;
     }
 
-
-    Email parseEmail(String body,String sendAddr){
-        Email mail = new Email(body,sendAddr);
+    Email parseEmail(String body, String sendAddr) {
+        Email mail = new Email(body, sendAddr);
         return mail;
     }
 
-   
-
-    
-
-   
-
-   
-
-   
-
-   
-
-   
-
-
-
-    //For testing
+    // For testing
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         ContactForm form = new ContactForm();
         frame.add(form.display());
-        frame.setPreferredSize(new Dimension(524,368));
-        
+        frame.setPreferredSize(new Dimension(524, 368));
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }
-
