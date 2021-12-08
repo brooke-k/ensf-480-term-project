@@ -42,6 +42,13 @@ public class Driver {
 
         LoginForm loginForm = LoginForm.getOnlyInstance(listener);
 
+        DatabaseController controller = new DatabaseController();
+        Listener listener = new Listener(controller, signUp, contact, preferenceForm, searchForm, propertyApp, inbox);
+
+        LoginForm loginForm = LoginForm.getOnlyInstance(listener);
+        HomePage homePage = new HomePage(listener);
+        PropertyPage propertyPage = new PropertyPage(listener);
+
         frame.add(loginForm.display(listener), "loginForm");
         frame.add(signUp.display(listener), "renterSignUpForm");
         frame.add(contact.display(listener), "contactForm");

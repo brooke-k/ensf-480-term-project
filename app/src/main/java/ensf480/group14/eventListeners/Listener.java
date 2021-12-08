@@ -34,6 +34,7 @@ public class Listener implements ActionListener {
     ArrayList<Property> properties;
     ArrayList<Email> mail;
     DatabaseSubject controller;
+
     Property property;
 
     RenterSignUpForm signUpForm;
