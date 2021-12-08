@@ -34,9 +34,9 @@ public class Listener implements ActionListener {
             // Error);
             // pageToShow = "LoginPage";
             // }
-        } else if (e.getActionCommand().equals("Sign up as renter")){
+        } else if (e.getActionCommand().equals("Sign up as renter")) {
 
-        } else if (e.getActionCommand().equals("Sign up as landlord")){
+        } else if (e.getActionCommand().equals("Sign up as landlord")) {
 
         } else if (e.getActionCommand().equals("Search")) {
             pageToShow = "SearchPage";

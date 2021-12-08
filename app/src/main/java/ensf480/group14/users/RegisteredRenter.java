@@ -3,24 +3,25 @@ package ensf480.group14.users;
 import java.util.ArrayList;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
-import ensf480.group14.dbcontrol.DatabaseController;
+import ensf480.group14.dbcontrol.RegisteredRenterDBController;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
 
 public class RegisteredRenter extends User {
 
 	String emailAddress;
-	DatabaseController dbcontroller;
+	RegisteredRenterDBController dbcontroller;
 	PreferenceForm prefs;
 	ArrayList<Property> lastMatchedProperties;
-	String iD;
+	ObjectId iD;
 
-	public RegisteredRenter(String emailAddress, String renterId, String type) {
+	public RegisteredRenter(String emailAddress, ObjectId renterId, String type) {
 		this.emailAddress = emailAddress;
 		this.iD = renterId;
 		this.type = type;
-		this.dbcontroller = new DatabaseController();
+		this.dbcontroller = new RegisteredRenterDBController();
 	}
 
 	private RegisteredRenter() {
@@ -36,8 +37,8 @@ public class RegisteredRenter extends User {
 		newRenter.setEmailAddress(renterDoc.get("email").toString());
 		// newRenter.setPrefs(prefs);
 		newRenter.setType(renterDoc.get("type").toString());
-		newRenter.setDbcontroller(new DatabaseController());
-		newRenter.setiD(renterDoc.get("_id").toString());
+		newRenter.setDbcontroller(new RegisteredRenterDBController());
+		newRenter.setiD((ObjectId) renterDoc.get("_id"));
 		return newRenter;
 
 	}
@@ -60,11 +61,11 @@ public class RegisteredRenter extends User {
 		this.emailAddress = emailAddress;
 	}
 
-	public DatabaseController getDbcontroller() {
+	public RegisteredRenterDBController getDbcontroller() {
 		return dbcontroller;
 	}
 
-	public void setDbcontroller(DatabaseController dbcontroller) {
+	public void setDbcontroller(RegisteredRenterDBController dbcontroller) {
 		this.dbcontroller = dbcontroller;
 	}
 
@@ -76,21 +77,22 @@ public class RegisteredRenter extends User {
 		this.prefs = prefs;
 	}
 
-	// public ArrayList<Property> getLastMatchedProperties() {
-	// return lastMatchedProperties;
-	// }
-
-	// public void setLastMatchedProperties(ArrayList<Property>
-	// lastMatchedProperties) {
-	// this.lastMatchedProperties = lastMatchedProperties;
-	// }
-
-	public String getiD() {
+	public ObjectId getiD() {
 		return iD;
 	}
 
-	public void setiD(String iD) {
+	public void setiD(ObjectId iD) {
 		this.iD = iD;
+	}
+
+	public void addPreference(PreferenceForm prefForm) {
+		if (this.iD == null) {
+			return;
+		}
+
+		prefForm.setRenterID(this.iD);
+		dbcontroller.addPreferenceFormToDatabase(prefForm);
+
 	}
 
 }

@@ -68,13 +68,13 @@ public class SearchResult {
 
 
 		DefaultTableModel model = new DefaultTableModel(properties,columns);
-		
+
 		JTable jTable = new JTable(model){
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
                 return false;
              }
 
-        };		
+        };
         jTable.getTableHeader().setReorderingAllowed(false);
         TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(jTable.getModel());
         jTable.setRowSorter(rowSorter);
@@ -83,7 +83,7 @@ public class SearchResult {
         jTable.setFont(new Font("Serif", Font.BOLD, 14));
         jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
-                
+
                 System.out.println(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());
             }
         });
@@ -91,7 +91,7 @@ public class SearchResult {
         master.setBackground(Color.GRAY);
         return master;
 	}
-	
+
 	// For testing
 
     public static void main(String[] args) {
@@ -106,7 +106,7 @@ public class SearchResult {
 			temp.setCityQuad("NW");
 			temp.setNumBedrooms(2);
 			temp.setNumBathrooms(3.0);
-			temp.setFurnished(true); 
+			temp.setFurnished(true);
             propertyTest.add(temp);
         }
 		JPanel p = new JPanel();
@@ -115,12 +115,12 @@ public class SearchResult {
         //frame.setContentPane(sp);
         frame.add(p);
         frame.setPreferredSize(new Dimension(900, 600));
-       
+
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-       
+
     }
 
 }

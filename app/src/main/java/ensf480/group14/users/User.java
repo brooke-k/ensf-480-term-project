@@ -10,4 +10,4 @@ public abstract class User {
 	public String getType() {
 		return type;
 	}
-}
+};

@@ -71,20 +71,19 @@ public class Driver {
                 homePagePanel = homePage.display(listener.getUser());
                 frame.add(homePagePanel, "homePage");
                 cardLayout.show(frame, "homePage");
-            } else if (page.equals("SearchPage")){
+            } else if (page.equals("SearchPage")) {
                 cardLayout.show(frame, "searchForm");
-            } else if (page.equals("SearchResultsPage")){
+            } else if (page.equals("SearchResultsPage")) {
                 frame.remove(searchResultsPanel);
                 searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
                 frame.add(searchResultsPanel, "searchResultsPage");
                 cardLayout.show(frame, "searchResultsPage");
-            } else if (page.equals("InboxPage")){
+            } else if (page.equals("InboxPage")) {
                 frame.remove(inboxPagePanel);
                 inboxPagePanel = inbox.display(listener.getUser(), listener.getMail());
                 frame.add(inboxPagePanel, "inboxPage");
                 cardLayout.show(frame, "inboxPage");
-            }
-            else {
+            } else {
                 cardLayout.show(frame, "searchForm");
             }
         }

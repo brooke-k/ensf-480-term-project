@@ -1,9 +1,10 @@
 package ensf480.group14.external;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 public class Property {
-	private String iD;
+	private ObjectId iD;
 	private String address;
 	private String cityQuad;
 	private String rentalState;
@@ -13,11 +14,11 @@ public class Property {
 	private Integer numBedrooms;
 	private Double numBathrooms;
 	private String landlordEmail;
-	private Double listingPrice;
 	private Double rentCost;
 	private Boolean furnished;
 	private String type;
 	private Boolean visibleToRenters;
+	private ObjectId landlordID;
 
 	private Property(Property property) {
 		this.iD = property.iD;
@@ -30,14 +31,13 @@ public class Property {
 		this.numBedrooms = property.numBedrooms;
 		this.numBathrooms = property.numBathrooms;
 		this.landlordEmail = property.landlordEmail;
-		this.listingPrice = property.listingPrice;
 		this.rentCost = property.rentCost;
 		this.visibleToRenters = property.visibleToRenters;
 		this.type = property.type;
+		this.landlordID = property.landlordID;
 	}
 
 	public Property() {
-		iD = null;
 
 		address = null;
 		cityQuad = null;
@@ -49,9 +49,9 @@ public class Property {
 		numBedrooms = null;
 		numBathrooms = null;
 		landlordEmail = null;
+		landlordID = null;
 		type = null;
 
-		listingPrice = null;
 		rentCost = null;
 		visibleToRenters = false;
 	}
@@ -64,10 +64,11 @@ public class Property {
 	public static Property getProperty(Document propertyDoc) {
 		Property returnProp = new Property();
 		returnProp.address = propertyDoc.get("address", String.class);
-		returnProp.iD = propertyDoc.get("_id", String.class);
+		returnProp.iD = propertyDoc.get("_id", ObjectId.class);
 		returnProp.cityQuad = propertyDoc.get("city_quad", String.class);
 		returnProp.rentalState = propertyDoc.get("rental_state", String.class);
 		returnProp.landlordName = propertyDoc.get("landlord_name", String.class);
+		returnProp.landlordID = propertyDoc.get("landlord_id", ObjectId.class);
 		returnProp.landlordEmail = propertyDoc.get("landlord_email", String.class);
 		returnProp.type = propertyDoc.get("type", String.class);
 		returnProp.dateLastListed = propertyDoc.get("date_last_listed", String.class);
@@ -82,26 +83,29 @@ public class Property {
 
 	public static Document toDocument(Property prop) {
 		Document propDoc = new Document("address", prop.getAddress());
-		propDoc.append("_id", prop.getiD());
+		if (prop.getiD() != null) {
+			propDoc.append("_id", prop.getiD());
+		}
 		propDoc.append("city_quad", prop.getCityQuad());
 		propDoc.append("rental_state", prop.getRentalState());
 		propDoc.append("landlord_name", prop.getLandlordName());
 		propDoc.append("landlord_email", prop.getLandlordName());
 		propDoc.append("date_last_listed", prop.getDateLastListed());
 		propDoc.append("date_rented", prop.getDateRented());
-		propDoc.append("bedrooms", prop.getNumBathrooms());
-		propDoc.append("bathrooms", prop.getNumBedrooms());
+		propDoc.append("bathrooms", prop.getNumBathrooms());
+		propDoc.append("bedrooms", prop.getNumBedrooms());
 		propDoc.append("rent_cost", prop.getRentCost());
 		propDoc.append("visible_to_renters", prop.isVisibleToRenters());
 		propDoc.append("type", prop.getType());
+		propDoc.append("landlord_id", prop.getLandlordID());
 		return propDoc;
 	}
 
-	public String getiD() {
+	public ObjectId getiD() {
 		return iD;
 	}
 
-	public void setiD(String iD) {
+	public void setiD(ObjectId iD) {
 		this.iD = iD;
 	}
 
@@ -169,20 +173,12 @@ public class Property {
 		this.numBathrooms = numBathrooms;
 	}
 
-	public String getLandlordID() {
-		return landlordEmail;
+	public ObjectId getLandlordID() {
+		return landlordID;
 	}
 
-	public void setLandlordID(String landlordEmail) {
-		this.landlordEmail = landlordEmail;
-	}
-
-	public Double getListingPrice() {
-		return listingPrice;
-	}
-
-	public void setListingPrice(Double listingPrice) {
-		this.listingPrice = listingPrice;
+	public void setLandlordID(ObjectId landlordID) {
+		this.landlordID = landlordID;
 	}
 
 	public Double getRentCost() {
@@ -214,8 +210,7 @@ public class Property {
 		asString = asString + "Date last listed: " + dateLastListed + "\n\r";
 		asString = asString + "Date rented: " + dateRented + "\n\r";
 		asString = asString + "Name of landlord: " + landlordName + "\n\r";
-		asString = asString + "ID of landlord: " + landlordEmail + "\n\r";
-		asString = asString + "Listing price: " + listingPrice + "\n\r";
+		asString = asString + "ID of landlord: " + landlordID + "\n\r";
 		asString = asString + "Visible to public search: " + ((visibleToRenters.booleanValue()) ? "Yes" : "No")
 				+ "\n\r";
 

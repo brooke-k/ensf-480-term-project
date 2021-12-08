@@ -30,13 +30,13 @@ public class Report {
     // Currently throws an error because the Property class has not been made yet.
 
     // Methods
-    public Report(Calendar startDate, Calendar endDate, DatabaseController controller) throws IOException {
+    public Report(Calendar startDate, Calendar endDate, RegisteredRenterDBController controller) throws IOException {
         dateRangeStart = startDate;
         dateRangeEnd = endDate;
         generateReport(controller);
     }
 
-    public String generateReport(DatabaseController dbControl) throws IOException {
+    public String generateReport(RegisteredRenterDBController dbControl) throws IOException {
 
         /*
          * reportFile = new File("./src/main/outputs/report.txt");
@@ -103,5 +103,3 @@ public class Report {
         this.numPropertiesActive = numPropertiesActive;
     }
 }
-
-  
