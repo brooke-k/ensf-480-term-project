@@ -3,6 +3,7 @@ package ensf480.group14.users;
 import java.util.ArrayList;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import ensf480.group14.dbcontrol.DatabaseController;
 import ensf480.group14.external.Property;
@@ -14,9 +15,9 @@ public class RegisteredRenter extends User {
 	DatabaseController dbcontroller;
 	PreferenceForm prefs;
 	ArrayList<Property> lastMatchedProperties;
-	String iD;
+	ObjectId iD;
 
-	public RegisteredRenter(String emailAddress, String renterId, String type) {
+	public RegisteredRenter(String emailAddress, ObjectId renterId, String type) {
 		this.emailAddress = emailAddress;
 		this.iD = renterId;
 		this.type = type;
@@ -37,7 +38,7 @@ public class RegisteredRenter extends User {
 		// newRenter.setPrefs(prefs);
 		newRenter.setType(renterDoc.get("type").toString());
 		newRenter.setDbcontroller(new DatabaseController());
-		newRenter.setiD(renterDoc.get("_id").toString());
+		newRenter.setiD((ObjectId) renterDoc.get("_id"));
 		return newRenter;
 
 	}
@@ -76,21 +77,22 @@ public class RegisteredRenter extends User {
 		this.prefs = prefs;
 	}
 
-	// public ArrayList<Property> getLastMatchedProperties() {
-	// return lastMatchedProperties;
-	// }
-
-	// public void setLastMatchedProperties(ArrayList<Property>
-	// lastMatchedProperties) {
-	// this.lastMatchedProperties = lastMatchedProperties;
-	// }
-
-	public String getiD() {
+	public ObjectId getiD() {
 		return iD;
 	}
 
-	public void setiD(String iD) {
+	public void setiD(ObjectId iD) {
 		this.iD = iD;
+	}
+
+	public void addPreference(PreferenceForm prefForm) {
+		if (this.iD == null) {
+			return;
+		}
+
+		prefForm.setRenterID(this.iD);
+		dbcontroller.addPreferenceFormToDatabase(prefForm);
+
 	}
 
 }

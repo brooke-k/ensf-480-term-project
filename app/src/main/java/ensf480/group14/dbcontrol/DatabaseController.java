@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.naming.spi.DirStateFactory.Result;
+import javax.swing.text.TabStop;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -22,15 +22,8 @@ import org.bson.Document;
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
-import ensf480.group14.forms.Search;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
-
-/* import ensf480.group14.external.Property;
-import ensf480.group14.forms.Search;
-import ensf480.group14.users.Landlord;
-import ensf480.group14.users.Manager;
-import ensf480.group14.users.RegisteredRenter; */
 
 public class DatabaseController implements DatabaseSubject {
     public static boolean databaseOpen; // Public to allow for any
@@ -96,10 +89,10 @@ public class DatabaseController implements DatabaseSubject {
             mongoClient = MongoClients.create(connectionURL);
             dbMongo = mongoClient.getDatabase(dbName);
 
-            usersCollection = dbMongo.getCollection("Users");
-            propertiesCollection = dbMongo.getCollection("Properties");
+            usersCollection = dbMongo.getCollection("users");
+            propertiesCollection = dbMongo.getCollection("properties");
             emailCollection = dbMongo.getCollection("email");
-            preferenceCollection = dbMongo.getCollection("Preferences");
+            preferenceCollection = dbMongo.getCollection("preferences");
 
         }
     }
@@ -130,6 +123,8 @@ public class DatabaseController implements DatabaseSubject {
         while (collectionIter.hasNext()) {
             System.out.println(collectionIter.next());
         }
+        System.out.println();
+
         collectionIter.close();
 
     }
@@ -142,6 +137,8 @@ public class DatabaseController implements DatabaseSubject {
         while (collectionIter.hasNext()) {
             System.out.println(collectionIter.next());
         }
+        System.out.println();
+
         collectionIter.close();
 
     }
@@ -154,6 +151,7 @@ public class DatabaseController implements DatabaseSubject {
         while (collectionIter.hasNext()) {
             System.out.println(collectionIter.next());
         }
+        System.out.println();
         collectionIter.close();
 
     }
@@ -171,11 +169,25 @@ public class DatabaseController implements DatabaseSubject {
     // printUsers();
 
     // }
+    private void resetProperties() {
+        System.out.println();
+        System.out.println("Removing all properties from the database");
+        Document all = new Document();
+        propertiesCollection.deleteMany(all);
+        System.out.println();
+        System.out.println("Removed all properties from the database");
+
+    }
 
     public void addUserToDatabase(String email, String password, String userType) {
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("email", email);
-        FindIterable<Document> findIter = emailCollection.find(searchQuery);
+        FindIterable<Document> findIter = usersCollection.find(searchQuery);
+        if (findIter.first() != null) {
+            System.out.println("A user with the email \"" + email + "\" already exists.");
+            System.out.println("The user with email \"" + email + "\" was not added to the database.");
+            return;
+        }
         MongoCursor<Document> resultCursor = findIter.iterator();
         if (resultCursor.hasNext()) { // Meaning the user already exists in the database and should
                                       // not be added as a duplicate
@@ -367,20 +379,42 @@ public class DatabaseController implements DatabaseSubject {
         }
     }
 
-    public static void main(String args[]) {
-        DatabaseController db = new DatabaseController();
-        db.printEmail();
-        RegisteredRenter testRenter;
-        db.addUserToDatabase("rremail@groupfourteen.ca", "rr_password", "renter");
-        db.printUsers();
-        testRenter = RegisteredRenter
-                .getRegisteredRenter(db.getFirstObject("email", "rremail@groupfourteen.ca", "users"));
-        testRenter.print();
+    /**
+     * For testing, to clear the terminal of previous information.
+     */
+    private static void clearTerminal() {
+        System.out.println("\u001B[1;1H\u001B[2J");
+    }
 
-        db.printProperties();
+    public static void main(String args[]) {
+        DatabaseController.clearTerminal();
+        DatabaseController db = new DatabaseController();
+        // db.printEmail();
+        RegisteredRenter testRenter;
+
+        db.resetProperties();
+
+        Property testProperty = new Property();
+        testProperty.setAddress("Test address 73");
+        testProperty.setCityQuad("EW");
+        testProperty.setDateLastListed("02/02/13");
+        testProperty.setFurnished(true);
+        testProperty.setDateLastListed("01/01/00");
+        testProperty.setLandlordEmail("Return_To_Sender");
+        testProperty.setNumBathrooms(804595.0);
+        testProperty.setNumBedrooms(1);
+        testProperty.setRentCost(2.0);
+        testProperty.setRentalState("Haunted");
+        testProperty.setLandlordName("Mr. Aristotle Berkinghamshire");
+        // testProperty.setLandlordID("LMAO");
+        db.addPropertyToDatabase(testProperty);
+
+        // db.printProperties();
+
         for (Property p : db.getAllProperties()) {
             p.print();
         }
+
         // DatabaseController dbc = new DatabaseController();
 
     }
