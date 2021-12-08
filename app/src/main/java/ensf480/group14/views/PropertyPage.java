@@ -27,17 +27,31 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class PropertyPage {
-	private ActionListener listener;
+
+    private Property currentProp;
+
+	public Property getCurrentProp() {
+        return currentProp;
+    }
+
+
+
+    public void setCurrentProp(Property currentProp) {
+        this.currentProp = currentProp;
+    }
+
+    private ActionListener listener;
 
 	public PropertyPage() {
 
 	}
 
-	public PropertyPage(ActionListener listen) {
-		listener = listen;
-	}
 
-	public JPanel display(Property prop) {
+
+	public JPanel display(Property prop,ActionListener listen) {
+
+        listener = listen;
+        currentProp = prop; 
 		JPanel panel = new JPanel(new BorderLayout(50,50));
         
             // Top panel (address) 
@@ -50,17 +64,17 @@ public class PropertyPage {
             //Bottom Panel Contact Popout
             JButton contactButton = new JButton("Contact Owner");
             contactButton.setPreferredSize(new Dimension(5,40));
-            contactButton.addActionListener(listener);
+            contactButton.addActionListener(listener);      //opens contact form ;  NEED TO KEEP TRACK OF CURRENT PROP use getCurrentProp
             panel.add(contactButton,BorderLayout.SOUTH);
 
             //Right Panel with details
             String s = "";
-            s +=  "TYPE"+"\n";//p.getType();
+            s +=  prop.getType() + "\n";
             s += "Bedrooms: " + prop.getNumBedrooms().toString() + "\n";
             s += "Bathrooms: " + prop.getNumBathrooms().toString() + "             \n";
             s +=( (prop.isFurnished()) ? "Furnished" :"Unfurnished" )+ "\n";
             s += "Rent: $";
-            s += String.format("%.02f",prop.getListingPrice());
+            s += String.format("%.02f",prop.getRentCost());
         
             
             JTextArea details = new JTextArea(s);
@@ -70,8 +84,8 @@ public class PropertyPage {
             details.setFont(new Font("Serif", Font.BOLD, 40));
             panel.add(details,BorderLayout.EAST);
             panel.setBackground(Color.GRAY);
+            
             //Left/Center Panel
-            //Right Panel with details
             int i = ThreadLocalRandom.current().nextInt(1, 4 + 1);
             ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("images/"+i+".png"));
             Image image = imageIcon.getImage();
@@ -101,7 +115,8 @@ public class PropertyPage {
 
 		// LoginForm login = getOnlyInstance();
         Property temp = new Property();
-        temp.setListingPrice(500.1);
+        temp.setRentCost(500.1);
+        temp.setType("House");
         temp.setAddress("111111");
         temp.setCityQuad("NW");
         temp.setNumBedrooms(2);

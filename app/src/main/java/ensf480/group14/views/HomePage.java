@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.bson.types.ObjectId;
+
 public class HomePage {
 	private ActionListener listener;
 
@@ -29,11 +31,9 @@ public class HomePage {
 
 	}
 
-	public HomePage(ActionListener listen) {
-		listener = listen;
-	}
 
-	public JPanel display(User user) {
+	public JPanel display(User user,ActionListener listen) {
+		listener = listen;
 		JPanel panel = new JPanel();
 		Dimension expectDimension = new Dimension(300, 300);
 
@@ -52,28 +52,51 @@ public class HomePage {
 		// loginLabel.setFont(new Font("Serif", Font.BOLD, 35));
 		// loginLabel.setSize(40, 40);
 		// panel.add(loginLabel);
+		if (!user.getType().equals("manager")){
 		JButton searchButton = new JButton("Search");
-		searchButton.addActionListener(listener);
+		searchButton.addActionListener(listener);      //search form --> search results
 		panel.add(searchButton);
+		}
 
 		if (user.getType().equals("registered_renter")) {
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
-			JButton preferenceButton = new JButton("Notifications Settings");
+			JButton preferenceButton = new JButton("Notifications Settings");  //open preference form
 			preferenceButton.addActionListener(listener);
 			panel.add(preferenceButton);
 		}
 		if (user.getType().equals("manager")) {
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
-			JButton accessButton = new JButton("Access Database");
+			JButton accessButton = new JButton("Access Database");    //opens search results with all properties
 			accessButton.addActionListener(listener);
 			panel.add(accessButton);
 
+			panel.add(Box.createRigidArea(new Dimension(1, 5)));
+			JButton feesButton = new JButton("Adjust Fees");    //opens dialog box with pay period and amount
+			feesButton.addActionListener(listener);                 // also needs to change those in DB/Billing
+			panel.add(feesButton);
+
+			panel.add(Box.createRigidArea(new Dimension(1, 5)));
+			JButton reportButton = new JButton("Generate Report");  //generates report as txt file and opens it
+			reportButton.addActionListener(listener);              //brooke already made this in Report
+			panel.add(reportButton);
 		}
 		if (user.getType().equals("landlord")) {
+			
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
-			JButton managePropertyButton = new JButton("Manage Properties");
+			JButton managePropertyButton = new JButton("Manage Properties");      //Open search results with only properties that the landlord owns
 			managePropertyButton.addActionListener(listener);
 			panel.add(managePropertyButton);
+			panel.add(Box.createRigidArea(new Dimension(1, 5)));
+			JButton addPropertyButton = new JButton("New Property Application");   //Open Property Application
+			addPropertyButton.addActionListener(listener);
+			panel.add(addPropertyButton);
+			
+		}
+		if(user.getType().equals("landlord")||user.getType().equals("registered_renter")){
+			panel.add(Box.createRigidArea(new Dimension(1, 5)));
+			JButton addPropertyButton = new JButton("Inbox");                   //Open Inbox page needs array of emails addressed to user
+			addPropertyButton.addActionListener(listener);
+			panel.add(addPropertyButton);
 		}
 		return panel;
 	}
@@ -82,7 +105,8 @@ public class HomePage {
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		User user = new RegisteredRenter("an email", "an ID", "manager");
+		ObjectId id = new ObjectId();
+        User user = new RegisteredRenter("an email", id, "banana");
 		HomePage loggedIn = new HomePage();
 
 		// LoginForm login = getOnlyInstance();
