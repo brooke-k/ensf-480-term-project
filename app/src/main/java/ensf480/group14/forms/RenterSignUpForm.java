@@ -75,9 +75,13 @@ public class RenterSignUpForm implements Form {
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Sign up as renter");
         submitButton.addActionListener(listener);
         panel.add(submitButton);
+
+        JButton submitButton2 = new JButton("Sign up as landlord");
+        submitButton.addActionListener(listener);
+        panel.add(submitButton2);
 
         return panel;
     }

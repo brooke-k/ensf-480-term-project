@@ -10,20 +10,11 @@ import ensf480.group14.dbcontrol.DatabaseController;
 import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.forms.*;
 import ensf480.group14.users.User;
-import ensf480.group14.views.LoggedIn;
+import ensf480.group14.views.HomePage;
+import ensf480.group14.views.Inbox;
+import ensf480.group14.views.SearchResult;
 
 import java.awt.event.ActionEvent;
-
-enum FormState {
-    LOGIN,
-    RENTER_SIGNUP,
-    CONTACT,
-    PREFERENCE,
-    LANDLORD_SIGNUP,
-    SEARCH,
-    PROPERTY_APPLICATION,
-    ERROR;
-}
 
 public class Driver {
     static JFrame frame1;
@@ -46,15 +37,22 @@ public class Driver {
         LandlordSignUpForm landlordSign = new LandlordSignUpForm();
         Search searchForm = new Search();
         PropertyApplication propertyApp = new PropertyApplication();
-        // LoggedIn homePage = new LoggedIn(listener);
+        HomePage homePage = new HomePage(listener);
+        SearchResult searchResults = new SearchResult();
+        Inbox inbox = new Inbox();
 
-        frame.add(loginForm.display(), "loginForm");
-        frame.add(signUp.display(), "renterSignUpForm");
-        frame.add(contact.display(), "contactForm");
-        frame.add(preferenceForm.display(), "preferencesForm");
-        frame.add(searchForm.display(), "searchForm");
-        frame.add(landlordSign.display(), "landlordSignUpForm");
-        // frame.add(homePage.display(), "homePage");
+        frame.add(loginForm.display(listener), "loginForm");
+        frame.add(signUp.display(listener), "renterSignUpForm");
+        frame.add(contact.display(listener), "contactForm");
+        frame.add(preferenceForm.display(listener), "preferencesForm");
+        frame.add(searchForm.display(listener), "searchForm");
+        frame.add(landlordSign.display(listener), "landlordSignUpForm");
+        JPanel homePagePanel = homePage.display(listener.getUser());
+        frame.add(homePagePanel, "homePage");
+        JPanel searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
+        frame.add(searchResultsPanel, "searchResultsPage");
+        JPanel inboxPagePanel = inbox.display(listener.getUser(), listener.getMail());
+        frame.add(inboxPagePanel, "inboxPage");
 
         frame1.add(frame);
         frame1.pack();
@@ -64,69 +62,31 @@ public class Driver {
 
         while (true) {
             String page = listener.getPageToShow();
-            if (page.equals("SignInPage")) {
+            if (page.equals("SignUpPage")) {
                 cardLayout.show(frame, "renterSignUpForm");
             } else if (page.equals("LoginPage")) {
                 cardLayout.show(frame, "loginForm");
             } else if (page.equals("HomePage")) {
-                frame.add(homePage.display(listener.getUser()), "homePage");
+                frame.remove(homePagePanel);
+                homePagePanel = homePage.display(listener.getUser());
+                frame.add(homePagePanel, "homePage");
                 cardLayout.show(frame, "homePage");
+            } else if (page.equals("SearchPage")){
+                cardLayout.show(frame, "searchForm");
+            } else if (page.equals("SearchResultsPage")){
+                frame.remove(searchResultsPanel);
+                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
+                frame.add(searchResultsPanel, "searchResultsPage");
+                cardLayout.show(frame, "searchResultsPage");
+            } else if (page.equals("InboxPage")){
+                frame.remove(inboxPagePanel);
+                inboxPagePanel = inbox.display(listener.getUser(), listener.getMail());
+                frame.add(inboxPagePanel, "inboxPage");
+                cardLayout.show(frame, "inboxPage");
             }
-
             else {
                 cardLayout.show(frame, "searchForm");
             }
         }
-
-        /*
-         * FormState currState = FormState.LOGIN;
-         * LoginListener loginListener = new LoginListener();
-         * frame = new JFrame();
-         * LoginForm form = LoginForm.getOnlyInstance(loginListener);
-         * // ^^ Does not work. Need another package to deal with this.
-         * frame.add(form.display());
-         * frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         * frame.pack();
-         * frame.setLocationRelativeTo(null);
-         * frame.setVisible(true);
-         * // System.out.println("\u001B[1;1H\u001B[2J");
-         * int s;
-         * while (true) {
-         * FormState curr = FormState.LOGIN;
-         * s = loginListener.getStringEvent();
-         * // System.out.println(s);
-         * // if (s != null && s.equals("Login")) {
-         * // System.out.println("LOGIN");
-         * // curr = FormState.LOGIN;
-         *
-         * // } else if (s != null && s.equals("Or Sign Up")) {
-         * // System.out.println("SIGNUP");
-         * // curr = FormState.SIGNUP;
-         * // }
-         * // System.out.println("\u001B[1;1H\u001B[2K" + curr + ", " + currState);
-         * // System.out.println(currState);
-         * // System.out.println(curr);
-         * // System.out.print(" ");
-         * // if (currState != curr) {
-         * // // System.out.println("\u001B[1;2H\u001B[2K" + "Test");
-         * // currState = curr;
-         * // System.out.println("te");
-         *
-         * switch (s) {
-         * case 1:
-         * System.out.println("LOGIN");
-         * break;
-         * case 2:
-         * System.out.println("SIGNUP");
-         * break;
-         * default:
-         * System.out.println("No Match");
-         * }
-         *
-         * }
-         *
-         * }
-         * // return;
-         */
     }
 }
