@@ -1,62 +1,88 @@
 package ensf480.group14.external;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
+public class Email {
+    private String recipient;
+    private String subject;
+    private String body;
+    private String sender;
+    private ObjectId emailID;
 
-public class Email  {
-private String recipient;
-private String subject;
-private String body;
-private String sender;
-private String emailID;
+    public Email(String bod, String send) {
+        this.body = bod;
+        this.sender = send;
+    }
 
+    public Email() {
 
-public Email(String bod,String send){
-    this.body = bod;
-    this.sender = send;
+    }
 
+    public static Email getEmail(Document emailDoc) {
+        Email email = new Email();
+        email.setBody(emailDoc.get("body").toString());
+        email.setId((ObjectId) emailDoc.get("_id"));
+        email.setRecipient(emailDoc.get("dest_addr").toString());
+        email.setSender(emailDoc.get("src_addr").toString());
+        email.setSubject(emailDoc.get("subject").toString());
+        return email;
+    }
 
+    public static Document toDocument(Email email) {
+        Document emailDoc = new Document("_id", email.getId());
+        emailDoc.append("dest_addr", email.getRecipient());
+        emailDoc.append("src_addr", email.getSender());
+        emailDoc.append("subject", email.getSubject());
+        emailDoc.append("body", email.getBody());
+        return emailDoc;
+    }
 
-}
+    public Email(String bod, String send, String sub) {
+        this.body = bod;
+        this.sender = send;
+        this.subject = sub;
 
-public Email(String bod,String send,String sub){
-    this.body = bod;
-    this.sender = send;
-    this.subject = sub;
+    }
 
-}
+    public String getRecipient() {
+        return recipient;
+    }
 
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
 
-public String getRecipient() {
-    return recipient;
-}
+    public String getSubject() {
+        return subject;
+    }
 
-public void setRecipient(String recipient) {
-    this.recipient = recipient;
-}
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-public String getSubject() {
-    return subject;
-}
+    public String getBody() {
+        return body;
+    }
 
-public void setSubject(String subject) {
-    this.subject = subject;
-}
+    public void setBody(String body) {
+        this.body = body;
+    }
 
-public String getBody() {
-    return body;
-}
+    public String getSender() {
+        return sender;
+    }
 
-public void setBody(String body) {
-    this.body = body;
-}
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 
-public String getSender() {
-    return sender;
-}
+    public void setId(ObjectId iD) {
+        this.emailID = iD;
+    }
 
-public void setSender(String sender) {
-    this.sender = sender;
-}
-
+    public ObjectId getId() {
+        return this.emailID;
+    }
 
 }
