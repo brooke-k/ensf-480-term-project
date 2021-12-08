@@ -180,7 +180,7 @@ public class PreferenceForm implements Form {
 
 		panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
-		JButton submitButton = new JButton("Save");
+		JButton submitButton = new JButton("Save Preference");
 		submitButton.addActionListener(listener);
 		panel.add(submitButton);
 
