@@ -10,8 +10,14 @@ import javax.swing.JOptionPane;
 import ensf480.group14.dbcontrol.DatabaseController;
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
+import ensf480.group14.forms.ContactForm;
 import ensf480.group14.forms.LoginForm;
+import ensf480.group14.forms.PreferenceForm;
+import ensf480.group14.forms.PropertyApplication;
+import ensf480.group14.forms.RenterSignUpForm;
+import ensf480.group14.forms.Search;
 import ensf480.group14.users.User;
+import ensf480.group14.views.Inbox;
 
 public class Listener implements ActionListener {
     String pageToShow;
@@ -20,6 +26,26 @@ public class Listener implements ActionListener {
     ArrayList<Email> mail;
     DatabaseController controller;
     Property property;
+
+    RenterSignUpForm signUpForm;
+    ContactForm contactForm;
+    PreferenceForm preferenceForm;
+    Search searchForm;
+    PropertyApplication propertyAppForm;
+    Inbox inbox;
+
+    public Listener(DatabaseController controller, RenterSignUpForm signUpForm,
+            ContactForm contactForm, PreferenceForm preferenceForm, Search searchForm,
+            PropertyApplication propertyAppForm, Inbox inbox) {
+        this.controller = controller;
+        this.signUpForm = signUpForm;
+        this.contactForm = contactForm;
+        this.preferenceForm = preferenceForm;
+        this.searchForm = searchForm;
+        this.propertyAppForm = propertyAppForm;
+        this.inbox = inbox;
+    }
+
 
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getSource()); // test this
@@ -36,12 +62,28 @@ public class Listener implements ActionListener {
             // pageToShow = "LoginPage";
             // }
         } else if (e.getActionCommand().equals("Sign up as renter")) {
-
+            Boolean res = signUpRenter(signUpForm.getUsername(), signUpForm.getPassword(), signUpForm.getConfirmPassword());
+            if(res == true){
+                setPageToShow("HomePage");
+            }else{
+                setPageToShow("SignUpPage");
+                JOptionPane.showMessageDialog(null, "Username is taken");
+            }
         } else if (e.getActionCommand().equals("Sign up as landlord")) {
-
-        } else if (e.getActionCommand().equals("Search")) {
+            Boolean res = signUpLandlord(signUpForm.getUsername(), signUpForm.getPassword(), signUpForm.getConfirmPassword());
+            if(res == true){
+                setPageToShow("HomePage");
+            }else{
+                setPageToShow("SignUpPage");
+                JOptionPane.showMessageDialog(null, "Username is taken");
+            }
+        } else if (e.getActionCommand().equals("Search Properties")) {
             pageToShow = "SearchPage";
-        } else if (e.getActionCommand().equals("Notifications Settings")) {
+        } else if (e.getActionCommand().equals("Search")){
+            searchProperties();
+            setPageToShow("SearchResultsPage");
+        } 
+        else if (e.getActionCommand().equals("Notifications Settings")) {
             pageToShow = "PreferencePage";
         } else if (e.getActionCommand().equals("Access Database")) {
             pageToShow = "DatabasePage";
@@ -51,9 +93,17 @@ public class Listener implements ActionListener {
 
     }
 
-    public Listener(DatabaseController control) {
-        controller = control;
-        pageToShow = "Login";
+
+    public Boolean signUpRenter(String username, String password, String confirmPassword){
+
+    }
+
+    public Boolean signUpLandlord(String username, String password, String confirmPassword){
+
+    }
+
+    public void searchProperties(){
+
     }
 
     public void setPageToShow(String pageToShow) {
