@@ -52,7 +52,7 @@ public class HomePage {
 		// loginLabel.setFont(new Font("Serif", Font.BOLD, 35));
 		// loginLabel.setSize(40, 40);
 		// panel.add(loginLabel);
-		JButton searchButton = new JButton("Search");
+		JButton searchButton = new JButton("Search Properties");
 		searchButton.addActionListener(listener);
 		panel.add(searchButton);
 

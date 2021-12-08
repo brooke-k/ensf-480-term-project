@@ -28,19 +28,19 @@ public class Driver {
         frame = new JPanel(cardLayout);
         frame1 = new JFrame();
 
-        DatabaseController controller = new DatabaseController();
-        Listener listener = new Listener(controller);
-
-        LoginForm loginForm = LoginForm.getOnlyInstance(listener);
         RenterSignUpForm signUp = new RenterSignUpForm();
         ContactForm contact = new ContactForm();
         PreferenceForm preferenceForm = new PreferenceForm();
-        LandlordSignUpForm landlordSign = new LandlordSignUpForm();
         Search searchForm = new Search();
         PropertyApplication propertyApp = new PropertyApplication();
-        HomePage homePage = new HomePage(listener);
         SearchResult searchResults = new SearchResult();
         Inbox inbox = new Inbox();
+
+        DatabaseController controller = new DatabaseController();
+        Listener listener = new Listener(controller, signUp, contact, preferenceForm, searchForm, propertyApp, inbox);
+
+        LoginForm loginForm = LoginForm.getOnlyInstance(listener);
+        HomePage homePage = new HomePage(listener);
         PropertyPage propertyPage = new PropertyPage(listener);
 
         frame.add(loginForm.display(listener), "loginForm");
@@ -48,7 +48,6 @@ public class Driver {
         frame.add(contact.display(listener), "contactForm");
         frame.add(preferenceForm.display(listener), "preferencesForm");
         frame.add(searchForm.display(listener), "searchForm");
-        frame.add(landlordSign.display(listener), "landlordSignUpForm");
         JPanel homePagePanel = homePage.display(listener.getUser());
         frame.add(homePagePanel, "homePage");
         JPanel searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
