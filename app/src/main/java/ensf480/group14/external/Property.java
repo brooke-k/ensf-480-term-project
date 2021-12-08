@@ -16,6 +16,7 @@ public class Property {
 	private Double listingPrice;
 	private Double rentCost;
 	private Boolean furnished;
+	private String type;
 	private Boolean visibleToRenters;
 
 	private Property(Property property) {
@@ -32,6 +33,7 @@ public class Property {
 		this.listingPrice = property.listingPrice;
 		this.rentCost = property.rentCost;
 		this.visibleToRenters = property.visibleToRenters;
+		this.type = property.type;
 	}
 
 	Property() {
@@ -47,6 +49,7 @@ public class Property {
 		numBedrooms = null;
 		numBathrooms = null;
 		landlordEmail = null;
+		type = null;
 
 		listingPrice = null;
 		rentCost = null;
@@ -54,15 +57,11 @@ public class Property {
 	}
 
 	public Property(Document propertyDocument) {
-		this(Property.toProperty(propertyDocument));
+		this(Property.getProperty(propertyDocument));
 
 	}
 
-	public Document toDoc() {
-		return Property.toDoc(this);
-	}
-
-	static Property toProperty(Document propertyDoc) {
+	public static Property getProperty(Document propertyDoc) {
 		Property returnProp = new Property();
 		returnProp.address = propertyDoc.get("address", String.class);
 		returnProp.iD = propertyDoc.get("_id", String.class);
@@ -70,18 +69,18 @@ public class Property {
 		returnProp.rentalState = propertyDoc.get("rental_state", String.class);
 		returnProp.landlordName = propertyDoc.get("landlord_name", String.class);
 		returnProp.landlordEmail = propertyDoc.get("landlord_email", String.class);
+		returnProp.type = propertyDoc.get("type", String.class);
 		returnProp.dateLastListed = propertyDoc.get("date_last_listed", String.class);
 		returnProp.dateRented = propertyDoc.get("date_rented", String.class);
 		returnProp.numBedrooms = propertyDoc.get("bedrooms", Integer.class);
 		returnProp.numBathrooms = propertyDoc.get("bathrooms", Double.class);
-		returnProp.listingPrice = propertyDoc.get("listing_cost", Double.class);
 		returnProp.rentCost = propertyDoc.get("rent_cost", Double.class);
 		returnProp.visibleToRenters = propertyDoc.get("visible_to_renters", Boolean.class);
 		return returnProp;
 
 	}
 
-	static Document toDoc(Property prop) {
+	public static Document toDocument(Property prop) {
 		Document propDoc = new Document("address", prop.getAddress());
 		propDoc.append("_id", prop.getiD());
 		propDoc.append("city_quad", prop.getCityQuad());
@@ -92,9 +91,9 @@ public class Property {
 		propDoc.append("date_rented", prop.getDateRented());
 		propDoc.append("bedrooms", prop.getNumBathrooms());
 		propDoc.append("bathrooms", prop.getNumBedrooms());
-		propDoc.append("listing_cost", prop.getListingPrice());
 		propDoc.append("rent_cost", prop.getRentCost());
 		propDoc.append("visible_to_renters", prop.isVisibleToRenters());
+		propDoc.append("type", prop.getType());
 		return propDoc;
 	}
 
@@ -206,6 +205,7 @@ public class Property {
 		String asString = "\n\r";
 		asString = asString + "Address: " + address + "\n\r";
 		asString = asString + "ID: " + iD + "\n\r";
+		asString = asString + "Type: " + type + "\n\r";
 		asString = asString + "City quadrant: " + cityQuad + "\n\r";
 		asString = asString + "Rental state: " + rentalState + "\n\r";
 		asString = asString + "Number of bedrooms: " + numBedrooms + "\n\r";
@@ -232,6 +232,22 @@ public class Property {
 
 	public void setFurnished(boolean furnished) {
 		this.furnished = Boolean.valueOf(furnished);
+	}
+
+	public String getLandlordEmail() {
+		return landlordEmail;
+	}
+
+	public void setLandlordEmail(String landlordEmail) {
+		this.landlordEmail = landlordEmail;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
