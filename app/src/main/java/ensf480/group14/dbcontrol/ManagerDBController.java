@@ -16,7 +16,7 @@ import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
 public class ManagerDBController extends LandlordDBControl {
-	ManagerDBController() {
+	public ManagerDBController() {
 		super();
 	}
 

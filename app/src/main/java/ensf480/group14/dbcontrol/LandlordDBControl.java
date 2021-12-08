@@ -11,7 +11,7 @@ import ensf480.group14.external.Property;
 
 public class LandlordDBControl extends RegisteredRenterDBController {
 
-	LandlordDBControl() {
+	public LandlordDBControl() {
 		super();
 	}
 

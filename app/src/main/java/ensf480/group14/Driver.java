@@ -6,7 +6,7 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ensf480.group14.dbcontrol.DatabaseController;
+import ensf480.group14.dbcontrol.DatabaseSubject;
 import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.forms.*;
 import ensf480.group14.users.User;
@@ -35,6 +35,12 @@ public class Driver {
         PropertyApplication propertyApp = new PropertyApplication();
         SearchResult searchResults = new SearchResult();
         Inbox inbox = new Inbox();
+        HomePage homePage = new HomePage();
+        PropertyPage propertyPage = new PropertyPage();
+
+        Listener listener = new Listener(signUp, contact, preferenceForm, searchForm, propertyApp, inbox, homePage, propertyPage);
+
+        LoginForm loginForm = LoginForm.getOnlyInstance(listener);
 
         DatabaseController controller = new DatabaseController();
         Listener listener = new Listener(controller, signUp, contact, preferenceForm, searchForm, propertyApp, inbox);
