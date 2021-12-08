@@ -24,7 +24,7 @@ public class ContactForm implements Form {
     // private String userEmailAddress;
     // private String message;
 
-    public JPanel display() {
+    public JPanel display(ActionListener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
@@ -68,14 +68,7 @@ public class ContactForm implements Form {
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
         JButton sendButton = new JButton("Send");
-        sendButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource() == sendButton) {
-                    parseEmail(emailBody.getText(), userEmail.getText());
-
-                }
-            }
-        });
+        sendButton.addActionListener(listener);
         panel.add(sendButton);
 
         return panel;
@@ -90,7 +83,7 @@ public class ContactForm implements Form {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         ContactForm form = new ContactForm();
-        frame.add(form.display());
+        //frame.add(form.display());
         frame.setPreferredSize(new Dimension(524, 368));
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

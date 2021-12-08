@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
+import java.awt.event.FocusEvent;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
@@ -21,7 +23,7 @@ public class LandlordSignUpForm implements Form {
     private String password;
     private String confirmPassword;
 
-    public JPanel display(){
+    public JPanel display(ActionListener listener){
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
@@ -47,31 +49,40 @@ public class LandlordSignUpForm implements Form {
         JTextField usernameField = new JTextField();
         usernameField.setSize(190, 20);
         usernameField.setMaximumSize(new Dimension(190, 20));
+        usernameField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setUsername(usernameField.getText());
+            }
+        });
         panel.add(usernameField);
 
         panel.add(new JLabel("Password"));
         JTextField passwordField = new JTextField();
         passwordField.setMaximumSize(new Dimension(190, 20));
+        passwordField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setPassword(passwordField.getText());
+            }
+        });
         panel.add(passwordField);
 
         panel.add(new JLabel("Confirm Password"));
         JTextField confirmPasswordField = new JTextField();
         confirmPasswordField.setMaximumSize(new Dimension(190, 20));
+        confirmPasswordField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setConfirmPassword(confirmPasswordField.getText());
+            }
+        });
         panel.add(confirmPasswordField);
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
         JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent evt){
-                if(evt.getSource() == submitButton){
-                    setUsername(usernameField.getText());
-                    setPassword(passwordField.getText());
-                    setConfirmPassword(confirmPasswordField.getText());
-                    //signUp();
-                }
-            }
-        });
+        submitButton.addActionListener(listener);
         panel.add(submitButton);
 
         return panel;
@@ -115,7 +126,7 @@ public class LandlordSignUpForm implements Form {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         LandlordSignUpForm form = new LandlordSignUpForm();
-        frame.add(form.display());
+       // frame.add(form.display());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

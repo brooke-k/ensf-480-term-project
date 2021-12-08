@@ -10,6 +10,7 @@ import ensf480.group14.dbcontrol.DatabaseController;
 import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.forms.*;
 import ensf480.group14.users.User;
+import ensf480.group14.views.LoggedIn;
 
 import java.awt.event.ActionEvent;
 
@@ -53,7 +54,7 @@ public class Driver {
         frame.add(preferenceForm.display(), "preferencesForm");
         frame.add(searchForm.display(), "searchForm");
         frame.add(landlordSign.display(), "landlordSignUpForm");
-        frame.add(homePage.display(), "homePage");
+        //frame.add(homePage.display(), "homePage");
 
         frame1.add(frame);
         frame1.pack();
@@ -65,10 +66,10 @@ public class Driver {
             String page = listener.getPageToShow();
             if (page.equals("SignInPage")) {
                 cardLayout.show(frame, "renterSignUpForm");
-                System.out.println(loginForm.getUsername() + ", " + loginForm.getPassword());
             } else if (page.equals("LoginPage")) {
                 cardLayout.show(frame, "loginForm");
-            } else if (page.equals("HomePages")) {
+            } else if (page.equals("HomePage")) {
+                frame.add(homePage.display(listener.getUser()), "homePage");
                 cardLayout.show(frame, "homePage");
             }
 

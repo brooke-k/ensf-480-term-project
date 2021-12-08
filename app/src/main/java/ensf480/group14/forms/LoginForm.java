@@ -45,7 +45,7 @@ public class LoginForm implements Form {
         return onlyInstance;
     }
 
-    public JPanel display() {
+    public JPanel display(ActionListener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
