@@ -36,7 +36,7 @@ public class Property {
 		this.type = property.type;
 	}
 
-	Property() {
+	public Property() {
 		iD = null;
 
 		address = null;
