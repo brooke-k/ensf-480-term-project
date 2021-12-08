@@ -19,6 +19,7 @@ public class Listener implements ActionListener {
     ArrayList<Property> properties;
     ArrayList<Email> mail;
     DatabaseController controller;
+    Property property;
 
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getSource()); // test this
@@ -93,6 +94,14 @@ public class Listener implements ActionListener {
 
     public void setMail(ArrayList<Email> mail) {
         this.mail = mail;
+    }
+
+    public Property getProperty() {
+        return property;
+    }
+
+    public void setProperty(Property property) {
+        this.property = property;
     }
 
 }

@@ -12,6 +12,7 @@ import ensf480.group14.forms.*;
 import ensf480.group14.users.User;
 import ensf480.group14.views.HomePage;
 import ensf480.group14.views.Inbox;
+import ensf480.group14.views.PropertyPage;
 import ensf480.group14.views.SearchResult;
 
 import java.awt.event.ActionEvent;
@@ -40,6 +41,7 @@ public class Driver {
         HomePage homePage = new HomePage(listener);
         SearchResult searchResults = new SearchResult();
         Inbox inbox = new Inbox();
+        PropertyPage propertyPage = new PropertyPage(listener);
 
         frame.add(loginForm.display(listener), "loginForm");
         frame.add(signUp.display(listener), "renterSignUpForm");
@@ -53,6 +55,8 @@ public class Driver {
         frame.add(searchResultsPanel, "searchResultsPage");
         JPanel inboxPagePanel = inbox.display(listener.getUser(), listener.getMail());
         frame.add(inboxPagePanel, "inboxPage");
+        JPanel propertyPagePanel = propertyPage.display(listener.getProperty());
+        frame.add(propertyPagePanel, "propertyPage");
 
         frame1.add(frame);
         frame1.pack();
@@ -83,7 +87,13 @@ public class Driver {
                 inboxPagePanel = inbox.display(listener.getUser(), listener.getMail());
                 frame.add(inboxPagePanel, "inboxPage");
                 cardLayout.show(frame, "inboxPage");
-            } else {
+            } else if (page.equals("PropertyPage")){
+                frame.remove(propertyPagePanel);
+                propertyPagePanel = propertyPage.display(listener.getProperty());
+                frame.add(propertyPagePanel, "propertyPage");
+                cardLayout.show(frame, "propertyPage");
+            }
+            else {
                 cardLayout.show(frame, "searchForm");
             }
         }
