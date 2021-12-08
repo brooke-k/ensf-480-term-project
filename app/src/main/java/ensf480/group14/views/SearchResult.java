@@ -32,6 +32,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.bson.types.ObjectId;
+
 public class SearchResult {
 
 
@@ -50,16 +52,17 @@ public class SearchResult {
 
         JPanel master = new JPanel(new BorderLayout());
         String[] columns ={"Rent","Address","City Quadrant","Type","Number of Bedrooms", "Number of Bathrooms", "Furnished Status"};
+        if(!props.isEmpty()){
         String [][] properties = new String[props.size()][7];
         int i = 0;
         for(Property p :props){
             //String s = new DecimalFormat("#.0#").format(p.getListingPrice());
             String s = "$";
-            s += String.format("%.02f",p.getListingPrice());
-			properties[i][0] = s ;
+            s += String.format("%.02f",p.getRentCost());
+			properties[i][0] = s;
 			properties[i][1] = p.getAddress();
 			properties[i][2] = p.getCityQuad();
-            properties[i][3] =  "TYPE";//p.getType();
+            properties[i][3] = p.getType();
             properties[i][4] = p.getNumBedrooms().toString();
 			properties[i][5] = p.getNumBathrooms().toString();
 			properties[i][6] = (p.isFurnished()) ? "Furnished" :"Unfurnished";
@@ -82,13 +85,22 @@ public class SearchResult {
         jTable.setForeground(Color.PINK);
         jTable.setFont(new Font("Serif", Font.BOLD, 14));
         jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
+            public void valueChanged(ListSelectionEvent event) {                                       //all these have the address of the property in a string
+                if(!user.getType().equals("manager")&&!user.getType().equals("landlord")){  
+                    listener.openProperty(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());  //opens a property page
+                }
+                else if(user.getType().equals("manager")){
+                    listener.openVisibilityPanel(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());  //opens the manager dialog to edit visibility
+                }
+                else if(user.getType().equals("landlord") && (user.owns(jTable.getValueAt(jTable.getSelectedRow(), 1).toString())) ){  //opens the edit property page
+                    listener.openEditProperty(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());
 
-                System.out.println(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());
+                }
             }
         });
         master.add(new JScrollPane(jTable),BorderLayout.CENTER);
         master.setBackground(Color.GRAY);
+    }
         return master;
 	}
 
@@ -97,11 +109,12 @@ public class SearchResult {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         SearchResult s = new SearchResult();
-        User user = new RegisteredRenter("an email", "an ID", "registered_renter");
+        ObjectId id = new ObjectId();
+        User user = new RegisteredRenter("an email", id, "registered_renter");
         ArrayList<Property> propertyTest = new ArrayList<Property>();
         for(int i = 0; i < 100;i++){
             Property temp = new Property();
-			temp.setListingPrice((i+1)*500.1);
+			temp.setRentCost((i+1)*500.1);
 			temp.setAddress("111111"+i);
 			temp.setCityQuad("NW");
 			temp.setNumBedrooms(2);

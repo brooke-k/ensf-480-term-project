@@ -1,6 +1,6 @@
 package ensf480.group14.views;
 
-import ensf480.group14.dbcontrol.DatabaseController;
+
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.users.RegisteredRenter;
@@ -41,21 +41,20 @@ public class Inbox {
 
     }
 
-    public Inbox(ActionListener listen) {
+    public JPanel display(ArrayList<Email> mail, ActionListener listen) {
         listener = listen;
-    }
-
-    public JPanel display(User user, ArrayList<Email> mail) {
-
         JPanel master = new JPanel(new BorderLayout());
         String[] columns = { "Sender", "Address" };
         String[][] mails = new String[mail.size()][3];
         int i = 0;
         for (Email m : mail) {
             // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
-            mails[i][0] = m.getSender();
-            mails[i][1] = m.getAddress();
-            mails[i][2] = m.getEmailID();
+            mails[i][0] = m.getId();
+            mails[i][1] = m.getSender();
+            mails[i][2] = m.getSubject();
+            
+            //mails[i][1] = m.getAddress();
+            //mails[i][2] = m.getEmailID();
             i++;
         }
 
@@ -75,9 +74,8 @@ public class Inbox {
         jTable.setForeground(Color.PINK);
         jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-
-                System.out.println(jTable.getValueAt(jTable.getSelectedRow(), 0).toString());
-                System.out.println(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());
+                //takes an email ID opens email view
+                listener.openEmail(jTable.getValueAt(jTable.getSelectedRow(), 0).toString());
             }
         });
         master.add(new JScrollPane(jTable), BorderLayout.CENTER);
@@ -90,14 +88,14 @@ public class Inbox {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         Inbox s = new Inbox();
-        User user = new RegisteredRenter("an email", "an ID", "registered_renter");
+        //User user = new RegisteredRenter("an email", "an ID", "registered_renter");
         ArrayList<Email> emailTest = new ArrayList<Email>();
         for (int i = 0; i < 40; i++) {
             emailTest.add(new Email("HI", "Renter" + i + "@aol.com", "231" + i + "12 NorthMount Dr"));
 
         }
         JPanel p = new JPanel();
-        p = s.display(user, emailTest);
+        p = s.display(emailTest);
         // JScrollPane sp = new JScrollPane(p);
         // frame.setContentPane(sp);
         frame.add(p);
