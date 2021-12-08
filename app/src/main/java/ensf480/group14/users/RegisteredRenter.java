@@ -2,9 +2,6 @@ package ensf480.group14.users;
 
 import java.util.ArrayList;
 
-import javax.imageio.spi.RegisterableService;
-import javax.management.relation.RelationServiceNotRegisteredException;
-
 import org.bson.Document;
 
 import ensf480.group14.dbcontrol.DatabaseController;
@@ -23,9 +20,10 @@ public class RegisteredRenter extends User {
 		this.emailAddress = emailAddress;
 		this.iD = renterId;
 		this.type = type;
+		this.dbcontroller = new DatabaseController();
 	}
 
-	public RegisteredRenter() {
+	private RegisteredRenter() {
 		emailAddress = null;
 		iD = null;
 		dbcontroller = null;
@@ -33,9 +31,25 @@ public class RegisteredRenter extends User {
 
 	}
 
-	public static getRegisteredRenter(Document renterDoc){
+	public static RegisteredRenter getRegisteredRenter(Document renterDoc) {
 		RegisteredRenter newRenter = new RegisteredRenter();
+		newRenter.setEmailAddress(renterDoc.get("email").toString());
+		// newRenter.setPrefs(prefs);
+		newRenter.setType(renterDoc.get("type").toString());
+		newRenter.setDbcontroller(new DatabaseController());
+		newRenter.setiD(renterDoc.get("_id").toString());
+		return newRenter;
 
+	}
+
+	public static Document toDocument(RegisteredRenter rRenter) {
+		Document finalDoc = rRenter.dbcontroller.getFirstObject("email", rRenter.getEmailAddress(), "users");
+		return finalDoc;
+	}
+
+	public void print() {
+		System.out.printf("\n\r PRINTING USER: %s", iD);
+		System.out.printf("\n\r email: %s\n\r type: %s\n\r ID: %s\n\r", emailAddress, type, iD);
 	}
 
 	public String getEmailAddress() {
@@ -62,13 +76,14 @@ public class RegisteredRenter extends User {
 		this.prefs = prefs;
 	}
 
-	public ArrayList<Property> getLastMatchedProperties() {
-		return lastMatchedProperties;
-	}
+	// public ArrayList<Property> getLastMatchedProperties() {
+	// return lastMatchedProperties;
+	// }
 
-	public void setLastMatchedProperties(ArrayList<Property> lastMatchedProperties) {
-		this.lastMatchedProperties = lastMatchedProperties;
-	}
+	// public void setLastMatchedProperties(ArrayList<Property>
+	// lastMatchedProperties) {
+	// this.lastMatchedProperties = lastMatchedProperties;
+	// }
 
 	public String getiD() {
 		return iD;
@@ -77,10 +92,5 @@ public class RegisteredRenter extends User {
 	public void setiD(String iD) {
 		this.iD = iD;
 	}
-
-	// public static RegisteredRenter toRegisteredRenter(Document renterDoc) {
-	// RegisteredRenter renter = new RegisteredRenter();
-
-	// }
 
 }

@@ -22,13 +22,14 @@ public class Listener implements ActionListener {
             pageToShow = "SignInPage";
         } else if (e.getActionCommand().equals("Login")) {
             LoginForm login = LoginForm.getOnlyInstance(this);
-            user = controller.checkLogin(login.getUsername(), login.getPassword());
-            if (user != null) {
-                pageToShow = "HomePage";
-            } else {
-                JOptionPane.showMessageDialog(null, "Username or Password is Incorrect");
-                pageToShow = "LoginPage";
-            }
+            // user = controller.checkLogin(login.getUsername(), login.getPassword());
+            // if (user != null) {
+            // pageToShow = "HomePage";
+            // } else {
+            // JOptionPane.showMessageDialog(null, "Username or Password is Incorrect",
+            // Error);
+            // pageToShow = "LoginPage";
+            // }
         } else if (e.getActionCommand().equals("Search")) {
             pageToShow = "SearchPage";
         } else if (e.getActionCommand().equals("Notifications Settings")) {
@@ -50,7 +51,7 @@ public class Listener implements ActionListener {
         this.pageToShow = pageToShow;
     }
 
-    public String getPageToShow(){
+    public String getPageToShow() {
         return pageToShow;
     }
 
