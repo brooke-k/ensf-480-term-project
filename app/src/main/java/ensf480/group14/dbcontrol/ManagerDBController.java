@@ -11,11 +11,12 @@ import org.bson.Document;
 
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
+import ensf480.group14.forms.PreferenceForm;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
 public class ManagerDBController extends LandlordDBControl {
-	ManagerDBController() {
+	public ManagerDBController() {
 		super();
 	}
 
@@ -103,11 +104,63 @@ public class ManagerDBController extends LandlordDBControl {
 	}
 
 	public ArrayList<User> getAllUsers() {
-		return null;
+		FindIterable<Document> docIter = usersCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		if (!iter.hasNext()) {
+			return null;
+		}
+		ArrayList<User> arr = new ArrayList<>(0);
+
+		while (iter.hasNext()) {
+			// TODO
+			// arr.add(User.getUser(iter.next()));
+		}
+
+		return arr;
 	}
 
 	public ArrayList<Email> getAllEmails() {
-		return null;
+		FindIterable<Document> docIter = emailCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		if (!iter.hasNext()) {
+			return null;
+		}
+		ArrayList<Email> arr = new ArrayList<>(0);
+
+		while (iter.hasNext()) {
+			arr.add(Email.getEmail(iter.next()));
+		}
+
+		return arr;
+	}
+
+	public ArrayList<Property> getAllProperties() {
+		FindIterable<Document> docIter = propertiesCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		if (!iter.hasNext()) {
+			return null;
+		}
+		ArrayList<Property> arr = new ArrayList<>(0);
+
+		while (iter.hasNext()) {
+			arr.add(Property.getProperty(iter.next()));
+		}
+
+		return arr;
+	}
+
+	public ArrayList<PreferenceForm> getAllPreferences() {
+		FindIterable<Document> docIter = preferenceCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		if (!iter.hasNext()) {
+			return null;
+		}
+		ArrayList<PreferenceForm> arr = new ArrayList<>(0);
+		while (iter.hasNext()) {
+			arr.add(PreferenceForm.getPreferenceForm(iter.next()));
+		}
+
+		return arr;
 	}
 
 	/**
