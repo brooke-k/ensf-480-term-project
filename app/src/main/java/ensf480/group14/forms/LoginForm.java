@@ -18,11 +18,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ensf480.group14.eventListeners.Listener;
+
 public class LoginForm implements Form {
     private static LoginForm onlyInstance;
     private String username;
     private String password;
     private ActionListener listener;
+
+    public LoginForm() {
+        username = new String();
+        password = new String();
+        //listener = listen;
+    }
 
     public LoginForm(ActionListener listen) {
         username = new String();
@@ -99,6 +107,10 @@ public class LoginForm implements Form {
         signUpButton.addActionListener(listener);
         panel.add(signUpButton);
 
+        JButton continueButton = new JButton("Continue without Logging in");
+        continueButton.addActionListener(listener);
+        panel.add(continueButton);
+
         return panel;
     }
 
@@ -123,14 +135,14 @@ public class LoginForm implements Form {
     }
 
     // For testing
-    /*
-     * public static void main(String[] args) {
-     * JFrame frame = new JFrame();
-     * // LoginForm login = getOnlyInstance();
-     * frame.add(login.display());
-     * frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-     * frame.pack();
-     * frame.setVisible(true);
-     * }
-     */
+    
+      public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        LoginForm login = new LoginForm();
+        frame.add(login.display());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+      }
+     
 }

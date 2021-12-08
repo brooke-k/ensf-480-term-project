@@ -22,14 +22,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class LoggedIn {
+public class HomePage {
 	private ActionListener listener;
 
-	public LoggedIn() {
+	public HomePage() {
 
 	}
 
-	public LoggedIn(ActionListener listen) {
+	public HomePage(ActionListener listen) {
 		listener = listen;
 	}
 
@@ -83,7 +83,7 @@ public class LoggedIn {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		User user = new RegisteredRenter("an email", "an ID", "manager");
-		LoggedIn loggedIn = new LoggedIn();
+		HomePage loggedIn = new HomePage();
 
 		// LoginForm login = getOnlyInstance();
 		frame.add(loggedIn.display(user));
