@@ -127,7 +127,7 @@ public class Search implements Form {
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Search");
         submitButton.addActionListener(listener);
         panel.add(submitButton);
 

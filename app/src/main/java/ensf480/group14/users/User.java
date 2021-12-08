@@ -10,4 +10,8 @@ public abstract class User {
 	public String getType() {
 		return type;
 	}
+
+	User() {
+		type = "default";
+	}
 };

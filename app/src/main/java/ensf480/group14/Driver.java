@@ -6,12 +6,13 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ensf480.group14.dbcontrol.DatabaseController;
+import ensf480.group14.dbcontrol.DatabaseSubject;
 import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.forms.*;
 import ensf480.group14.users.User;
 import ensf480.group14.views.HomePage;
 import ensf480.group14.views.Inbox;
+import ensf480.group14.views.PropertyPage;
 import ensf480.group14.views.SearchResult;
 
 import java.awt.event.ActionEvent;
@@ -27,32 +28,40 @@ public class Driver {
         frame = new JPanel(cardLayout);
         frame1 = new JFrame();
 
-        DatabaseController controller = new DatabaseController();
-        Listener listener = new Listener(controller);
-
-        LoginForm loginForm = LoginForm.getOnlyInstance(listener);
         RenterSignUpForm signUp = new RenterSignUpForm();
         ContactForm contact = new ContactForm();
         PreferenceForm preferenceForm = new PreferenceForm();
-        LandlordSignUpForm landlordSign = new LandlordSignUpForm();
         Search searchForm = new Search();
         PropertyApplication propertyApp = new PropertyApplication();
-        HomePage homePage = new HomePage(listener);
         SearchResult searchResults = new SearchResult();
         Inbox inbox = new Inbox();
+        HomePage homePage = new HomePage();
+        PropertyPage propertyPage = new PropertyPage();
+
+        Listener listener = new Listener(signUp, contact, preferenceForm, searchForm, propertyApp, inbox, homePage, propertyPage);
+
+        LoginForm loginForm = LoginForm.getOnlyInstance(listener);
+
+        DatabaseController controller = new DatabaseController();
+        Listener listener = new Listener(controller, signUp, contact, preferenceForm, searchForm, propertyApp, inbox);
+
+        LoginForm loginForm = LoginForm.getOnlyInstance(listener);
+        HomePage homePage = new HomePage(listener);
+        PropertyPage propertyPage = new PropertyPage(listener);
 
         frame.add(loginForm.display(listener), "loginForm");
         frame.add(signUp.display(listener), "renterSignUpForm");
         frame.add(contact.display(listener), "contactForm");
         frame.add(preferenceForm.display(listener), "preferencesForm");
         frame.add(searchForm.display(listener), "searchForm");
-        frame.add(landlordSign.display(listener), "landlordSignUpForm");
         JPanel homePagePanel = homePage.display(listener.getUser());
         frame.add(homePagePanel, "homePage");
         JPanel searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
         frame.add(searchResultsPanel, "searchResultsPage");
         JPanel inboxPagePanel = inbox.display(listener.getUser(), listener.getMail());
         frame.add(inboxPagePanel, "inboxPage");
+        JPanel propertyPagePanel = propertyPage.display(listener.getProperty());
+        frame.add(propertyPagePanel, "propertyPage");
 
         frame1.add(frame);
         frame1.pack();
@@ -83,7 +92,13 @@ public class Driver {
                 inboxPagePanel = inbox.display(listener.getUser(), listener.getMail());
                 frame.add(inboxPagePanel, "inboxPage");
                 cardLayout.show(frame, "inboxPage");
-            } else {
+            } else if (page.equals("PropertyPage")){
+                frame.remove(propertyPagePanel);
+                propertyPagePanel = propertyPage.display(listener.getProperty());
+                frame.add(propertyPagePanel, "propertyPage");
+                cardLayout.show(frame, "propertyPage");
+            }
+            else {
                 cardLayout.show(frame, "searchForm");
             }
         }

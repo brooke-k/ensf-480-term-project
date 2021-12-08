@@ -52,9 +52,14 @@ public class HomePage {
 		// loginLabel.setFont(new Font("Serif", Font.BOLD, 35));
 		// loginLabel.setSize(40, 40);
 		// panel.add(loginLabel);
+
 		if (!user.getType().equals("manager")){
-		JButton searchButton = new JButton("Search");
+
 		searchButton.addActionListener(listener);      //search form --> search results
+
+		JButton searchButton = new JButton("Search Properties");
+		searchButton.addActionListener(listener);
+
 		panel.add(searchButton);
 		}
 

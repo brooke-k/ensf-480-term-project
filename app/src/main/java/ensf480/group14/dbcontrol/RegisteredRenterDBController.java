@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import javax.print.Doc;
 import javax.swing.text.TabStop;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObjectCodec;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -16,12 +19,15 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
+import ensf480.group14.forms.Search;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
@@ -36,8 +42,8 @@ public class RegisteredRenterDBController implements DatabaseSubject {
      * private ArrayList<Landlord> landlords;
      */
 
-    private static MongoClient mongoClient;
-    private static MongoDatabase dbMongo;
+    protected static MongoClient mongoClient;
+    protected static MongoDatabase dbMongo;
     protected static MongoCollection usersCollection;
     protected static MongoCollection propertiesCollection;
     protected static MongoCollection emailCollection;
@@ -134,6 +140,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         }
         resultCursor.close();
         Document newUser = new Document("email", email);
+        emailCollection.insertOne(newUser);
         newUser.append("password", password).append("type", userType);
         usersCollection.insertOne(newUser);
         System.out.println("User with email \"" + email + "\" added to the database.");
@@ -165,6 +172,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         newPreference.append("city_quadrant", pf.getCityQuadrant());
         newPreference.append("max_price", pf.getMaxPrice());
         newPreference.append("min_price", pf.getMinPrice());
+        newPreference.append("renter_id", pf.getRenterID());
 
         preferenceCollection.insertOne(newPreference);
 
@@ -189,6 +197,79 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     public static void setDatabaseOpen(boolean databaseOpen) {
         RegisteredRenterDBController.databaseOpen = databaseOpen;
+    }
+
+    // Returns null if no properties found.
+    public ArrayList<Property> searchProperties(Search searchForm) {
+        return null;
+    }
+
+    public static void sendEmail(Email email) {
+        BasicDBObject dbo = new BasicDBObject();
+        dbo.put("_id", email.getId());
+        FindIterable<Document> docIter = emailCollection.find(dbo);
+        if (docIter != null) { // Email already exists
+            return;
+        }
+        emailCollection.insertOne(Email.toDocument(email));
+    }
+
+    public static boolean userHasEmails(String userEmail) {
+        BasicDBObject dbo = new BasicDBObject();
+        FindIterable<Document> docIter = emailCollection
+                .find(Filters.and(Filters.eq("email", userEmail), Filters.eq("read", Boolean.FALSE)));
+        return docIter != null;
+    }
+
+    public static void deleteEmail(ObjectId emailID) {
+        BasicDBObject query = new BasicDBObject();
+        query.put("_id", emailID);
+        emailCollection.deleteMany(query);
+        return;
+    }
+
+    public static ArrayList<Email> getAllEmails(String userEmail) {
+        BasicDBObject query = new BasicDBObject();
+        query.put("dest_addr", userEmail);
+        FindIterable<Document> docIter = emailCollection.find(query);
+        MongoCursor<Document> iter = docIter.cursor();
+        if (!iter.hasNext()) {
+            return null;
+        }
+
+        ArrayList<Email> emails = new ArrayList<Email>(0);
+        while (iter.hasNext()) {
+            emails.add(Email.getEmail(iter.next()));
+
+        }
+        if (emails.isEmpty()) {
+            return null;
+        }
+        return emails;
+    }
+
+    public static void deleteAllEmails(String userEmail) {
+        BasicDBObject query = new BasicDBObject();
+        query.put("dest_addr", userEmail);
+        emailCollection.deleteMany(query);
+    }
+
+    public static void deleteAllReadEmails(String userEmail) {
+        emailCollection.deleteMany(Filters.and(Filters.eq("dest_addr", userEmail), Filters.eq("read", Boolean.TRUE)));
+    }
+
+    public static ArrayList<Email> getAllUnreadEmails(String userEmail) {
+        FindIterable<Document> docIter = emailCollection
+                .find(Filters.and(Filters.eq("dest_addr", userEmail), Filters.eq("read", Boolean.TRUE)));
+        MongoCursor<Document> iter = docIter.iterator();
+        if (!iter.hasNext()) {
+            return null;
+        }
+        ArrayList<Email> emails = new ArrayList<>(0);
+        while (iter.hasNext()) {
+            emails.add(Email.getEmail(iter.next()));
+        }
+        return emails;
     }
 
     /*
@@ -221,22 +302,39 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     // return registeredRenters;
     // }
 
-    // public void setRegisteredRenters(ArrayList<RegisteredRenter>
-    // registeredRenters) {
-    // this.registeredRenters = registeredRenters;
-    // }
+    public User checkLogin(String email, String password) {
+        return null;
 
-    // public void setManagers(ArrayList<Manager> managers) {
-    // this.managers = managers;
-    // }
+        /*
+         * BasicDBObject query = new BasicDBObject();
+         * query.append("email", email).append("password", password);
+         * FindIterable<Document> docIter = usersCollection.find(query);
+         * MongoCursor<Document> iter = docIter.iterator();
+         * if (!iter.hasNext()) { // User with email does not exist
+         * return null;
+         * }
+         * User user;
+         * // if(renter){
+         * // User user = new RegisteredRenter();
+         * // else if (landlord)
+         * // User user = new Landlord();
+         *
+         * Document foundUser = docIter.first();
+         * String userType = foundUser.get("type").toString();
+         *
+         * if (userType.equals("registered_renter")) {
+         * user = new RegisteredRenter();
+         * // ((PreferenceForm)
+         * // user).setBuildingType(foundUser.getString("building_type"));
+         */
 
-    // public ArrayList<Landlord> getLandlords() {
-    // return landlords;
-    // }
+    }
 
-    // public void setLandlords(ArrayList<Landlord> landlords) {
-    // this.landlords = landlords;
-    // }
+    // Return new user if sign up successful,
+    // Return null if email already taken
+    public User signUp(String email, String password, String type) {
+        return null;
+    }
 
     public ArrayList<Property> getAllProperties() {
         ArrayList<Property> propArray = new ArrayList<>(0);
