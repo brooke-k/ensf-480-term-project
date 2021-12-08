@@ -171,7 +171,7 @@ public class DatabaseController implements DatabaseSubject {
 
     // }
 
-    public void addUserToDatabase(String username, String password, String email, String userType) {
+    public void addUserToDatabase(String email, String password, String userType) {
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("email", email);
         FindIterable<Document> findIter = emailCollection.find(searchQuery);
@@ -183,16 +183,10 @@ public class DatabaseController implements DatabaseSubject {
             resultCursor.close();
             return;
         }
-
         resultCursor.close();
-
         Document newUser = new Document("email", email);
-        emailCollection.insertOne(newUser);
-
-        newUser.append("username", username).append("password", password).append("type", userType);
-
+        newUser.append("password", password).append("type", userType);
         usersCollection.insertOne(newUser);
-
         System.out.println("User with email \"" + email + "\" added to the database.");
 
     }
@@ -201,7 +195,6 @@ public class DatabaseController implements DatabaseSubject {
         BasicDBObject searchQuery = new BasicDBObject();
         System.out.println("Removing user with the email address \"" + email + "\" from database");
         usersCollection.deleteOne(Filters.eq("email", email));
-        emailCollection.deleteOne(Filters.eq("email", email));
         System.out.println("User with the email address \"" + email + "\" has been removed from the database");
     }
 
@@ -253,11 +246,11 @@ public class DatabaseController implements DatabaseSubject {
         resultCursor.close();
 
         Document newProperty = new Document("address", property.getAddress());
-        newProperty.append("bedrooms", property.getNumBedrooms().toString());
-        newProperty.append("bathrooms", property.getNumBathrooms().toString());
-        newProperty.append("furnished", (property.isFurnished());
+        newProperty.append("bedrooms", property.getNumBedrooms());
+        newProperty.append("bathrooms", property.getNumBathrooms());
+        newProperty.append("furnished", property.isFurnished());
         newProperty.append("cityQuad", property.getCityQuad());
-        newProperty.append("price", property.getListingPrice().toString());
+        newProperty.append("price", property.getListingPrice());
         newProperty.append("visibleToRenters", property.isVisibleToRenters());
         newProperty.append("landlordID", property.getLandlordID());
         newProperty.append("landlordName", property.getLandlordName());
@@ -295,30 +288,32 @@ public class DatabaseController implements DatabaseSubject {
         DatabaseController.databaseOpen = databaseOpen;
     }
 
-    public String checkLogin(String email, String password) {
-        BasicDBObject query = new BasicDBObject();
-        query.append("email", email).append("password", password);
-        FindIterable<Document> docIter = usersCollection.find(query);
-        MongoCursor<Document> iter = docIter.iterator();
-        if (!iter.hasNext()) { // User with email does not exist
-            return null;
-        }
-        User user;
-        // if(renter){
-        // User user = new RegisteredRenter();
-        // else if (landlord)
-        // User user = new Landlord();
-
-        Document foundUser = docIter.first();
-        String userType = foundUser.get("type").toString();
-
-        if (userType.equals("registered_renter")) {
-            user = new RegisteredRenter();
-            // ((PreferenceForm)
-            // user).setBuildingType(foundUser.getString("building_type"));
-
-        }
-    }
+    /*
+     * public String checkLogin(String email, String password) {
+     * BasicDBObject query = new BasicDBObject();
+     * query.append("email", email).append("password", password);
+     * FindIterable<Document> docIter = usersCollection.find(query);
+     * MongoCursor<Document> iter = docIter.iterator();
+     * if (!iter.hasNext()) { // User with email does not exist
+     * return null;
+     * }
+     * User user;
+     * // if(renter){
+     * // User user = new RegisteredRenter();
+     * // else if (landlord)
+     * // User user = new Landlord();
+     *
+     * Document foundUser = docIter.first();
+     * String userType = foundUser.get("type").toString();
+     *
+     * if (userType.equals("registered_renter")) {
+     * user = new RegisteredRenter();
+     * // ((PreferenceForm)
+     * // user).setBuildingType(foundUser.getString("building_type"));
+     *
+     * }
+     * }
+     */
     // public ArrayList<RegisteredRenter> getRegisteredRenters() {
     // return registeredRenters;
     // }
@@ -353,9 +348,36 @@ public class DatabaseController implements DatabaseSubject {
         return null;
     }
 
+    public Document getFirstObject(String field, String content, String collection) {
+        BasicDBObject query = new BasicDBObject();
+        query.put(field, content);
+        FindIterable<Document> docIter;
+        if (collection.equals("users")) {
+            docIter = usersCollection.find(query);
+            return docIter.first();
+        } else if (collection.equals("properties")) {
+            docIter = propertiesCollection.find(query);
+            return docIter.first();
+        } else if (collection.equals("preferences")) {
+            docIter = preferenceCollection.find(query);
+            return docIter.first();
+        } else if (collection.equals("email")) {
+            docIter = emailCollection.find(query);
+            return docIter.first();
+        } else {
+            return null;
+        }
+    }
+
     public static void main(String args[]) {
         DatabaseController db = new DatabaseController();
         db.printEmail();
+        RegisteredRenter testRenter;
+        db.addUserToDatabase("rremail@groupfourteen.ca", "rr_password", "renter");
+        db.printUsers();
+        testRenter = RegisteredRenter
+                .getRegisteredRenter(db.getFirstObject("email", "rremail@groupfourteen.ca", "users"));
+        testRenter.print();
         // DatabaseController dbc = new DatabaseController();
 
     }

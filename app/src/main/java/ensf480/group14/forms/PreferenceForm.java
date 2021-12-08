@@ -24,6 +24,8 @@ import javax.swing.JTextField;
 
 import com.mongodb.BasicDBObject;
 
+import org.bson.Document;
+
 public class PreferenceForm implements Form {
 	private String buildingType;
 	private String cityQuadrant;

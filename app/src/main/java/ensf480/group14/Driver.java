@@ -46,7 +46,7 @@ public class Driver {
         LandlordSignUpForm landlordSign = new LandlordSignUpForm();
         Search searchForm = new Search();
         PropertyApplication propertyApp = new PropertyApplication();
-        LoggedIn homePage = new LoggedIn(listener);
+        // LoggedIn homePage = new LoggedIn(listener);
 
         frame.add(loginForm.display(), "loginForm");
         frame.add(signUp.display(), "renterSignUpForm");
@@ -54,7 +54,7 @@ public class Driver {
         frame.add(preferenceForm.display(), "preferencesForm");
         frame.add(searchForm.display(), "searchForm");
         frame.add(landlordSign.display(), "landlordSignUpForm");
-        //frame.add(homePage.display(), "homePage");
+        // frame.add(homePage.display(), "homePage");
 
         frame1.add(frame);
         frame1.pack();
