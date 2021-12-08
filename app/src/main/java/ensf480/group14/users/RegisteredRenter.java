@@ -26,9 +26,9 @@ public class RegisteredRenter extends User {
 
 	private RegisteredRenter() {
 		emailAddress = null;
-		iD = null;
 		dbcontroller = null;
 		prefs = null;
+		type = "registered_";
 
 	}
 
