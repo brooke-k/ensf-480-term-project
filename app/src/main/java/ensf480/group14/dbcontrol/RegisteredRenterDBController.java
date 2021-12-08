@@ -27,6 +27,7 @@ import org.bson.types.ObjectId;
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
+import ensf480.group14.forms.Search;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
@@ -41,8 +42,8 @@ public class RegisteredRenterDBController implements DatabaseSubject {
      * private ArrayList<Landlord> landlords;
      */
 
-    private static MongoClient mongoClient;
-    private static MongoDatabase dbMongo;
+    protected static MongoClient mongoClient;
+    protected static MongoDatabase dbMongo;
     protected static MongoCollection usersCollection;
     protected static MongoCollection propertiesCollection;
     protected static MongoCollection emailCollection;
@@ -198,6 +199,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         RegisteredRenterDBController.databaseOpen = databaseOpen;
     }
 
+    // Returns null if no properties found.
+    public ArrayList<Property> searchProperties(Search searchForm) {
+        return null;
+    }
+
     public static void sendEmail(Email email) {
         BasicDBObject dbo = new BasicDBObject();
         dbo.put("_id", email.getId());
@@ -296,22 +302,39 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     // return registeredRenters;
     // }
 
-    // public void setRegisteredRenters(ArrayList<RegisteredRenter>
-    // registeredRenters) {
-    // this.registeredRenters = registeredRenters;
-    // }
+    public User checkLogin(String email, String password) {
+        return null;
 
-    // public void setManagers(ArrayList<Manager> managers) {
-    // this.managers = managers;
-    // }
+        /*
+         * BasicDBObject query = new BasicDBObject();
+         * query.append("email", email).append("password", password);
+         * FindIterable<Document> docIter = usersCollection.find(query);
+         * MongoCursor<Document> iter = docIter.iterator();
+         * if (!iter.hasNext()) { // User with email does not exist
+         * return null;
+         * }
+         * User user;
+         * // if(renter){
+         * // User user = new RegisteredRenter();
+         * // else if (landlord)
+         * // User user = new Landlord();
+         *
+         * Document foundUser = docIter.first();
+         * String userType = foundUser.get("type").toString();
+         *
+         * if (userType.equals("registered_renter")) {
+         * user = new RegisteredRenter();
+         * // ((PreferenceForm)
+         * // user).setBuildingType(foundUser.getString("building_type"));
+         */
 
-    // public ArrayList<Landlord> getLandlords() {
-    // return landlords;
-    // }
+    }
 
-    // public void setLandlords(ArrayList<Landlord> landlords) {
-    // this.landlords = landlords;
-    // }
+    // Return new user if sign up successful,
+    // Return null if email already taken
+    public User signUp(String email, String password, String type) {
+        return null;
+    }
 
     public ArrayList<Property> getAllProperties() {
         ArrayList<Property> propArray = new ArrayList<>(0);
