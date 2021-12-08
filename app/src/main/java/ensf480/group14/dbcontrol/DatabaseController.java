@@ -19,6 +19,7 @@ import com.mongodb.client.model.Filters;
 
 import org.bson.Document;
 
+import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
 import ensf480.group14.forms.Search;
@@ -245,19 +246,11 @@ public class DatabaseController implements DatabaseSubject {
 
         resultCursor.close();
 
-        Document newProperty = new Document("address", property.getAddress());
-        newProperty.append("bedrooms", property.getNumBedrooms());
-        newProperty.append("bathrooms", property.getNumBathrooms());
-        newProperty.append("furnished", property.isFurnished());
-        newProperty.append("cityQuad", property.getCityQuad());
-        newProperty.append("price", property.getListingPrice());
-        newProperty.append("visibleToRenters", property.isVisibleToRenters());
-        newProperty.append("landlordID", property.getLandlordID());
-        newProperty.append("landlordName", property.getLandlordName());
-        newProperty.append("dateLastListed", property.getDateLastListed());
-        newProperty.append("dateRented", property.getDateRented());
+        propertiesCollection.insertOne(Property.toDocument(property));
+    }
 
-        propertiesCollection.insertOne(newProperty);
+    public Property getProperty(String address) {
+        return Property.getProperty(getFirstObject("address", address, "properties"));
     }
 
     private void removePropertyFromDatabase(String address) {
@@ -335,16 +328,21 @@ public class DatabaseController implements DatabaseSubject {
     // this.landlords = landlords;
     // }
 
-    public ArrayList<String> getAllProperties() {
-        // return Property.
+    public ArrayList<Property> getAllProperties() {
+        ArrayList<Property> propArray = new ArrayList<>(0);
+        FindIterable<Document> docIter = propertiesCollection.find();
+        MongoCursor<Document> iter = docIter.iterator();
+        while (iter.hasNext()) {
+            propArray.add(Property.getProperty(iter.next()));
+        }
+        return propArray;
+    }
+
+    public ArrayList<User> getAllUsers() {
         return null;
     }
 
-    public ArrayList<String> getAllUsers() {
-        return null;
-    }
-
-    public ArrayList<String> getAllEmails() {
+    public ArrayList<Email> getAllEmails() {
         return null;
     }
 
@@ -378,6 +376,11 @@ public class DatabaseController implements DatabaseSubject {
         testRenter = RegisteredRenter
                 .getRegisteredRenter(db.getFirstObject("email", "rremail@groupfourteen.ca", "users"));
         testRenter.print();
+
+        db.printProperties();
+        for (Property p : db.getAllProperties()) {
+            p.print();
+        }
         // DatabaseController dbc = new DatabaseController();
 
     }
