@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
+import java.awt.event.FocusEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -27,7 +29,7 @@ public class PropertyApplication implements Form {
     String cityQuad;
     double price;
 
-    public JPanel display(){
+    public JPanel display(ActionListener listener){
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
@@ -53,18 +55,36 @@ public class PropertyApplication implements Form {
         JTextField address = new JTextField();
         address.setSize(190, 20);
         address.setMaximumSize(new Dimension(190, 20));
+        address.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setAddress(address.getText());
+            }
+        });
         panel.add(address);
 
         panel.add(new JLabel("Number of Bedrooms"));
         JTextField numBedrooms = new JTextField();
         numBedrooms.setSize(190, 20);
         numBedrooms.setMaximumSize(new Dimension(190, 20));
+        numBedrooms.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setNumBed(Integer.parseInt(numBedrooms.getText()));
+            }
+        });
         panel.add(numBedrooms);
 
         panel.add(new JLabel("Number of Bathrooms"));
         JTextField numBathrooms = new JTextField();
         numBathrooms.setSize(190, 20);
         numBathrooms.setMaximumSize(new Dimension(190, 20));
+        numBathrooms.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setNumBath(Double.parseDouble(numBathrooms.getText()));
+            }
+        });
         panel.add(numBathrooms);
         
         JLabel checkLabel = new JLabel("Furnished");
@@ -75,49 +95,43 @@ public class PropertyApplication implements Form {
         //furnished.setText("Furnished");
         //furnished.setSize(20, 20);
         furnished.setMaximumSize(new Dimension(190, 20));
-        panel.add(furnished);
-
-        furnished.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                JCheckBox cb = (JCheckBox) event.getSource();
-                if (cb.isSelected()) {
-                    furnish = true;
-                } else {
-                    furnish = false;
-                }
+        furnished.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setFurnish(furnished.isSelected());
             }
         });
-
+        panel.add(furnished);
 
         panel.add(new JLabel("City Quadrant"));
         JTextField quad = new JTextField();
         quad.setSize(190, 20);
         quad.setMaximumSize(new Dimension(190, 20));
+        quad.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setCityQuad(quad.getText());
+            }
+        });
         panel.add(quad);
 
         panel.add(new JLabel("Price"));
         JTextField price = new JTextField();
         price.setSize(190, 20);
         price.setMaximumSize(new Dimension(190, 20));
+        price.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setPrice(Double.parseDouble(price.getText()));
+            }
+        });
         panel.add(price);
 
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
         JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent evt){
-                if(evt.getSource() == submitButton){
-                    setAddress(address.getText());
-                    setNumBed(Integer.parseInt(numBedrooms.getText()));
-                    setNumBath(Integer.parseInt(numBathrooms.getText()));
-                    setCityQuad(quad.getText());
-                    setPrice(Double.parseDouble(price.getText()));
-                    //signUp();
-                }
-            }
-        });
+        submitButton.addActionListener(listener);
         panel.add(submitButton);
 
         return panel;

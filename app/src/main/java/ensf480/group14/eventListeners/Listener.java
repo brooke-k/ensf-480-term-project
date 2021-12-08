@@ -4,6 +4,8 @@ package ensf480.group14.eventListeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import ensf480.group14.dbcontrol.DatabaseController;
 import ensf480.group14.forms.LoginForm;
 import ensf480.group14.users.User;
@@ -11,10 +13,12 @@ import ensf480.group14.users.User;
 public class Listener implements ActionListener {
     String pageToShow;
     User user;
+
     DatabaseController controller;
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Or Sign In")) {
+        System.out.println(e.getSource()); // test this
+        if (e.getActionCommand().equals("Or Sign Up")) {
             pageToShow = "SignInPage";
         } else if (e.getActionCommand().equals("Login")) {
             LoginForm login = LoginForm.getOnlyInstance(this);
@@ -22,7 +26,7 @@ public class Listener implements ActionListener {
             if (user != null) {
                 pageToShow = "HomePage";
             } else {
-                JOptionPane.showMessageDialog(null, "Username or Password is Incorrect", Error);
+                JOptionPane.showMessageDialog(null, "Username or Password is Incorrect");
                 pageToShow = "LoginPage";
             }
         } else if (e.getActionCommand().equals("Search")) {
@@ -42,8 +46,28 @@ public class Listener implements ActionListener {
         pageToShow = "Login";
     }
 
-    public String getPageToShow() {
+    public void setPageToShow(String pageToShow) {
+        this.pageToShow = pageToShow;
+    }
+
+    public String getPageToShow(){
         return pageToShow;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public DatabaseController getController() {
+        return controller;
+    }
+
+    public void setController(DatabaseController controller) {
+        this.controller = controller;
     }
 
 }

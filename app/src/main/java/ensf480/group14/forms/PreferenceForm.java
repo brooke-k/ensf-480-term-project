@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
+import java.awt.event.FocusEvent;
 import java.rmi.server.RemoteRef;
 import java.util.Base64;
 import java.awt.event.ActionEvent;
@@ -49,7 +51,7 @@ public class PreferenceForm implements Form {
 		return return_pf;
 	}
 
-	public JPanel display() {
+	public JPanel display(ActionListener listener) {
 		JPanel panel = new JPanel();
 
 		panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -65,57 +67,86 @@ public class PreferenceForm implements Form {
 		panel.add(new JLabel("Building Type"));
 		String buildingTypes[] = { "House", "Apartment", "TownHouse" };
 		JComboBox buildingTypeField = new JComboBox<String>(buildingTypes);
+		buildingTypeField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+                setBuildingType((buildingTypeField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
+            }
+        });
 		panel.add(buildingTypeField);
 
 		panel.add(new JLabel("Number of Bedrooms"));
 		JTextField numOfBedroomsField = new JTextField();
 		numOfBedroomsField.setSize(190, 20);
 		numOfBedroomsField.setMaximumSize(new Dimension(190, 20));
+		numOfBedroomsField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+				setNumOfBedrooms(Integer.parseInt(numOfBedroomsField.getText()));            }
+        });
 		panel.add(numOfBedroomsField);
 
 		panel.add(new JLabel("Number of Bathrooms"));
 		JTextField numOfBathroomsField = new JTextField();
 		numOfBathroomsField.setSize(190, 20);
 		numOfBathroomsField.setMaximumSize(new Dimension(190, 20));
+		numOfBathroomsField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+				setNumOfBathrooms(Double.parseDouble(numOfBathroomsField.getText()));
+			}
+        });
 		panel.add(numOfBathroomsField);
 
 		JCheckBox furnishedField = new JCheckBox("Furnished");
 		furnishedField.setBackground(Color.GRAY);
+		furnishedField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+				setFurnished(furnishedField.isSelected());
+			}
+        });
 		panel.add(furnishedField);
 
 		panel.add(new JLabel("City Quadrant"));
 		String cityQuadrants[] = { "NW", "NE", "SW", "SE" };
 		JComboBox cityQuadrantField = new JComboBox<String>(cityQuadrants);
+		cityQuadrantField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+				setCityQuadrant((cityQuadrantField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
+			}
+        });
 		panel.add(cityQuadrantField);
 
 		panel.add(new JLabel("Max Price"));
 		JTextField maxPriceField = new JTextField();
 		maxPriceField.setSize(190, 20);
 		maxPriceField.setMaximumSize(new Dimension(190, 20));
+		maxPriceField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+				setMaxPrice(Double.parseDouble(maxPriceField.getText()));
+			}
+        });
 		panel.add(maxPriceField);
 
 		panel.add(new JLabel("Min Price"));
 		JTextField minPriceField = new JTextField();
 		minPriceField.setSize(190, 20);
 		minPriceField.setMaximumSize(new Dimension(190, 20));
+		minPriceField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {}
+            public void focusLost(FocusEvent e) {
+				setMinPrice(Double.parseDouble(minPriceField.getText()));
+			}
+        });
 		panel.add(minPriceField);
 
 		panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
 		JButton submitButton = new JButton("Save");
-		submitButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				if (evt.getSource() == submitButton) {
-					setBuildingType((buildingTypeField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
-					setCityQuadrant((cityQuadrantField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
-					setFurnished(furnishedField.isSelected());
-					setMaxPrice(Double.parseDouble(maxPriceField.getText()));
-					setMinPrice(Double.parseDouble(minPriceField.getText()));
-					setNumOfBathrooms(Double.parseDouble(numOfBathroomsField.getText()));
-					setNumOfBedrooms(Integer.parseInt(numOfBedroomsField.getText()));
-				}
-			}
-		});
+		submitButton.addActionListener(listener);
 		panel.add(submitButton);
 
 		return panel;
@@ -125,7 +156,7 @@ public class PreferenceForm implements Form {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		PreferenceForm form = new PreferenceForm();
-		frame.add(form.display());
+		//frame.add(form.display());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
