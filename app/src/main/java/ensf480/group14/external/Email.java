@@ -7,6 +7,7 @@ private String recipient;
 private String subject;
 private String body;
 private String sender;
+private String emailID;
 
 
 public Email(String bod,String send){

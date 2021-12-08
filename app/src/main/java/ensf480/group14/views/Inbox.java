@@ -15,6 +15,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import javax.swing.*;
@@ -47,16 +48,17 @@ public class Inbox {
 	}
 
 
-	public JPanel display(User user,Email [] mail) {
+	public JPanel display(User user, ArrayList<Email> mail) {
 
         JPanel master = new JPanel(new BorderLayout());
-        String[] columns ={"Sender","Body"};
-        String [][] mails = new String[mail.length][2];
+        String[] columns ={"Sender","Address"};
+        String [][] mails = new String[mail.size()][3];
         int i = 0;
         for(Email m :mail){
             //String s = new DecimalFormat("#.0#").format(p.getListingPrice());
 			mails[i][0] = m.getSender();
-			mails[i][1] = m.getBody();
+			mails[i][1] = m.getAddress();
+            mails[i][2] = m.getEmailID();
 			i++;
         }
 
@@ -74,9 +76,11 @@ public class Inbox {
         jTable.setRowSorter(rowSorter);
         jTable.setBackground(Color.GRAY);
         jTable.setFont(new Font("Serif", Font.BOLD, 14));
+        jTable.setForeground(Color.PINK);
         jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
                 
+                System.out.println(jTable.getValueAt(jTable.getSelectedRow(), 0).toString());
                 System.out.println(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());
             }
         });
@@ -91,18 +95,13 @@ public class Inbox {
         JFrame frame = new JFrame();
         Inbox s = new Inbox();
         User user = new RegisteredRenter("an email", "an ID", "registered_renter");
-        Property [] propertyTest = new Property[40];
-        for(int i = 0; i < propertyTest.length;i++){
-            propertyTest[i] = new Property();
-			propertyTest[i].setListingPrice((i+1)*50000.1);
-			propertyTest[i].setAddress("111111"+i);
-			propertyTest[i].setCityQuad("NW");
-			propertyTest[i].setNumBedrooms(2);
-			propertyTest[i].setNumBathrooms(3.0);
-			propertyTest[i].setFurnished(true);
+        ArrayList<Email> emailTest = new ArrayList<Email>();
+        for(int i = 0; i < 40;i++) {
+            emailTest.add(new Email("HI","Renter"+i+"@aol.com","231"+i+"12 NorthMount Dr"));
+
         }
 		JPanel p = new JPanel();
-        p = s.display(user, propertyTest);
+        p = s.display(user, emailTest);
         //JScrollPane sp = new JScrollPane(p);
         //frame.setContentPane(sp);
         frame.add(p);

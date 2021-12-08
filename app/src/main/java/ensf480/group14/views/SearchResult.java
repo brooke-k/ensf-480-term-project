@@ -13,6 +13,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import javax.swing.*;
@@ -45,11 +46,11 @@ public class SearchResult {
 	}
 
 
-	public JPanel display(User user,Property [] props) {
+	public JPanel display(User user,ArrayList<Property> props) {
 
         JPanel master = new JPanel(new BorderLayout());
-        String[] columns ={"Price","Address","City Quadrant","Type","Number of Bedrooms", "Number of Bathrooms", "Furnished Status"};
-        String [][] properties = new String[props.length][7];
+        String[] columns ={"Rent","Address","City Quadrant","Type","Number of Bedrooms", "Number of Bathrooms", "Furnished Status"};
+        String [][] properties = new String[props.size()][7];
         int i = 0;
         for(Property p :props){
             //String s = new DecimalFormat("#.0#").format(p.getListingPrice());
@@ -78,6 +79,7 @@ public class SearchResult {
         TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(jTable.getModel());
         jTable.setRowSorter(rowSorter);
         jTable.setBackground(Color.GRAY);
+        jTable.setForeground(Color.PINK);
         jTable.setFont(new Font("Serif", Font.BOLD, 14));
         jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
@@ -96,15 +98,16 @@ public class SearchResult {
         JFrame frame = new JFrame();
         SearchResult s = new SearchResult();
         User user = new RegisteredRenter("an email", "an ID", "registered_renter");
-        Property [] propertyTest = new Property[40];
-        for(int i = 0; i < propertyTest.length;i++){
-            propertyTest[i] = new Property();
-			propertyTest[i].setListingPrice((i+1)*50000.1);
-			propertyTest[i].setAddress("111111"+i);
-			propertyTest[i].setCityQuad("NW");
-			propertyTest[i].setNumBedrooms(2);
-			propertyTest[i].setNumBathrooms(3.0);
-			propertyTest[i].setFurnished(true);
+        ArrayList<Property> propertyTest = new ArrayList<Property>();
+        for(int i = 0; i < 100;i++){
+            Property temp = new Property();
+			temp.setListingPrice((i+1)*500.1);
+			temp.setAddress("111111"+i);
+			temp.setCityQuad("NW");
+			temp.setNumBedrooms(2);
+			temp.setNumBathrooms(3.0);
+			temp.setFurnished(true); 
+            propertyTest.add(temp);
         }
 		JPanel p = new JPanel();
         p = s.display(user, propertyTest);
