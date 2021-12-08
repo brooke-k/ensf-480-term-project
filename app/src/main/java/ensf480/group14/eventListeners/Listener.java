@@ -33,7 +33,9 @@ public class Listener implements ActionListener {
     User user;
     ArrayList<Property> properties;
     ArrayList<Email> mail;
-    DatabaseSubject controller;
+    RegisteredRenterDBController renterController;
+    ManagerDBController managerController;
+    LandlordDBControl landlordController;
 
     Property property;
 
@@ -49,6 +51,7 @@ public class Listener implements ActionListener {
     public Listener(RenterSignUpForm signUpForm,
         ContactForm contactForm, PreferenceForm preferenceForm, Search searchForm,
         PropertyApplication propertyAppForm, Inbox inbox, HomePage homePage, PropertyPage propertyPage) {
+        this.renterController = new RegisteredRenterDBController();
         this.signUpForm = signUpForm;
         this.contactForm = contactForm;
         this.preferenceForm = preferenceForm;
@@ -64,15 +67,17 @@ public class Listener implements ActionListener {
         System.out.println(e.getSource()); // test this
         if (e.getActionCommand().equals("Or Sign Up")) {
             pageToShow = "SignUpPage";
-        } else if (e.getActionCommand().equals("Login")) {
+        } 
+        
+        else if (e.getActionCommand().equals("Login")) {
             LoginForm login = LoginForm.getOnlyInstance(this);
-            user = controller.checkLogin(login.getUsername(), login.getPassword());
+            user = renterController.checkLogin(login.getUsername(), login.getPassword());
             if (user instanceof RegisteredRenter){
-                controller = new RegisteredRenterDBController();
+                renterController = new RegisteredRenterDBController();
             }else if (user instanceof Landlord){
-                controller = new LandlordDBControl();
+                landlordController = new LandlordDBControl();
             }else {
-                controller = new ManagerDBController();
+                managerController = new ManagerDBController();
             }
 
             if (user != null) {
@@ -81,7 +86,14 @@ public class Listener implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Username or Password is Incorrect");
                 pageToShow = "LoginPage";
             }
-        } else if (e.getActionCommand().equals("Sign up as renter")) {
+        } 
+        
+        else if (e.getActionCommand().equals("Continue without Logging in")){
+            user = null;
+            pageToShow = "HomePage";
+        } 
+        
+        else if (e.getActionCommand().equals("Sign up as renter")) {
             Boolean res = signUpRenter(signUpForm.getUsername(), signUpForm.getPassword(), signUpForm.getConfirmPassword());
             if(res == true){
                 setPageToShow("HomePage");
@@ -89,7 +101,9 @@ public class Listener implements ActionListener {
                 setPageToShow("SignUpPage");
                 JOptionPane.showMessageDialog(null, "Username is taken");
             }
-        } else if (e.getActionCommand().equals("Sign up as landlord")) {
+        } 
+        
+        else if (e.getActionCommand().equals("Sign up as landlord")) {
             Boolean res = signUpLandlord(signUpForm.getUsername(), signUpForm.getPassword(), signUpForm.getConfirmPassword());
             if(res == true){
                 setPageToShow("HomePage");
@@ -97,26 +111,56 @@ public class Listener implements ActionListener {
                 setPageToShow("SignUpPage");
                 JOptionPane.showMessageDialog(null, "Username is taken");
             }
-        } else if (e.getActionCommand().equals("Search Properties")) {
+        } 
+        
+        else if (e.getActionCommand().equals("Search Properties")) {
             pageToShow = "SearchPage";
-        } else if (e.getActionCommand().equals("Search")){
+        } 
+        
+        else if (e.getActionCommand().equals("Search")){
             searchProperties();
             setPageToShow("SearchResultsPage");
         } 
+        
         else if (e.getActionCommand().equals("Notifications Settings")) {
             pageToShow = "PreferencePage";
-        } else if (e.getActionCommand().equals("Access Database")) {
+        } 
+        
+        else if (e.getActionCommand().equals("Access Database")) {
             pageToShow = "DatabasePage";
-        } else if (e.getActionCommand().equals("Manage Properties")) {
+        } 
+        
+        else if (e.getActionCommand().equals("Manage Properties")) {
             pageToShow = "ManagePropertysPage";
-        } else if (e.getActionCommand().equals("Adjust Fees")){
+        } 
+        
+        else if (e.getActionCommand().equals("Adjust Fees")){
 
-        } else if (e.getActionCommand().equals("New Property Application")){
+        } 
+        
+        else if (e.getActionCommand().equals("New Property Application")){
 
-        } else if (e.getActionCommand().equals("Access Database")){
+        } 
+        
+        else if (e.getActionCommand().equals("Access Database")){
 
+        } 
+        
+        else if (e.getActionCommand().equals("Send")){
+            // Send Contact Form
+        } 
+        
+        else if (e.getActionCommand().equals("Save Preference")){
+            // Saves preference form
         }
 
+        else if (e.getActionCommand().equals("Submit Application")){
+            // Submits an application Form
+        }
+
+        else if (e.getActionCommand().equals("Contact Owner")){
+            pageToShow = "ContactPage";
+        }
     }
 
 

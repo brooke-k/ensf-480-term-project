@@ -130,7 +130,7 @@ public class PropertyApplication implements Form {
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Submit Application");
         submitButton.addActionListener(listener);
         panel.add(submitButton);
 
