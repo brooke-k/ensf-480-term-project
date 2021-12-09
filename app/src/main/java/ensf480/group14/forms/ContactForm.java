@@ -1,17 +1,28 @@
+/**
+ * File: ContactForm.java
+ * ENSF 480, Fall 2021
+ * Term Project
+ * Lecture Section: L02
+ * Instructor: M. Moshirpour
+ * Group 14
+ * @author Khosla, Abhay
+ * @author Kindleman, Brooke
+ * @author Knapton, Nicholas
+ * @author Kramer, Brian
+ * Created: Dec 2021
+ * @version 1.0
+ */
+
 package ensf480.group14.forms;
 
-import ensf480.group14.external.Email;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.*;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,6 +30,8 @@ import javax.swing.JPanel;
 //import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import ensf480.group14.external.Email;
 
 public class ContactForm implements Form {
     // private String userEmailAddress;
@@ -83,7 +96,7 @@ public class ContactForm implements Form {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         ContactForm form = new ContactForm();
-        //frame.add(form.display());
+        // frame.add(form.display());
         frame.setPreferredSize(new Dimension(524, 368));
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

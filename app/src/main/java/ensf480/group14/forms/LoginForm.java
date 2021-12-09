@@ -1,3 +1,18 @@
+/**
+ * File: LoginForm.java
+ * ENSF 480, Fall 2021
+ * Term Project
+ * Lecture Section: L02
+ * Instructor: M. Moshirpour
+ * Group 14
+ * @author Khosla, Abhay
+ * @author Kindleman, Brooke
+ * @author Knapton, Nicholas
+ * @author Kramer, Brian
+ * Created: Dec 2021
+ * @version 1.0
+ */
+
 package ensf480.group14.forms;
 
 import java.awt.Color;
@@ -29,7 +44,7 @@ public class LoginForm implements Form {
     public LoginForm() {
         username = new String();
         password = new String();
-        //listener = listen;
+        // listener = listen;
     }
 
     public LoginForm(ActionListener listen) {
@@ -135,14 +150,14 @@ public class LoginForm implements Form {
     }
 
     // For testing
-    
-      public static void main(String[] args) {
+
+    public static void main(String[] args) {
         JFrame frame = new JFrame();
         LoginForm login = new LoginForm();
         frame.add(login.display());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-      }
-     
+    }
+
 }

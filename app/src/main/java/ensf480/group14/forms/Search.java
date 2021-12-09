@@ -1,14 +1,28 @@
+/**
+ * File: Search.java
+ * ENSF 480, Fall 2021
+ * Term Project
+ * Lecture Section: L02
+ * Instructor: M. Moshirpour
+ * Group 14
+ * @author Khosla, Abhay
+ * @author Kindleman, Brooke
+ * @author Knapton, Nicholas
+ * @author Kramer, Brian
+ * Created: Dec 2021
+ * @version 1.0
+ */
+
 package ensf480.group14.forms;
 
-import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
-import java.awt.event.ActionEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -47,10 +61,12 @@ public class Search implements Form {
         panel.add(loginLabel);
 
         panel.add(new JLabel("Building Type"));
-        String buildingTypes[] = {"House", "Apartment", "TownHouse"};
+        String buildingTypes[] = { "House", "Apartment", "TownHouse" };
         JComboBox buildingTypeField = new JComboBox<String>(buildingTypes);
         buildingTypeField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
                 setBuildingType((buildingTypeField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
             }
@@ -62,9 +78,12 @@ public class Search implements Form {
         numOfBedroomsField.setSize(190, 20);
         numOfBedroomsField.setMaximumSize(new Dimension(190, 20));
         numOfBedroomsField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
-				setNumOfBedrooms(Integer.parseInt(numOfBedroomsField.getText()));            }
+                setNumOfBedrooms(Integer.parseInt(numOfBedroomsField.getText()));
+            }
         });
         panel.add(numOfBedroomsField);
 
@@ -73,31 +92,37 @@ public class Search implements Form {
         numOfBathroomsField.setSize(190, 20);
         numOfBathroomsField.setMaximumSize(new Dimension(190, 20));
         numOfBathroomsField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
-				setNumOfBathrooms(Double.parseDouble(numOfBathroomsField.getText()));
-			}
+                setNumOfBathrooms(Double.parseDouble(numOfBathroomsField.getText()));
+            }
         });
         panel.add(numOfBathroomsField);
 
         JCheckBox furnishedField = new JCheckBox("Furnished");
         furnishedField.setBackground(Color.GRAY);
         furnishedField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
-				setFurnished(furnishedField.isSelected());
-			}
+                setFurnished(furnishedField.isSelected());
+            }
         });
         panel.add(furnishedField);
 
         panel.add(new JLabel("City Quadrant"));
-        String cityQuadrants[] = {"NW", "NE", "SW", "SE"};
+        String cityQuadrants[] = { "NW", "NE", "SW", "SE" };
         JComboBox cityQuadrantField = new JComboBox<String>(cityQuadrants);
         cityQuadrantField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
-				setCityQuadrant((cityQuadrantField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
-			}
+                setCityQuadrant((cityQuadrantField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
+            }
         });
         panel.add(cityQuadrantField);
 
@@ -106,10 +131,12 @@ public class Search implements Form {
         maxPriceField.setSize(190, 20);
         maxPriceField.setMaximumSize(new Dimension(190, 20));
         maxPriceField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
-				setMaxPrice(Double.parseDouble(maxPriceField.getText()));
-			}
+                setMaxPrice(Double.parseDouble(maxPriceField.getText()));
+            }
         });
         panel.add(maxPriceField);
 
@@ -118,10 +145,12 @@ public class Search implements Form {
         minPriceField.setSize(190, 20);
         minPriceField.setMaximumSize(new Dimension(190, 20));
         minPriceField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
-				setMinPrice(Double.parseDouble(minPriceField.getText()));
-			}
+                setMinPrice(Double.parseDouble(minPriceField.getText()));
+            }
         });
         panel.add(minPriceField);
 
@@ -193,8 +222,8 @@ public class Search implements Form {
     // For testing
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        Search form  = new Search();
-        //frame.add(form.display());
+        Search form = new Search();
+        // frame.add(form.display());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

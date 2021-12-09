@@ -1,17 +1,27 @@
+/**
+ * File: RegisteredRenterDBController.java
+ * ENSF 480, Fall 2021
+ * Term Project
+ * Lecture Section: L02
+ * Instructor: M. Moshirpour
+ * Group 14
+ * @author Khosla, Abhay
+ * @author Kindleman, Brooke
+ * @author Knapton, Nicholas
+ * @author Kramer, Brian
+ * Created: Dec 2021
+ * @version 1.0
+ */
+
 package ensf480.group14.dbcontrol;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import javax.print.Doc;
-import javax.swing.text.TabStop;
-
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObjectCodec;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -19,7 +29,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -28,7 +37,6 @@ import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
 import ensf480.group14.forms.Search;
-import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
 public class RegisteredRenterDBController implements DatabaseSubject {
