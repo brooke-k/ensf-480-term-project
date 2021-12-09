@@ -1,6 +1,6 @@
 package ensf480.group14.views;
 
-import ensf480.group14.dbcontrol.DatabaseController;
+
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
@@ -55,12 +55,10 @@ public class HomePage {
 
 		if (!user.getType().equals("manager")){
 
-		searchButton.addActionListener(listener);      //search form --> search results
-
-		JButton searchButton = new JButton("Search Properties");
+		JButton searchButton = new JButton("Search Properties"); //search form --> search results
 		searchButton.addActionListener(listener);
-
 		panel.add(searchButton);
+
 		}
 
 		if (user.getType().equals("registered_renter")) {
@@ -113,7 +111,7 @@ public class HomePage {
 		ObjectId id = new ObjectId();
         User user = new RegisteredRenter("an email", id, "banana");
 		HomePage loggedIn = new HomePage();
-
+		
 		// LoginForm login = getOnlyInstance();
 		frame.add(loggedIn.display(user));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
