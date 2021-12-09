@@ -16,6 +16,7 @@
 package ensf480.group14.dbcontrol;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -175,6 +176,42 @@ public class ManagerDBController extends LandlordDBControl {
 			arr.add(PreferenceForm.getPreferenceForm(iter.next()));
 		}
 
+		return arr;
+	}
+
+	public ArrayList<Property> getPropertiesListedWithin(Calendar startDate, Calendar endDate) {
+		FindIterable<Document> docIter = preferenceCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		if (!iter.hasNext()) {
+			return null;
+		}
+		ArrayList<Property> arr = new ArrayList<>(0);
+		Property temp;
+		while (iter.hasNext()) {
+			temp = Property.getProperty(iter.next());
+			if (temp.getDateLastListed().compareTo(startDate) >= 0
+					&& temp.getDateLastListed().compareTo(endDate) <= 0) {
+				arr.add(temp);
+			}
+		}
+		return arr;
+	}
+
+	public ArrayList<Property> getPropertiesRentedWithin(Calendar startDate, Calendar endDate) {
+		FindIterable<Document> docIter = preferenceCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		if (!iter.hasNext()) {
+			return null;
+		}
+		ArrayList<Property> arr = new ArrayList<>(0);
+		Property temp;
+		while (iter.hasNext()) {
+			temp = Property.getProperty(iter.next());
+			if (temp.getDateRented().compareTo(startDate) >= 0
+					&& temp.getDateRented().compareTo(endDate) <= 0) {
+				arr.add(temp);
+			}
+		}
 		return arr;
 	}
 

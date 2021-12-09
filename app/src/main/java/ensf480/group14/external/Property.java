@@ -15,6 +15,9 @@
 
 package ensf480.group14.external;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -24,8 +27,8 @@ public class Property {
 	private String cityQuad;
 	private String rentalState;
 	private String landlordName;
-	private String dateLastListed;
-	private String dateRented;
+	private Calendar dateLastListed;
+	private Calendar dateRented;
 	private Integer numBedrooms;
 	private Double numBathrooms;
 	private String landlordEmail;
@@ -86,8 +89,8 @@ public class Property {
 		returnProp.landlordID = propertyDoc.get("landlord_id", ObjectId.class);
 		returnProp.landlordEmail = propertyDoc.get("landlord_email", String.class);
 		returnProp.type = propertyDoc.get("type", String.class);
-		returnProp.dateLastListed = propertyDoc.get("date_last_listed", String.class);
-		returnProp.dateRented = propertyDoc.get("date_rented", String.class);
+		returnProp.dateLastListed = propertyDoc.get("date_last_listed", Calendar.class);
+		returnProp.dateRented = propertyDoc.get("date_rented", Calendar.class);
 		returnProp.numBedrooms = propertyDoc.get("bedrooms", Integer.class);
 		returnProp.numBathrooms = propertyDoc.get("bathrooms", Double.class);
 		returnProp.rentCost = propertyDoc.get("rent_cost", Double.class);
@@ -156,19 +159,19 @@ public class Property {
 		this.landlordName = landlordName;
 	}
 
-	public String getDateLastListed() {
+	public Calendar getDateLastListed() {
 		return dateLastListed;
 	}
 
-	public void setDateLastListed(String dateLastListed) {
+	public void setDateLastListed(Calendar dateLastListed) {
 		this.dateLastListed = dateLastListed;
 	}
 
-	public String getDateRented() {
+	public Calendar getDateRented() {
 		return dateRented;
 	}
 
-	public void setDateRented(String dateRented) {
+	public void setDateRented(Calendar dateRented) {
 		this.dateRented = dateRented;
 	}
 

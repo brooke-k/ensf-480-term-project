@@ -15,18 +15,18 @@
 
 package ensf480.group14.billcontrol;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import ensf480.group14.users.Landlord;
 
 public class BillingSystem {
     private double feeAmount;
-    private Date paymentDate;
+    private Calendar paymentDate;
     private String paymentType;
     private Landlord landlord;
 
     // Constructor
-    public BillingSystem(double feeAmount, Landlord landlord, Date paymentDate, String paymentType) {
+    public BillingSystem(double feeAmount, Landlord landlord, Calendar paymentDate, String paymentType) {
         this.feeAmount = feeAmount;
         this.landlord = landlord;
         this.paymentDate = paymentDate;
@@ -42,11 +42,11 @@ public class BillingSystem {
         this.feeAmount = feeAmount;
     }
 
-    public Date getPaymentDate() {
+    public Calendar getPaymentDate() {
         return this.paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(Calendar paymentDate) {
         this.paymentDate = paymentDate;
     }
 
