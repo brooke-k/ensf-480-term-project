@@ -32,7 +32,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class PayInfoForm { // TODO: Add back the implements forms
+/**
+ * Is the form for paying for the application fee once submitted sucessfully
+ */
+public class PayInfoForm implements Form {
+
     String firstName;
     String lastName;
     String cardNumber;
@@ -40,8 +44,16 @@ public class PayInfoForm { // TODO: Add back the implements forms
     String expiryDate;
     private ActionListener listener;
 
-    public JPanel display() {// ActionListener listen) { //should save payment into database
-        // listener = listen;
+    /**
+     * Takes in nothing just creates a form using the fields which would be found in
+     * a common payment form
+     *
+     * @param: Takes in the action listener
+     * @returns: Builds the payment form.
+     */
+
+    public JPanel display(ActionListener listen) { // should save payment into database
+        listener = listen;
         JPanel panel = new JPanel();
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -97,12 +109,18 @@ public class PayInfoForm { // TODO: Add back the implements forms
             public void focusGained(FocusEvent e) {
             }
 
+            // CHECKS IF VALID TO BUY WEIRD FOOD WITH
             public void focusLost(FocusEvent e) {
                 if (checkCard(cardNum.getText()))
                     setCardNumber(cardNum.getText());
             }
         });
         panel.add(cardNum);
+
+        // Total number of houses listed in the period. Notice that some houses that are
+        // listed may not be active anymore. It means some houses their posting period
+        // can be expired or landlords have cancelled their posting, therefore the
+        // renters cannot view them anymore.
 
         panel.add(new JLabel("CVV"));
         JTextField cvvCode = new JTextField();
@@ -143,6 +161,9 @@ public class PayInfoForm { // TODO: Add back the implements forms
         return panel;
     }
 
+    /**
+     * Checking the edge case of if its a valid credit card or not.
+     */
     private boolean checkCard(String num) {
         if (!num.startsWith("4")) {
             return false;
@@ -212,5 +233,4 @@ public class PayInfoForm { // TODO: Add back the implements forms
         frame.pack();
         frame.setVisible(true);
     }
-
 }

@@ -15,12 +15,13 @@
 
 package ensf480.group14.users;
 
-import java.util.Date;
+import java.io.IOException;
+import java.util.Calendar;
 
 import org.bson.types.ObjectId;
 
-import ensf480.group14.billcontrol.BillingSystem;
 import ensf480.group14.dbcontrol.ManagerDBController;
+import ensf480.group14.dbcontrol.Report;
 
 public class Manager extends User {
     private ObjectId iD;
@@ -48,9 +49,12 @@ public class Manager extends User {
     // Start of
     // getters and setters
 
-    public void generateReport() {
-        report = new Report();
-        report.Report();
+    public void generateReport(Calendar startDate, Calendar endDate) {
+        try {
+            Report report = new Report(startDate, endDate);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public ObjectId getiD() {

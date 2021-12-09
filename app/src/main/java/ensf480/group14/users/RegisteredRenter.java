@@ -39,11 +39,12 @@ public class RegisteredRenter extends User {
 		this.dbcontroller = new RegisteredRenterDBController();
 	}
 
-	private RegisteredRenter() {
+	public RegisteredRenter() {
 		emailAddress = null;
 		dbcontroller = null;
 		prefs = null;
-		type = "registered_";
+		this.iD = new ObjectId();
+		type = "registered_renter";
 
 	}
 

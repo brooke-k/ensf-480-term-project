@@ -19,14 +19,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 
-import javax.swing.text.Document;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
+import ensf480.group14.external.Property;
 
 public class Report {
     // Attributes
@@ -45,58 +41,71 @@ public class Report {
     // Currently throws an error because the Property class has not been made yet.
 
     // Methods
-    public Report(Calendar startDate, Calendar endDate, RegisteredRenterDBController controller) throws IOException {
+    public Report(Calendar startDate, Calendar endDate) throws IOException {
         dateRangeStart = startDate;
         dateRangeEnd = endDate;
-        generateReport(controller);
+        generateReport();
     }
 
-    public static String generateReport(RegisteredRenterDBController dbControl) throws IOException {
+    private String generateReport() {
+        ManagerDBController dbControl = new ManagerDBController();
 
         reportFile = new File("./src/main/outputs/report.txt");
         if (reportFile.exists()) {
             reportFile.delete(); // Done to clear any older report copies,
             // for testing
-            reportFile.createNewFile();
+            try {
+                reportFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
-            reportFile.createNewFile();
+            try {
+                reportFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        bufReportWriter = new BufferedWriter(new FileWriter(reportFile));
+        try {
+            bufReportWriter = new BufferedWriter(new FileWriter(reportFile));
 
-        String reportString; // String-version of report to write
-        MongoCollection< propertyCollection = dbControl.getAllProperties();
+            ArrayList<Property> propertyArray = dbControl.getPropertiesListedWithin(dateRangeStart, dateRangeEnd);
 
-        FindIterable<Document> docIterator = propertyCollection.find();
-        Iterator collectionIter = docIterator.iterator();
-        while (collectionIter.hasNext()) {
-            bufReportWriter.write(collectionIter.next().toString());
+            bufReportWriter.write("\n\rTotal number of properties listed between ");
+            bufReportWriter.write(dateRangeStart.toString() + " and ");
+            bufReportWriter.write(dateRangeEnd.toString() + ": " + propertyArray.size() + "\n\r");
+
+            propertyArray.clear();
+            propertyArray = dbControl.getPropertiesRentedWithin(dateRangeStart, dateRangeEnd);
+
+            bufReportWriter.write("\n\rTotal number of properties rented between ");
+            bufReportWriter.write(dateRangeStart.toString() + " and ");
+            bufReportWriter.write(dateRangeEnd.toString() + ": " + propertyArray.size() + "\n\r");
+
+            propertyArray.clear();
+            propertyArray = dbControl.getActiveProperties();
+
+            bufReportWriter.write("\n\rTotal number of active properties");
+            bufReportWriter.write(dateRangeStart.toString() + " and ");
+            bufReportWriter.write(dateRangeEnd.toString() + ": " + propertyArray.size() + "\n\r");
+
+            propertyArray.clear();
+            propertyArray = dbControl.getPropertiesRentedWithin(dateRangeStart, dateRangeEnd);
+
+            bufReportWriter.write("\n\rProperties rented between ");
+            bufReportWriter.write(dateRangeStart.toString() + " and ");
+            bufReportWriter.write(dateRangeEnd.toString() + ":\n\r");
+            for (Property p : propertyArray) {
+                bufReportWriter.write("\n\r" + p.toString());
+            }
+
+            bufReportWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        bufReportWriter.close();
 
         return null;
-        /*
-         * reportFile = new File("./src/main/outputs/report.txt");
-         * if (reportFile.exists()) {
-         * reportFile.delete(); // Done to clear any older report copies,
-         * // for testing
-         * reportFile.createNewFile();
-         * } else {
-         * reportFile.createNewFile();
-         * }
-         *
-         * bufReportWriter = new BufferedWriter(new FileWriter(reportFile));
-         *
-         * String reportString; // String-version of report to write
-         * MongoCollection propertyCollection = dbControl.getAllProperties();
-         *
-         * FindIterable<Document> docIterator = propertyCollection.find();
-         * Iterator collectionIter = docIterator.iterator();
-         * while (collectionIter.hasNext()) {
-         * bufReportWriter.write(collectionIter.next().toString());
-         * }
-         * bufReportWriter.close();
-         */
 
     }
 

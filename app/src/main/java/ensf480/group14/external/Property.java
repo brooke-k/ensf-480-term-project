@@ -16,7 +16,6 @@
 package ensf480.group14.external;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -207,30 +206,19 @@ public class Property {
 		this.rentCost = rentCost;
 	}
 
-	public boolean isVisibleToRenters() {
+	public Boolean isVisibleToRenters() {
 		return visibleToRenters;
 	}
 
-	public void setVisibleToRenters(boolean visibleToRenters) {
+	public void setVisibleToRenters(Boolean visibleToRenters) {
 		this.visibleToRenters = visibleToRenters;
 	}
 
 	public String toString() {
 		String asString = "\n\r";
-		asString = asString + "Address: " + address + "\n\r";
-		asString = asString + "ID: " + iD + "\n\r";
-		asString = asString + "Type: " + type + "\n\r";
-		asString = asString + "City quadrant: " + cityQuad + "\n\r";
-		asString = asString + "Rental state: " + rentalState + "\n\r";
-		asString = asString + "Number of bedrooms: " + numBedrooms + "\n\r";
-		asString = asString + "Number of bathrooms: " + numBathrooms + "\n\r";
-		asString = asString + "Rental cost per month: " + rentCost + "\n\r";
-		asString = asString + "Date last listed: " + dateLastListed + "\n\r";
-		asString = asString + "Date rented: " + dateRented + "\n\r";
 		asString = asString + "Name of landlord: " + landlordName + "\n\r";
-		asString = asString + "ID of landlord: " + landlordID + "\n\r";
-		asString = asString + "Visible to public search: " + ((visibleToRenters.booleanValue()) ? "Yes" : "No")
-				+ "\n\r";
+		asString = asString + "ID: " + iD + "\n\r";
+		asString = asString + "Address: " + address + "\n\r";
 
 		return asString;
 	}

@@ -35,24 +35,37 @@ import javax.swing.JTextField;
 
 import ensf480.group14.eventListeners.Listener;
 
+/**
+ * Creates a
+ * login page for the users to login in with their credentials
+ */
 public class LoginForm implements Form {
     private static LoginForm onlyInstance;
     private String username;
     private String password;
     private ActionListener listener;
 
+    /**
+     * Default constructor with no parameters
+     */
     public LoginForm() {
         username = new String();
         password = new String();
         // listener = listen;
     }
 
+    /**
+     * Takes in the listener for the LoginForm constructor
+     */
     public LoginForm(ActionListener listen) {
         username = new String();
         password = new String();
         listener = listen;
     }
 
+    /**
+     * Unique login form listener is being returned here
+     */
     public static LoginForm getOnlyInstance(ActionListener loginListener) {
         if (onlyInstance == null) {
             onlyInstance = new LoginForm(loginListener);
@@ -60,6 +73,10 @@ public class LoginForm implements Form {
         return onlyInstance;
     }
 
+    /**
+     * @param: Takes in the action listener
+     * @returns: Returns a form with the login options
+     */
     public JPanel display(ActionListener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);

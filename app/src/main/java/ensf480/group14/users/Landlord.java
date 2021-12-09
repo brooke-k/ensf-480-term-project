@@ -17,7 +17,14 @@ package ensf480.group14.users;
 
 import java.util.HashSet;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 public class Landlord extends User {
+	private String firstName;
+	private String lastName;
+	private String email;
+	private ObjectId iD;
 
 	private HashSet<String> ownedAddresses;
 
@@ -31,5 +38,74 @@ public class Landlord extends User {
 
 	public void removeAddress(String address) {
 		ownedAddresses.remove(address);
+	}
+
+	public static Landlord getLandlord(Document lldoc) {
+		Landlord ll = new Landlord();
+		ll.setFirstName(lldoc.get("first_name").toString());
+		ll.setLastName(lldoc.get("last_name").toString());
+		ll.setOwnedAddresses((HashSet<String>) lldoc.get("owned_addresses"));
+		ll.setType(lldoc.get("type").toString());
+		ll.setEmail(lldoc.get("email").toString());
+		ll.setiD((ObjectId) lldoc.get("_id"));
+		return ll;
+	}
+
+	public static Document toDocument(Landlord landlord) {
+		Document doc = new Document("_id", landlord.getiD());
+		doc.append("first_name", landlord.getFirstName());
+		doc.append("last_name", landlord.getLastName());
+		doc.append("owned_addresses", landlord.getOwnedAddresses());
+		doc.append("type", landlord.getType());
+		doc.append("email", landlord.getEmail());
+		return doc;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public ObjectId getiD() {
+		return iD;
+	}
+
+	public void setiD(ObjectId iD) {
+		this.iD = iD;
+	}
+
+	public HashSet<String> getOwnedAddresses() {
+		return ownedAddresses;
+	}
+
+	public void setOwnedAddresses(HashSet<String> ownedAddresses) {
+		this.ownedAddresses = ownedAddresses;
+	}
+
+	public void addOwnedAddress(String newAddress) {
+		ownedAddresses.add(newAddress);
+	}
+
+	public void removeOwnedAddress(String addressToRemove) {
+		ownedAddresses.remove(addressToRemove);
 	}
 }

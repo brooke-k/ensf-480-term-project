@@ -1,5 +1,19 @@
-package ensf480.group14.views;
+/**
+ * File: Inbox.java
+ * ENSF 480, Fall 2021
+ * Term Project
+ * Lecture Section: L02
+ * Instructor: M. Moshirpour
+ * Group 14
+ * @author Khosla, Abhay
+ * @author Kindleman, Brooke
+ * @author Knapton, Nicholas
+ * @author Kramer, Brian
+ * Created: Dec 2021
+ * @version 1.0
+ */
 
+package ensf480.group14.views;
 
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
@@ -33,14 +47,26 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+/**
+ * Makes the emails in a neat form as a table into the Inbox
+ */
 public class Inbox {
 
     private ActionListener listener;
 
+    /**
+     * Constructors
+     */
     public Inbox() {
 
     }
 
+    /**
+     * Takes in the mail and the action listener
+     *
+     * @param: Emails in an arraylist and the listener
+     * @returns: All of them displayed in a JTable
+     */
     public JPanel display(ArrayList<Email> mail, ActionListener listen) {
         listener = listen;
         JPanel master = new JPanel(new BorderLayout());
@@ -49,12 +75,12 @@ public class Inbox {
         int i = 0;
         for (Email m : mail) {
             // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
-            mails[i][0] = m.getId();
+            mails[i][0] = m.getId().toString();
             mails[i][1] = m.getSender();
             mails[i][2] = m.getSubject();
-            
-            //mails[i][1] = m.getAddress();
-            //mails[i][2] = m.getEmailID();
+
+            // mails[i][1] = m.getAddress();
+            // mails[i][2] = m.getEmailID();
             i++;
         }
 
@@ -74,7 +100,7 @@ public class Inbox {
         jTable.setForeground(Color.PINK);
         jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-                //takes an email ID opens email view
+                // takes an email ID opens email view
                 listener.openEmail(jTable.getValueAt(jTable.getSelectedRow(), 0).toString());
             }
         });
@@ -88,7 +114,7 @@ public class Inbox {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         Inbox s = new Inbox();
-        //User user = new RegisteredRenter("an email", "an ID", "registered_renter");
+        // User user = new RegisteredRenter("an email", "an ID", "registered_renter");
         ArrayList<Email> emailTest = new ArrayList<Email>();
         for (int i = 0; i < 40; i++) {
             emailTest.add(new Email("HI", "Renter" + i + "@aol.com", "231" + i + "12 NorthMount Dr"));

@@ -97,8 +97,9 @@ public class RenterSignUpForm implements Form {
         submitButton.addActionListener(listener);
         panel.add(submitButton);
 
-        JButton submitButton2 = new JButton("Sign up as landlord");
-        submitButton.addActionListener(listener);
+        JButton submitButton2 = new JButton("Sign up as landlord instead");
+        submitButton2.setFont(new Font("Serif", Font.BOLD, 10));
+        submitButton2.addActionListener(listener);
         panel.add(submitButton2);
 
         return panel;

@@ -32,11 +32,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * landlord form to signup as a landlord
+ *
+ */
 public class LandlordSignUpForm implements Form {
     private String username;
     private String password;
     private String confirmPassword;
 
+    /**
+     * displays form for land lord to sign up
+     *
+     */
     public JPanel display(ActionListener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
@@ -72,6 +80,32 @@ public class LandlordSignUpForm implements Form {
             }
         });
         panel.add(usernameField);
+        panel.add(new JLabel("First Name"));
+        JTextField firstNameField = new JTextField();
+        firstNameField.setSize(190, 20);
+        firstNameField.setMaximumSize(new Dimension(190, 20));
+        firstNameField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+            }
+
+            public void focusLost(FocusEvent e) {
+                setFirstname(firstNameField.getText());
+            }
+        });
+        panel.add(firstNameField);
+        panel.add(new JLabel("Last name"));
+        JTextField lastNameField = new JTextField();
+        lastNameField.setSize(190, 20);
+        lastNameField.setMaximumSize(new Dimension(190, 20));
+        lastNameField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+            }
+
+            public void focusLost(FocusEvent e) {
+                setLastname(lastNameField.getText());
+            }
+        });
+        panel.add(lastnameField);
 
         panel.add(new JLabel("Password"));
         JTextField passwordField = new JTextField();
@@ -101,9 +135,9 @@ public class LandlordSignUpForm implements Form {
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
-        JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(listener);
-        panel.add(submitButton);
+        JButton landLordSignUpButton = new JButton("Sign Up as Landlord");
+        landLordSignUpButton.addActionListener(listener);
+        panel.add(landLordSignUpButton);
 
         return panel;
     }

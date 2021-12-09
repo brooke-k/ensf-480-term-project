@@ -198,7 +198,7 @@ public class ManagerDBController extends LandlordDBControl {
 	}
 
 	public ArrayList<Property> getPropertiesRentedWithin(Calendar startDate, Calendar endDate) {
-		FindIterable<Document> docIter = preferenceCollection.find();
+		FindIterable<Document> docIter = propertiesCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
 		if (!iter.hasNext()) {
 			return null;
@@ -209,6 +209,23 @@ public class ManagerDBController extends LandlordDBControl {
 			temp = Property.getProperty(iter.next());
 			if (temp.getDateRented().compareTo(startDate) >= 0
 					&& temp.getDateRented().compareTo(endDate) <= 0) {
+				arr.add(temp);
+			}
+		}
+		return arr;
+	}
+
+	public ArrayList<Property> getActiveProperties() {
+		FindIterable<Document> docIter = propertiesCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		if (!iter.hasNext()) {
+			return null;
+		}
+		ArrayList<Property> arr = new ArrayList<>(0);
+		Property temp;
+		while (iter.hasNext()) {
+			temp = Property.getProperty(iter.next());
+			if (temp.getRentalState().equals("active")) {
 				arr.add(temp);
 			}
 		}
@@ -233,9 +250,9 @@ public class ManagerDBController extends LandlordDBControl {
 		Property testProperty = new Property();
 		testProperty.setAddress("Test address 73");
 		testProperty.setCityQuad("EW");
-		testProperty.setDateLastListed("02/02/13");
+		// testProperty.setDateLastListed(Calendar());
 		testProperty.setFurnished(true);
-		testProperty.setDateLastListed("01/01/00");
+		// testProperty.setDateLastListed("01/01/00");
 		testProperty.setLandlordEmail("Return_To_Sender");
 		testProperty.setNumBathrooms(804595.0);
 		testProperty.setNumBedrooms(1);

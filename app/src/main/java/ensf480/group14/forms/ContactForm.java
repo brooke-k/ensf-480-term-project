@@ -33,24 +33,30 @@ import javax.swing.JTextField;
 
 import ensf480.group14.external.Email;
 
+/**
+ * Form to send email to a landlord
+ *
+ */
+
 public class ContactForm implements Form {
     // private String userEmailAddress;
     // private String message;
 
+    /**
+     * display form to contact the landlord of the property you are viewing
+     *
+     */
     public JPanel display(ActionListener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        // panel.setLayout(new GridLayout(0,1));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setPreferredSize(expectDimension);
         panel.setMaximumSize(expectDimension);
         panel.setMinimumSize(expectDimension);
 
         panel.setBackground(Color.GRAY);
-
-        // panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel contactLabel = new JLabel("Contact");
         contactLabel.setFont(new Font("Serif", Font.BOLD, 35));
@@ -71,7 +77,6 @@ public class ContactForm implements Form {
         bodyLabel.setAlignmentX(16);
         panel.add(bodyLabel);
         JTextArea emailBody = new JTextArea(50, 50);
-        // JScrollPane sPane = new JScrollPane(emailBody);
         emailBody.setSize(300, 60);
         emailBody.setMaximumSize(new Dimension(300, 60));
         emailBody.setColumns(300);
@@ -87,6 +92,10 @@ public class ContactForm implements Form {
         return panel;
     }
 
+    /**
+     * parses email to a landlord
+     *
+     */
     Email parseEmail(String body, String sendAddr) {
         Email mail = new Email(body, sendAddr);
         return mail;

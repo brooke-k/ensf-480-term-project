@@ -37,6 +37,9 @@ import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
 import ensf480.group14.forms.Search;
+import ensf480.group14.users.Landlord;
+import ensf480.group14.users.Manager;
+import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
 public class RegisteredRenterDBController implements DatabaseSubject {
@@ -238,11 +241,9 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         if (!iter.hasNext()) {
             return null;
         }
-
         ArrayList<Email> emails = new ArrayList<Email>(0);
         while (iter.hasNext()) {
             emails.add(Email.getEmail(iter.next()));
-
         }
         if (emails.isEmpty()) {
             return null;
@@ -274,67 +275,61 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return emails;
     }
 
-    /*
-     * public String checkLogin(String email, String password) {
-     * BasicDBObject query = new BasicDBObject();
-     * query.append("email", email).append("password", password);
-     * FindIterable<Document> docIter = usersCollection.find(query);
-     * MongoCursor<Document> iter = docIter.iterator();
-     * if (!iter.hasNext()) { // User with email does not exist
-     * return null;
-     * }
-     * User user;
-     * // if(renter){
-     * // User user = new RegisteredRenter();
-     * // else if (landlord)
-     * // User user = new Landlord();
-     *
-     * Document foundUser = docIter.first();
-     * String userType = foundUser.get("type").toString();
-     *
-     * if (userType.equals("registered_renter")) {
-     * user = new RegisteredRenter();
-     * // ((PreferenceForm)
-     * // user).setBuildingType(foundUser.getString("building_type"));
-     *
-     * }
-     * }
-     */
-    // public ArrayList<RegisteredRenter> getRegisteredRenters() {
-    // return registeredRenters;
-    // }
-
     public User checkLogin(String email, String password) {
-        return null;
 
-        /*
-         * BasicDBObject query = new BasicDBObject();
-         * query.append("email", email).append("password", password);
-         * FindIterable<Document> docIter = usersCollection.find(query);
-         * MongoCursor<Document> iter = docIter.iterator();
-         * if (!iter.hasNext()) { // User with email does not exist
-         * return null;
-         * }
-         * User user;
-         * // if(renter){
-         * // User user = new RegisteredRenter();
-         * // else if (landlord)
-         * // User user = new Landlord();
-         *
-         * Document foundUser = docIter.first();
-         * String userType = foundUser.get("type").toString();
-         *
-         * if (userType.equals("registered_renter")) {
-         * user = new RegisteredRenter();
-         * // ((PreferenceForm)
-         * // user).setBuildingType(foundUser.getString("building_type"));
-         */
+        BasicDBObject query = new BasicDBObject();
+        query.append("email", email).append("password", password);
+        FindIterable<Document> docIter = usersCollection.find(query);
+        MongoCursor<Document> iter = docIter.iterator();
+        if (!iter.hasNext()) { // User with email does not exist
+            return null;
+        }
+        Document userDoc = iter.next();
+        User user;
+        String type = userDoc.get("type").toString();
+        if (type.equals("registered_renter")) {
+            user = new RegisteredRenter();
+        } else if (type.equals("landlord")) {
+            user = new Landlord();
+        } else if (type.equals("manager")) {
+            user = new Manager();
+        } else {
+            user = null;
+        }
 
+        return user;
+
+    }
+
+    private boolean emailTaken(String email) {
+        BasicDBObject query = new BasicDBObject();
+        query.append("email", email);
+        FindIterable<Document> docIter = usersCollection.find(query);
+        MongoCursor<Document> iter = docIter.iterator();
+        if (iter.hasNext()) { // User with email does not exist
+            return true;
+        }
+        return false;
     }
 
     // Return new user if sign up successful,
     // Return null if email already taken
     public User signUp(String email, String password, String type) {
+        if (emailTaken(email)) {
+            return null;
+        }
+
+        String type = userDoc.get("type").toString();
+        if (type.equals("registered_renter")) {
+            user = new RegisteredRenter();
+        } else if (type.equals("landlord")) {
+            user = new Landlord();
+        } else if (type.equals("manager")) {
+            user = new Manager();
+        } else {
+            user = null;
+        }
+
         return null;
     }
 
