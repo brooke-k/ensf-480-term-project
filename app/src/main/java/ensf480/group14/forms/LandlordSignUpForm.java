@@ -1,3 +1,18 @@
+/**
+ * File: LandlordSignUpForm.java
+ * ENSF 480, Fall 2021
+ * Term Project
+ * Lecture Section: L02
+ * Instructor: M. Moshirpour
+ * Group 14
+ * @author Khosla, Abhay
+ * @author Kindleman, Brooke
+ * @author Knapton, Nicholas
+ * @author Kramer, Brian
+ * Created: Dec 2021
+ * @version 1.0
+ */
+
 package ensf480.group14.forms;
 
 import java.awt.Color;
@@ -6,9 +21,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
-import java.awt.event.ActionEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -23,24 +37,24 @@ public class LandlordSignUpForm implements Form {
     private String password;
     private String confirmPassword;
 
-    public JPanel display(ActionListener listener){
+    public JPanel display(ActionListener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
-        panel.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
-        panel.setLayout(new GridLayout(0,1));
+        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        panel.setLayout(new GridLayout(0, 1));
 
         panel.setPreferredSize(expectDimension);
         panel.setMaximumSize(expectDimension);
         panel.setMinimumSize(expectDimension);
 
         panel.setBackground(Color.GRAY);
-        
+
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel loginLabel = new JLabel("Landlord SignUp");
         loginLabel.setFont(new Font("Serif", Font.BOLD, 35));
-        loginLabel.setSize(40,40);
+        loginLabel.setSize(40, 40);
         panel.add(loginLabel);
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
@@ -50,7 +64,9 @@ public class LandlordSignUpForm implements Form {
         usernameField.setSize(190, 20);
         usernameField.setMaximumSize(new Dimension(190, 20));
         usernameField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
                 setUsername(usernameField.getText());
             }
@@ -61,7 +77,9 @@ public class LandlordSignUpForm implements Form {
         JTextField passwordField = new JTextField();
         passwordField.setMaximumSize(new Dimension(190, 20));
         passwordField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
                 setPassword(passwordField.getText());
             }
@@ -72,7 +90,9 @@ public class LandlordSignUpForm implements Form {
         JTextField confirmPasswordField = new JTextField();
         confirmPasswordField.setMaximumSize(new Dimension(190, 20));
         confirmPasswordField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {}
+            public void focusGained(FocusEvent e) {
+            }
+
             public void focusLost(FocusEvent e) {
                 setConfirmPassword(confirmPasswordField.getText());
             }
@@ -89,12 +109,12 @@ public class LandlordSignUpForm implements Form {
     }
 
     /*
-    public Landlord signUp(){
-        // Should talk to db?
-    }
-    */
+     * public Landlord signUp(){
+     * // Should talk to db?
+     * }
+     */
 
-    public LandlordSignUpForm(){
+    public LandlordSignUpForm() {
 
     };
 
@@ -126,7 +146,7 @@ public class LandlordSignUpForm implements Form {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         LandlordSignUpForm form = new LandlordSignUpForm();
-       // frame.add(form.display());
+        // frame.add(form.display());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
