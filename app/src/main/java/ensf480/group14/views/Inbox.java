@@ -15,6 +15,7 @@
 
 package ensf480.group14.views;
 
+import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.users.RegisteredRenter;
@@ -52,7 +53,7 @@ import javax.swing.table.TableRowSorter;
  */
 public class Inbox {
 
-    private ActionListener listener;
+    private Listener listener;
 
     /**
      * Constructors
@@ -67,9 +68,13 @@ public class Inbox {
      * @param: Emails in an arraylist and the listener
      * @returns: All of them displayed in a JTable
      */
-    public JPanel display(ArrayList<Email> mail, ActionListener listen) {
+    public JPanel display(ArrayList<Email> mail, Listener listen) {
+        
         listener = listen;
         JPanel master = new JPanel(new BorderLayout());
+        if (mail == null) {
+            return master;
+        }
         String[] columns = { "Sender", "Address" };
         String[][] mails = new String[mail.size()][3];
         int i = 0;
@@ -111,27 +116,27 @@ public class Inbox {
 
     // For testing
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        Inbox s = new Inbox();
-        // User user = new RegisteredRenter("an email", "an ID", "registered_renter");
-        ArrayList<Email> emailTest = new ArrayList<Email>();
-        for (int i = 0; i < 40; i++) {
-            emailTest.add(new Email("HI", "Renter" + i + "@aol.com", "231" + i + "12 NorthMount Dr"));
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     Inbox s = new Inbox();
+    //     // User user = new RegisteredRenter("an email", "an ID", "registered_renter");
+    //     ArrayList<Email> emailTest = new ArrayList<Email>();
+    //     for (int i = 0; i < 40; i++) {
+    //         emailTest.add(new Email("HI", "Renter" + i + "@aol.com", "231" + i + "12 NorthMount Dr"));
 
-        }
-        JPanel p = new JPanel();
-        p = s.display(emailTest);
-        // JScrollPane sp = new JScrollPane(p);
-        // frame.setContentPane(sp);
-        frame.add(p);
-        frame.setPreferredSize(new Dimension(900, 600));
+    //     }
+    //     JPanel p = new JPanel();
+    //     p = s.display(emailTest);
+    //     // JScrollPane sp = new JScrollPane(p);
+    //     // frame.setContentPane(sp);
+    //     frame.add(p);
+    //     frame.setPreferredSize(new Dimension(900, 600));
 
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    //     frame.pack();
+    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     frame.setLocationRelativeTo(null);
+    //     frame.setVisible(true);
 
-    }
+    // }
 
 }

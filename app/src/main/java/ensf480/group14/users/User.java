@@ -15,6 +15,8 @@
 
 package ensf480.group14.users;
 
+import org.bson.types.ObjectId;
+
 public abstract class User {
 	protected String type;
 
@@ -27,6 +29,19 @@ public abstract class User {
 	}
 
 	User() {
-		type = "default";
+		type = "banana : )";
 	}
+	
+	abstract public boolean owns(String address);
+
+	abstract public void setEmail(String emailAddress);
+
+	abstract public void setiD(ObjectId iD);
+
+	abstract public void setFirstName(String firstName);
+	
+	abstract public void setLastName(String lastName) ;
+
+
+
 };

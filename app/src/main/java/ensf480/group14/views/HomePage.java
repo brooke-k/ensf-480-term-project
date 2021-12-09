@@ -15,6 +15,7 @@
 
 package ensf480.group14.views;
 
+import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
@@ -43,7 +44,7 @@ import org.bson.types.ObjectId;
  *
  */
 public class HomePage {
-	private ActionListener listener;
+	private Listener listener;
 
 	public HomePage() {
 
@@ -53,9 +54,10 @@ public class HomePage {
 	 * displays home page based on the type of user who is logged in
 	 *
 	 */
-	public JPanel display(User user, ActionListener listen) {
+	public JPanel display(User user, Listener listen) {
 		listener = listen;
 		JPanel panel = new JPanel();
+		if(user == null) return panel;
 		Dimension expectDimension = new Dimension(300, 300);
 
 		panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -114,9 +116,9 @@ public class HomePage {
 		}
 		if (user.getType().equals("landlord") || user.getType().equals("registered_renter")) {
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
-			JButton addPropertyButton = new JButton("Inbox"); // Open Inbox page needs array of emails addressed to user
-			addPropertyButton.addActionListener(listener);
-			panel.add(addPropertyButton);
+			JButton inboxButton = new JButton("Inbox"); // Open Inbox page needs array of emails addressed to user
+			inboxButton.addActionListener(listener);
+			panel.add(inboxButton);
 		}
 		return panel;
 	}

@@ -18,6 +18,8 @@ package ensf480.group14.forms;
 import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
+import ensf480.group14.eventListeners.Listener;
+
 public interface Form {
-    public JPanel display(ActionListener listener);
+    public JPanel display(Listener listener);
 }

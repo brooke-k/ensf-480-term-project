@@ -40,13 +40,17 @@ public class Landlord extends User {
 		ownedAddresses.remove(address);
 	}
 
+	public Landlord(){
+		this.type = "landlord";
+	}
+
 	public static Landlord getLandlord(Document lldoc) {
 		Landlord ll = new Landlord();
+		ll.setEmail(lldoc.get("email").toString());
 		ll.setFirstName(lldoc.get("first_name").toString());
 		ll.setLastName(lldoc.get("last_name").toString());
 		ll.setOwnedAddresses((HashSet<String>) lldoc.get("owned_addresses"));
 		ll.setType(lldoc.get("type").toString());
-		ll.setEmail(lldoc.get("email").toString());
 		ll.setiD((ObjectId) lldoc.get("_id"));
 		return ll;
 	}

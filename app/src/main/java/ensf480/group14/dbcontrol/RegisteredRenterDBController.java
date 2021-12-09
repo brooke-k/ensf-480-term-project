@@ -126,14 +126,14 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     }
 
-    public void addUserToDatabase(String email, String password, String userType) {
+    public boolean addUserToDatabase(String email, String password, String userType) {
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("email", email);
         FindIterable<Document> findIter = usersCollection.find(searchQuery);
         if (findIter.first() != null) {
             System.out.println("A user with the email \"" + email + "\" already exists.");
             System.out.println("The user with email \"" + email + "\" was not added to the database.");
-            return;
+            return false;
         }
         MongoCursor<Document> resultCursor = findIter.iterator();
         if (resultCursor.hasNext()) { // Meaning the user already exists in the database and should
@@ -141,7 +141,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
             System.out.println("A user with the email \"" + email + "\" already exists.");
             System.out.println("The user with email \"" + email + "\" was not added to the database.");
             resultCursor.close();
-            return;
+            return false;
         }
         resultCursor.close();
         Document newUser = new Document("email", email);
@@ -149,7 +149,33 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         newUser.append("password", password).append("type", userType);
         usersCollection.insertOne(newUser);
         System.out.println("User with email \"" + email + "\" added to the database.");
+        return true;
+    }
 
+    public boolean addUserToDatabase(String email, String password, String userType, String firstName, String lastName) {
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("email", email);
+        FindIterable<Document> findIter = usersCollection.find(searchQuery);
+        if (findIter.first() != null) {
+            System.out.println("A user with the email \"" + email + "\" already exists.");
+            System.out.println("The user with email \"" + email + "\" was not added to the database.");
+            return false;
+        }
+        MongoCursor<Document> resultCursor = findIter.iterator();
+        if (resultCursor.hasNext()) { // Meaning the user already exists in the database and should
+                                      // not be added as a duplicate
+            System.out.println("A user with the email \"" + email + "\" already exists.");
+            System.out.println("The user with email \"" + email + "\" was not added to the database.");
+            resultCursor.close();
+            return false;
+        }
+        resultCursor.close();
+        Document newUser = new Document("email", email);
+        emailCollection.insertOne(newUser);
+        newUser.append("password", password).append("type", userType).append("first_name", firstName).append("last_name", lastName);
+        usersCollection.insertOne(newUser);
+        System.out.println("User with email \"" + email + "\" added to the database.");
+        return true;
     }
 
     public void addPreferenceFormToDatabase(PreferenceForm pf) {
@@ -288,11 +314,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         User user;
         String type = userDoc.get("type").toString();
         if (type.equals("registered_renter")) {
-            user = new RegisteredRenter();
+            user = RegisteredRenter.getRegisteredRenter(userDoc);
         } else if (type.equals("landlord")) {
-            user = new Landlord();
+            user = Landlord.getLandlord(userDoc);
         } else if (type.equals("manager")) {
-            user = new Manager();
+            user = Manager.getManager(userDoc);
         } else {
             user = null;
         }
@@ -301,12 +327,25 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     }
 
-    private boolean emailTaken(String email) {
+    public Document getUserByEmail(String email) {
         BasicDBObject query = new BasicDBObject();
-        query.append("email", email);
+        query.put("email", email);
         FindIterable<Document> docIter = usersCollection.find(query);
         MongoCursor<Document> iter = docIter.iterator();
-        if (iter.hasNext()) { // User with email does not exist
+        if (!iter.hasNext()) {
+            return null;
+        }
+
+        return iter.next();
+    }
+
+    private boolean emailTaken(String email) {
+        BasicDBObject searchQuery = new BasicDBObject();
+        searchQuery.put("email", email);
+        //usersCollection.
+        FindIterable<Document> findIter = usersCollection.find(new Document("email", email));
+        //FindIterable<Document> findIter = usersCollection.find(searchQuery);
+        if (findIter.first() != null) {
             return true;
         }
         return false;
@@ -315,19 +354,58 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     // Return new user if sign up successful,
     // Return null if email already taken
     public User signUp(String email, String password, String type) {
-        if (emailTaken(email)) {
+        if (emailTaken(email))       {
             return null;
         }
 
-        String type = userDoc.get("type").toString();
+        RegisteredRenter user1;
+        Landlord user2;
+        Manager user3;
         if (type.equals("registered_renter")) {
-            user = new RegisteredRenter();
+            user1 = new RegisteredRenter();
+           addUserToDatabase(email, password, type);
+            user1 = RegisteredRenter.getRegisteredRenter(getUserByEmail(email));
+            return user1;
         } else if (type.equals("landlord")) {
-            user = new Landlord();
+            //user2 = new Landlord();
+           addUserToDatabase(email, password, type);
+           user2 = Landlord.getLandlord(getUserByEmail(email));
+            return user2;
         } else if (type.equals("manager")) {
-            user = new Manager();
-        } else {
-            user = null;
+            user3 = new Manager();
+            addUserToDatabase(email, password, type);
+            user3 = Manager.getManager(getUserByEmail(email));
+            return user3;
+        }
+
+        return null;
+    }
+
+        // Return new user if sign up successful,
+    // Return null if email already taken
+    public User signUp(String email, String password, String type, String firstName, String lastName) {
+        if (emailTaken(email))       {
+            return null;
+        }
+
+        RegisteredRenter user1;
+        Landlord user2;
+        Manager user3;
+        if (type.equals("registered_renter")) {
+            user1 = new RegisteredRenter();
+           addUserToDatabase(email, password, type);
+            user1 = RegisteredRenter.getRegisteredRenter(getUserByEmail(email));
+            return user1;
+        } else if (type.equals("landlord")) {
+            //user2 = new Landlord();
+           addUserToDatabase(email, password, type, firstName, lastName);
+           user2 = Landlord.getLandlord(getUserByEmail(email));
+            return user2;
+        } else if (type.equals("manager")) {
+            user3 = new Manager();
+            addUserToDatabase(email, password, type);
+            user3 = Manager.getManager(getUserByEmail(email));
+            return user3;
         }
 
         return null;

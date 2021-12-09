@@ -32,6 +32,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ensf480.group14.eventListeners.Listener;
+
 /**
  * Is the form for paying for the application fee once submitted sucessfully
  */
@@ -42,7 +44,7 @@ public class PayInfoForm implements Form {
     String cardNumber;
     String cvvCode;
     String expiryDate;
-    private ActionListener listener;
+    private Listener listener;
 
     /**
      * Takes in nothing just creates a form using the fields which would be found in
@@ -52,7 +54,7 @@ public class PayInfoForm implements Form {
      * @returns: Builds the payment form.
      */
 
-    public JPanel display(ActionListener listen) { // should save payment into database
+    public JPanel display(Listener listen) { // should save payment into database
         listener = listen;
         JPanel panel = new JPanel();
 
@@ -61,12 +63,11 @@ public class PayInfoForm implements Form {
         panel.setBackground(Color.GRAY);
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel paymentLabel = new JLabel("Payment $" + " TODO");
+        JLabel paymentLabel = new JLabel("Payment $" + " TODO"); // need get price from db // TODO
         paymentLabel.setFont(new Font("Serif", Font.BOLD, 35));
         paymentLabel.setSize(40, 40);
         paymentLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(paymentLabel);
-
         JLabel loginLabel = new JLabel("Enter your Payment Information");
         loginLabel.setFont(new Font("Serif", Font.BOLD, 30));
         loginLabel.setSize(40, 40);
@@ -225,12 +226,12 @@ public class PayInfoForm implements Form {
     }
 
     // For testing
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        PayInfoForm payForm = new PayInfoForm();
-        frame.add(payForm.display());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     PayInfoForm payForm = new PayInfoForm();
+    //     frame.add(payForm.display());
+    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     frame.pack();
+    //     frame.setVisible(true);
+    // }
 }

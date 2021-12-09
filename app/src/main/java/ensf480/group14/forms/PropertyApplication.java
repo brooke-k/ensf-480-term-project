@@ -32,6 +32,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ensf480.group14.eventListeners.Listener;
+
 public class PropertyApplication implements Form {
     // private String userEmailAddress;
     // private String message;
@@ -43,7 +45,7 @@ public class PropertyApplication implements Form {
     String cityQuad;
     double price;
 
-    public JPanel display(ActionListener listener) {
+    public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
@@ -139,7 +141,7 @@ public class PropertyApplication implements Form {
         });
         panel.add(quad);
 
-        panel.add(new JLabel("Price"));
+        panel.add(new JLabel("Rent"));
         JTextField price = new JTextField();
         price.setSize(190, 20);
         price.setMaximumSize(new Dimension(190, 20));

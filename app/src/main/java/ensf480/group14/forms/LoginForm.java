@@ -24,13 +24,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import ensf480.group14.eventListeners.Listener;
@@ -57,7 +57,7 @@ public class LoginForm implements Form {
     /**
      * Takes in the listener for the LoginForm constructor
      */
-    public LoginForm(ActionListener listen) {
+    public LoginForm(Listener listen) {
         username = new String();
         password = new String();
         listener = listen;
@@ -66,7 +66,7 @@ public class LoginForm implements Form {
     /**
      * Unique login form listener is being returned here
      */
-    public static LoginForm getOnlyInstance(ActionListener loginListener) {
+    public static LoginForm getOnlyInstance(Listener loginListener) {
         if (onlyInstance == null) {
             onlyInstance = new LoginForm(loginListener);
         }
@@ -77,7 +77,7 @@ public class LoginForm implements Form {
      * @param: Takes in the action listener
      * @returns: Returns a form with the login options
      */
-    public JPanel display(ActionListener listener) {
+    public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
@@ -116,8 +116,9 @@ public class LoginForm implements Form {
         panel.add(usernameField);
 
         panel.add(new JLabel("Password"));
-        JTextField passwordField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
         passwordField.setMaximumSize(new Dimension(190, 20));
+        passwordField.setEchoChar('*');
         passwordField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
 
@@ -168,13 +169,13 @@ public class LoginForm implements Form {
 
     // For testing
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        LoginForm login = new LoginForm();
-        frame.add(login.display());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     LoginForm login = new LoginForm();
+    //     frame.add(login.display());
+    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     frame.pack();
+    //     frame.setVisible(true);
+    // }
 
 }

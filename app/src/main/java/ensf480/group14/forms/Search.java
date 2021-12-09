@@ -34,6 +34,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ensf480.group14.eventListeners.Listener;
+
 public class Search implements Form {
     private String buildingType;
     private int numOfBedrooms;
@@ -47,7 +49,7 @@ public class Search implements Form {
 
     }
 
-    public JPanel display(ActionListener listener) {
+    public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));

@@ -16,14 +16,20 @@
 package ensf480.group14;
 
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 import java.awt.CardLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import ensf480.group14.dbcontrol.DatabaseSubject;
 import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.forms.*;
+import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 import ensf480.group14.views.EditPropertyView;
 import ensf480.group14.views.EmailView;
@@ -70,11 +76,14 @@ public class Driver {
         mainPanel.add(preferenceForm.display(listener), "preferencesForm");
         mainPanel.add(searchForm.display(listener), "searchForm");
         mainPanel.add(propertyApp.display(listener), "propertyApplicationPage");
-        mainPanel.add(landlordSignUpForm.display(listener));
-        mainPanel.add(paymentForm.display(listener));
-        mainPanel.add(editProperty.display(listener.getProperty(), listener));
-        mainPanel.add(emailPage.display(listener.getEmail(), listen))
-        JPanel homePagePanel = homePage.display(listener.getUser(), listener);
+        mainPanel.add(landlordSignUpForm.display(listener), "landLordSignUpForm");
+        mainPanel.add(paymentForm.display(listener), "paymentForm");
+        JPanel editPropertyPanel = editProperty.display(listener.getProperty(), listener);
+        mainPanel.add(editPropertyPanel);
+
+        JPanel emailJPanel = emailPage.display(listener.getEmail(), listener);
+        mainPanel.add(emailJPanel, "emailPage");
+        JPanel homePagePanel = homePage.display(new RegisteredRenter(69), listener);
         mainPanel.add(homePagePanel, "homePage");
         JPanel searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
         mainPanel.add(searchResultsPanel, "searchResultsPage");
@@ -83,23 +92,58 @@ public class Driver {
         JPanel propertyPagePanel = propertyPage.display(listener.getProperty(), listener);
         mainPanel.add(propertyPagePanel, "propertyPage");
 
+        JMenuBar mb = new JMenuBar();
+        JMenu menu = new JMenu("HomePage");
+        menu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                listener.setPageToShow("HomePage");
+            }
+            @Override
+            public void menuDeselected(MenuEvent e) {
+            }
+            @Override
+            public void menuCanceled(MenuEvent e) {
+            }
+        });
         mainFrame.add(mainPanel);
         mainFrame.pack();
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
 
+        String page = "LoginPage";
+        String prevPage = "null";
         while (true) {
-            String page = listener.getPageToShow();
-            if (page.equals("SignUpPage")) {
-                cardLayout.show(mainPanel, "renterSignUpForm");
+            page = listener.getPageToShow();
+
+            if(prevPage.equals(page)){
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                continue;
+
             }
 
-            else if (page.equals("LoginPage")) {
+            prevPage = page;
+            if (page.equals("LoginPage")) {
                 cardLayout.show(mainPanel, "loginForm");
             }
 
+            else if (page.equals("SignUpPage")) {
+                cardLayout.show(mainPanel, "renterSignUpForm");
+            }
+
+            else if (page.equals("LandlordSignUpPage")){
+                cardLayout.show(mainPanel, "landLordSignUpForm");
+            }
+
             else if (page.equals("HomePage")) {
+                mb.add(menu);
+                mainFrame.setJMenuBar(mb);
                 mainPanel.remove(homePagePanel);
                 homePagePanel = homePage.display(listener.getUser(), listener);
                 mainPanel.add(homePagePanel, "homePage");
@@ -132,35 +176,47 @@ public class Driver {
             }
 
             else if (page.equals("PreferencePage")) {
-
+                cardLayout.show(mainPanel, "preferencesForm");
             }
 
             else if (page.equals("DatabasePage")) {
-
+                mainPanel.remove(searchResultsPanel);
+                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
+                mainPanel.add(searchResultsPanel, "searchResultsPage");
+                cardLayout.show(mainPanel, "searchResultsPage");
             }
 
             else if (page.equals("ManagePropertiesPage")) {
-
+                mainPanel.remove(searchResultsPanel);
+                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
+                mainPanel.add(searchResultsPanel, "searchResultsPage");
+                cardLayout.show(mainPanel, "searchResultsPage");
             }
 
             else if (page.equals("PropertyApplicationPage")) {
-
+                cardLayout.show(mainPanel, "propertyApplicationPage");
             }
 
             else if (page.equals("PayInfoPage")) {
-
+                cardLayout.show(mainPanel, "paymentForm");
             }
 
             else if (page.equals("ContactPage")) {
-
+                cardLayout.show(mainPanel, "contactForm");
             }
 
             else if (page.equals("EditPropertyPage")) {
-
+                mainPanel.remove(editPropertyPanel);
+                editPropertyPanel = editProperty.display(listener.getProperty(), listener);
+                mainPanel.add(editPropertyPanel);
+                cardLayout.show(mainPanel, "editPropertyPage");
             }
 
             else if (page.equals("EmailPage")) {
-
+                mainPanel.remove(emailJPanel);
+                emailJPanel = emailPage.display(listener.getEmail(), listener);
+                mainPanel.add(emailJPanel);
+                cardLayout.show(mainPanel, "emailPage");
             }
 
             else {

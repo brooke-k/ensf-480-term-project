@@ -15,6 +15,7 @@
 
 package ensf480.group14.views;
 
+import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.external.Property;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
@@ -55,7 +56,7 @@ public class PropertyPage {
         this.currentProp = currentProp;
     }
 
-    private ActionListener listener;
+    private Listener listener;
 
     public PropertyPage() {
 
@@ -65,12 +66,12 @@ public class PropertyPage {
      * Displays a property and all its details
      * has a button to contact owner
      */
-    public JPanel display(Property prop, ActionListener listen) {
+    public JPanel display(Property prop, Listener listen) {
 
         listener = listen;
         currentProp = prop;
         JPanel panel = new JPanel(new BorderLayout(50, 50));
-
+        if(prop == null) return panel;
         // Top panel (address)
         JLabel top = new JLabel(prop.getAddress() + " " + prop.getCityQuad(), SwingConstants.CENTER);
         top.setBackground(Color.GRAY);
@@ -102,13 +103,14 @@ public class PropertyPage {
         panel.add(details, BorderLayout.EAST);
         panel.setBackground(Color.GRAY);
 
+        ImageIcon imageIcon = null;
         // Left/Center Panel
         if (prop.getType().equals("house")) {
-            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("images/" + 1 + ".png"));
+            imageIcon = new ImageIcon(this.getClass().getResource("images/" + 1 + ".png"));
         } else if (prop.getType().equals("townhouse")) {
-            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("images/" + 3 + ".png"));
+            imageIcon = new ImageIcon(this.getClass().getResource("images/" + 3 + ".png"));
         } else if (prop.getType().equals("apartment")) {
-            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("images/" + 2 + ".png"));
+            imageIcon = new ImageIcon(this.getClass().getResource("images/" + 2 + ".png"));
         }
 
         Image image = imageIcon.getImage();
@@ -129,28 +131,28 @@ public class PropertyPage {
 
     // For testing
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        PropertyPage pp = new PropertyPage();
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     PropertyPage pp = new PropertyPage();
 
-        // LoginForm login = getOnlyInstance();
-        Property temp = new Property();
-        temp.setRentCost(500.1);
-        temp.setType("House");
-        temp.setAddress("111111");
-        temp.setCityQuad("NW");
-        temp.setNumBedrooms(2);
-        temp.setNumBathrooms(3.0);
-        temp.setFurnished(true);
+    //     // LoginForm login = getOnlyInstance();
+    //     Property temp = new Property();
+    //     temp.setRentCost(500.1);
+    //     temp.setType("House");
+    //     temp.setAddress("111111");
+    //     temp.setCityQuad("NW");
+    //     temp.setNumBedrooms(2);
+    //     temp.setNumBathrooms(3.0);
+    //     temp.setFurnished(true);
 
-        frame.add(pp.display(temp));
-        // frame.setBackground(Color.GRAY);
-        frame.setPreferredSize(new Dimension(900, 600));
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.pack();
-        frame.setVisible(true);
-    }
+    //     frame.add(pp.display(temp));
+    //     // frame.setBackground(Color.GRAY);
+    //     frame.setPreferredSize(new Dimension(900, 600));
+    //     frame.pack();
+    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     frame.setLocationRelativeTo(null);
+    //     frame.pack();
+    //     frame.setVisible(true);
+    // }
 
 }

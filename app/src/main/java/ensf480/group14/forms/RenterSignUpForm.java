@@ -32,12 +32,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ensf480.group14.eventListeners.Listener;
+
 public class RenterSignUpForm implements Form {
     private String username;
     private String password;
     private String confirmPassword;
 
-    public JPanel display(ActionListener listener) {
+    public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
@@ -98,7 +100,6 @@ public class RenterSignUpForm implements Form {
         panel.add(submitButton);
 
         JButton submitButton2 = new JButton("Sign up as landlord instead");
-        submitButton2.setFont(new Font("Serif", Font.BOLD, 10));
         submitButton2.addActionListener(listener);
         panel.add(submitButton2);
 

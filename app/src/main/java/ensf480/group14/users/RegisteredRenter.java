@@ -45,6 +45,14 @@ public class RegisteredRenter extends User {
 		prefs = null;
 		this.iD = new ObjectId();
 		type = "registered_renter";
+	}
+
+	public RegisteredRenter(int def) {
+		emailAddress = null;
+		dbcontroller = null;
+		prefs = null;
+		this.iD = new ObjectId();
+		type = "banana";
 
 	}
 
@@ -109,6 +117,25 @@ public class RegisteredRenter extends User {
 		prefForm.setRenterID(this.iD);
 		dbcontroller.addPreferenceFormToDatabase(prefForm);
 
+	}
+
+	public boolean owns(String address){
+		return false;
+	}
+
+	@Override
+	public void setFirstName(String firstName) {
+		
+	}
+
+	@Override
+	public void setLastName(String lastName) {
+		
+	}
+
+	@Override
+	public void setEmail(String emailAddress) {
+		
 	}
 
 }

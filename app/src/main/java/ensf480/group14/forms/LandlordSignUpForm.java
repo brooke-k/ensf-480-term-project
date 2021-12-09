@@ -32,6 +32,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ensf480.group14.eventListeners.Listener;
+
 /**
  * landlord form to signup as a landlord
  *
@@ -40,12 +42,14 @@ public class LandlordSignUpForm implements Form {
     private String username;
     private String password;
     private String confirmPassword;
+    private String firstName;
+    private String lastName;
 
     /**
      * displays form for land lord to sign up
      *
      */
-    public JPanel display(ActionListener listener) {
+    public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
@@ -89,7 +93,7 @@ public class LandlordSignUpForm implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setFirstname(firstNameField.getText());
+                setFirstName(firstNameField.getText());
             }
         });
         panel.add(firstNameField);
@@ -102,10 +106,10 @@ public class LandlordSignUpForm implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setLastname(lastNameField.getText());
+                setLastName(lastNameField.getText());
             }
         });
-        panel.add(lastnameField);
+        panel.add(lastNameField);
 
         panel.add(new JLabel("Password"));
         JTextField passwordField = new JTextField();
@@ -152,6 +156,23 @@ public class LandlordSignUpForm implements Form {
 
     };
 
+    
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -177,12 +198,12 @@ public class LandlordSignUpForm implements Form {
     }
 
     // For testing
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        LandlordSignUpForm form = new LandlordSignUpForm();
-        // frame.add(form.display());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     LandlordSignUpForm form = new LandlordSignUpForm();
+    //     // frame.add(form.display());
+    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     frame.pack();
+    //     frame.setVisible(true);
+    // }
 }

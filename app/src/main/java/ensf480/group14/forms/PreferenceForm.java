@@ -37,6 +37,8 @@ import javax.swing.JTextField;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import ensf480.group14.eventListeners.Listener;
+
 public class PreferenceForm implements Form {
 	private String buildingType;
 	private String cityQuadrant;
@@ -86,7 +88,7 @@ public class PreferenceForm implements Form {
 		return return_pf;
 	}
 
-	public JPanel display(ActionListener listener) {
+	public JPanel display(Listener listener) {
 		JPanel panel = new JPanel();
 
 		panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));

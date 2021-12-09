@@ -15,7 +15,9 @@
 
 package ensf480.group14.views;
 
+import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.external.Property;
+import ensf480.group14.users.Landlord;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
@@ -53,7 +55,7 @@ import org.bson.types.ObjectId;
  */
 public class SearchResult {
 
-    private ActionListener listener;
+    private Listener listener;
 
     /**
      * Default constructor
@@ -65,7 +67,7 @@ public class SearchResult {
     /**
      * The listeners need to be defined in the constructor
      */
-    public SearchResult(ActionListener listen) {
+    public SearchResult(Listener listen) {
         listener = listen;
     }
 
@@ -78,6 +80,9 @@ public class SearchResult {
     public JPanel display(User user, ArrayList<Property> props) {
 
         JPanel master = new JPanel(new BorderLayout());
+        DefaultTableModel model = null;
+        if(user == null) return master;
+
         if (!user.getType().equals("manager")) {
             String[] columns = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
                     "Number of Bathrooms",
@@ -98,32 +103,35 @@ public class SearchResult {
                     properties[i][6] = (p.isFurnished()) ? "Furnished" : "Unfurnished";
                     i++;
                 }
+                  model = new DefaultTableModel(properties, columns);
             }
 
             else if (user.getType().equals("manager")) {
-                String[] columns = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
+                String[] columns2 = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
                         "Number of Bathrooms",
                         "Furnished Status", "Visibility" };
                 if (!props.isEmpty()) {
-                    String[][] properties = new String[props.size()][8];
+                    String[][] properties2 = new String[props.size()][8];
                     int i = 0;
                     for (Property p : props) {
                         // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
                         String s = "$";
                         s += String.format("%.02f", p.getRentCost());
-                        properties[i][0] = s;
-                        properties[i][1] = p.getAddress();
-                        properties[i][2] = p.getCityQuad();
-                        properties[i][3] = p.getType();
-                        properties[i][4] = p.getNumBedrooms().toString();
-                        properties[i][5] = p.getNumBathrooms().toString();
-                        properties[i][6] = (p.isFurnished()) ? "Furnished" : "Unfurnished";
-                        properties[i][7] = (p.isVisible()) ? "Visible" : "Unlisted";
+                        properties2[i][0] = s;
+                        properties2[i][1] = p.getAddress();
+                        properties2[i][2] = p.getCityQuad();
+                        properties2[i][3] = p.getType();
+                        properties2[i][4] = p.getNumBedrooms().toString();
+                        properties2[i][5] = p.getNumBathrooms().toString();
+                        properties2[i][6] = (p.isFurnished()) ? "Furnished" : "Unfurnished";
+                        properties2[i][7] = (p.isVisibleToRenters()) ? "Visible" : "Unlisted";
                         i++;
                     }
+                    model = new DefaultTableModel(properties2, columns2);
                 }
+                
             }
-            DefaultTableModel model = new DefaultTableModel(properties, columns);
+           
 
             JTable jTable = new JTable(model) {
                 public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -171,34 +179,34 @@ public class SearchResult {
 
     // For testing
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        SearchResult s = new SearchResult();
-        ObjectId id = new ObjectId();
-        User user = new RegisteredRenter("an email", id, "registered_renter");
-        ArrayList<Property> propertyTest = new ArrayList<Property>();
-        for (int i = 0; i < 100; i++) {
-            Property temp = new Property();
-            temp.setRentCost((i + 1) * 500.1);
-            temp.setAddress("111111" + i);
-            temp.setCityQuad("NW");
-            temp.setNumBedrooms(2);
-            temp.setNumBathrooms(3.0);
-            temp.setFurnished(true);
-            propertyTest.add(temp);
-        }
-        JPanel p = new JPanel();
-        p = s.display(user, propertyTest);
-        // JScrollPane sp = new JScrollPane(p);
-        // frame.setContentPane(sp);
-        frame.add(p);
-        frame.setPreferredSize(new Dimension(900, 600));
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     SearchResult s = new SearchResult();
+    //     ObjectId id = new ObjectId();
+    //     User user = new RegisteredRenter("an email", id, "registered_renter");
+    //     ArrayList<Property> propertyTest = new ArrayList<Property>();
+    //     for (int i = 0; i < 100; i++) {
+    //         Property temp = new Property();
+    //         temp.setRentCost((i + 1) * 500.1);
+    //         temp.setAddress("111111" + i);
+    //         temp.setCityQuad("NW");
+    //         temp.setNumBedrooms(2);
+    //         temp.setNumBathrooms(3.0);
+    //         temp.setFurnished(true);
+    //         propertyTest.add(temp);
+    //     }
+    //     JPanel p = new JPanel();
+    //     p = s.display(user, propertyTest);
+    //     // JScrollPane sp = new JScrollPane(p);
+    //     // frame.setContentPane(sp);
+    //     frame.add(p);
+    //     frame.setPreferredSize(new Dimension(900, 600));
 
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    //     frame.pack();
+    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     frame.setLocationRelativeTo(null);
+    //     frame.setVisible(true);
 
-    }
+    // }
 
 }

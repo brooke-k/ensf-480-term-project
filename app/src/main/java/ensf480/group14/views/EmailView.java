@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.external.Email;
 
 /**
@@ -37,7 +38,7 @@ import ensf480.group14.external.Email;
  */
 public class EmailView {
 
-    private ActionListener listener;
+    private Listener listener;
 
     public EmailView() {
 
@@ -47,10 +48,13 @@ public class EmailView {
      * displays a single email with sender subject body
      *
      */
-    public JPanel display(Email email, ActionListener listen) {
-
+    public JPanel display(Email email, Listener listen) {
+        
         listener = listen;
         JPanel panel = new JPanel(new BorderLayout(50, 50));
+        if (email == null) {
+          return panel;  
+        } 
         JPanel header = new JPanel(new GridLayout(0, 1));
         // Top panel (sender)
         JLabel top = new JLabel(email.getSender(), SwingConstants.CENTER);

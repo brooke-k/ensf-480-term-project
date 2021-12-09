@@ -51,16 +51,17 @@ public class EditPropertyView {
     String cityQuad;
     double price;
 
-    private ActionListener listener;
+    private Listener listener;
 
     /**
      *
      * basically preference form except we overwrite an existing property
      */
-    public JPanel display(Property prop, ActionListener listen) {
-
+    public JPanel display(Property prop, Listener listen) {
+        
         listener = listen;
         JPanel panel = new JPanel();
+        if(prop == null) return panel;
         Dimension expectDimension = new Dimension(300, 300);
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -172,7 +173,7 @@ public class EditPropertyView {
         JButton saveButton = new JButton("Save Changes");
         saveButton.addActionListener(listener);
         panel.add(saveButton);
-
+        
         return panel;
     }
 

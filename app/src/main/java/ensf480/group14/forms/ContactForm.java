@@ -31,6 +31,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import ensf480.group14.eventListeners.Listener;
+
 import ensf480.group14.external.Email;
 
 /**
@@ -46,7 +48,7 @@ public class ContactForm implements Form {
      * display form to contact the landlord of the property you are viewing
      *
      */
-    public JPanel display(ActionListener listener) {
+    public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
 
