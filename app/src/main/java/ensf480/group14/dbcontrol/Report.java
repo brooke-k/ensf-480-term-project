@@ -36,10 +36,10 @@ public class Report {
     private int numPropertiesRented;
     private int numPropertiesActive;
 
-    File reportFile; // Can be changed in the future,
-                     // used for testing purposes here\
-                     // Output file for the report to go to.
-    BufferedWriter bufReportWriter;
+    static File reportFile; // Can be changed in the future,
+    // used for testing purposes here\
+    // Output file for the report to go to.
+    static BufferedWriter bufReportWriter;
 
     // private ArrayList<Property> propertiesRented;
     // Currently throws an error because the Property class has not been made yet.
@@ -51,7 +51,29 @@ public class Report {
         generateReport(controller);
     }
 
-    public String generateReport(RegisteredRenterDBController dbControl) throws IOException {
+    public static String generateReport(RegisteredRenterDBController dbControl) throws IOException {
+
+        reportFile = new File("./src/main/outputs/report.txt");
+        if (reportFile.exists()) {
+            reportFile.delete(); // Done to clear any older report copies,
+            // for testing
+            reportFile.createNewFile();
+        } else {
+            reportFile.createNewFile();
+        }
+
+        bufReportWriter = new BufferedWriter(new FileWriter(reportFile));
+
+        String reportString; // String-version of report to write
+        MongoCollection< propertyCollection = dbControl.getAllProperties();
+
+        FindIterable<Document> docIterator = propertyCollection.find();
+        Iterator collectionIter = docIterator.iterator();
+        while (collectionIter.hasNext()) {
+            bufReportWriter.write(collectionIter.next().toString());
+        }
+        bufReportWriter.close();
+
         return null;
         /*
          * reportFile = new File("./src/main/outputs/report.txt");

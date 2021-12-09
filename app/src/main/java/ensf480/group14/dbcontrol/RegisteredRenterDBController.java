@@ -44,18 +44,12 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     // calling function or class to mark it as "closed" if an exception
     // regarding the database is thrown.
 
-    /*
-     * private ArrayList<RegisteredRenter> registeredRenters;
-     * private ArrayList<Manager> managers;
-     * private ArrayList<Landlord> landlords;
-     */
-
     protected static MongoClient mongoClient;
     protected static MongoDatabase dbMongo;
-    protected static MongoCollection usersCollection;
-    protected static MongoCollection propertiesCollection;
-    protected static MongoCollection emailCollection;
-    protected static MongoCollection preferenceCollection;
+    protected static MongoCollection<Document> usersCollection;
+    protected static MongoCollection<Document> propertiesCollection;
+    protected static MongoCollection<Document> emailCollection;
+    protected static MongoCollection<Document> preferenceCollection;
 
     private ArrayList<DatabaseObserver> observers;
 

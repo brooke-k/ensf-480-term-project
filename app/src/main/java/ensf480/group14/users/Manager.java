@@ -23,7 +23,6 @@ import ensf480.group14.billcontrol.BillingSystem;
 import ensf480.group14.dbcontrol.ManagerDBController;
 
 public class Manager extends User {
-    private String userName;
     private ObjectId iD;
     private String email;
 
@@ -31,75 +30,43 @@ public class Manager extends User {
 
     public Manager() {
         super();
-        userName = null;
         email = null;
         type = "manager";
+        iD = new ObjectId();
+        dbController = new ManagerDBController();
     }
 
     // Constructor
-    public Manager(String userName, String ManagerID, String gender, Date birthday, String status) {
+    public Manager(String email, ObjectId iD) {
         super();
-        this.userName = userName;
-        this.ManagerID = ManagerID;
-        this.gender = gender;
-        this.birthday = birthday;
-        this.status = status;
+        this.email = email;
+        this.iD = iD;
+        this.type = "manager";
+        dbController = new ManagerDBController();
     }
+
     // Start of
     // getters and setters
-
-    public String getFullName() {
-        return this.userName;
-    }
-
-    public void setFullName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getGender() {
-        return this.gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Date getBirthday() {
-        return this.birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public void generateReport() {
         report = new Report();
         report.Report();
     }
 
-    public void changeFee() {
-        double feeIncrement = 50.10;
-        double newFee = getFeeAmount();
-        newFee += feeIncrement;
-        setFeeAmount(newFee);
+    public ObjectId getiD() {
+        return iD;
     }
 
-    public void changeDuration() {
-      String newDuration "Extra 10 Days";
-      setPeriodDuration(newDuration);
-      }
+    public void setiD(ObjectId iD) {
+        this.iD = iD;
+    }
 
-    public void changeStatus() {
-        String newStatus = "Listed";
-        setStatus(newStatus);
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
