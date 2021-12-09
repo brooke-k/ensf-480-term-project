@@ -37,29 +37,30 @@ public class Report {
     }
 
     public String generateReport(RegisteredRenterDBController dbControl) throws IOException {
-
-        reportFile = new File("./src/main/outputs/report.txt");
-        if (reportFile.exists()) {
-            reportFile.delete(); // Done to clear any older report copies,
-            // for testing
-            reportFile.createNewFile();
-        } else {
-            reportFile.createNewFile();
-        }
-
-        bufReportWriter = new BufferedWriter(new FileWriter(reportFile));
-
-        String reportString; // String-version of report to write
-        MongoCollection propertyCollection = dbControl.getAllProperties();
-
-        FindIterable<Document> docIterator = propertyCollection.find();
-        Iterator collectionIter = docIterator.iterator();
-        while (collectionIter.hasNext()) {
-            bufReportWriter.write(collectionIter.next().toString());
-        }
-        bufReportWriter.close();
-
         return null;
+        /*
+         * reportFile = new File("./src/main/outputs/report.txt");
+         * if (reportFile.exists()) {
+         * reportFile.delete(); // Done to clear any older report copies,
+         * // for testing
+         * reportFile.createNewFile();
+         * } else {
+         * reportFile.createNewFile();
+         * }
+         *
+         * bufReportWriter = new BufferedWriter(new FileWriter(reportFile));
+         *
+         * String reportString; // String-version of report to write
+         * MongoCollection propertyCollection = dbControl.getAllProperties();
+         *
+         * FindIterable<Document> docIterator = propertyCollection.find();
+         * Iterator collectionIter = docIterator.iterator();
+         * while (collectionIter.hasNext()) {
+         * bufReportWriter.write(collectionIter.next().toString());
+         * }
+         * bufReportWriter.close();
+         */
+
     }
 
     public Calendar getDateRangeStart() {
