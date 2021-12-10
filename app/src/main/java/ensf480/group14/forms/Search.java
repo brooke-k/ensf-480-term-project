@@ -63,7 +63,7 @@ public class Search implements Form {
         panel.add(loginLabel);
 
         panel.add(new JLabel("Building Type"));
-        String buildingTypes[] = { "House", "Apartment", "TownHouse" };
+        String buildingTypes[] = { "","House", "Apartment", "TownHouse" };
         JComboBox buildingTypeField = new JComboBox<String>(buildingTypes);
         buildingTypeField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
@@ -116,14 +116,14 @@ public class Search implements Form {
         panel.add(furnishedField);
 
         panel.add(new JLabel("City Quadrant"));
-        String cityQuadrants[] = { "NW", "NE", "SW", "SE" };
+        String cityQuadrants[] = {"", "NW", "NE", "SW", "SE" };
         JComboBox cityQuadrantField = new JComboBox<String>(cityQuadrants);
         cityQuadrantField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
             }
 
             public void focusLost(FocusEvent e) {
-                setCityQuadrant((cityQuadrantField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
+                setCityQuadrant((cityQuadrantField.getItemAt(cityQuadrantField.getSelectedIndex())).toString());
             }
         });
         panel.add(cityQuadrantField);

@@ -16,6 +16,7 @@
 package ensf480.group14.users;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -145,6 +146,10 @@ public class RegisteredRenter extends User {
 	@Override
 	public ObjectId getiD() {
 		return super.getId();
+	}
+
+	@Override
+	public void setOwnedAddresses(HashSet<String> address) {
 	}
 
 }

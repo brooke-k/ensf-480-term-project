@@ -129,7 +129,7 @@ public class Property {
 		propDoc.append("city_quad", prop.getCityQuad());
 		propDoc.append("rental_state", prop.getRentalState());
 		propDoc.append("landlord_name", prop.getLandlordName());
-		propDoc.append("landlord_email", prop.getLandlordName());
+		propDoc.append("landlord_email", prop.getLandlordEmail());
 		propDoc.append("date_last_listed", prop.getDateLastListed());
 		propDoc.append("date_rented", prop.getDateRented());
 		propDoc.append("bathrooms", prop.getNumBathrooms());

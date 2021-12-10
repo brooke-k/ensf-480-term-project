@@ -17,6 +17,7 @@ package ensf480.group14.users;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashSet;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -122,6 +123,10 @@ public class Manager extends User {
     @Override
     public String getLastName() {
         return "";
+    }
+
+    @Override
+    public void setOwnedAddresses(HashSet<String> address) {
     }
 
 }

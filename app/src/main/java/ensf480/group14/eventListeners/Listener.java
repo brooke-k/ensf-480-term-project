@@ -171,6 +171,7 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Manage Properties")) {
+            user.setOwnedAddresses(LandlordDBControl.getLandlordsAddresses(user.getId()));
             getLandlordsProperties();
             setPageToShow("ManagePropertiesPage");
         }
@@ -210,10 +211,11 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Send")) {
-            RegisteredRenterDBController.sendEmail(email);
+
+            Email em = new Email(contactForm.getMessage(),contactForm.getSenderEmailAddress(), property.getAddress());
+            RegisteredRenterDBController.sendEmail(em);
             JOptionPane.showMessageDialog(frame, "Message Sent.");
             setPageToShow("SearchResultsPage");
-            // Send Contact Form
         }
 
         else if (e.getActionCommand().equals("Save Preference")) {
@@ -231,6 +233,7 @@ public class Listener implements ActionListener {
             prop.setLandlordName(user.getFirstName() + " " + user.getLastName());
             prop.setLandlordID(user.getiD());
 
+            property = prop;
             landlordController.addPropertyToDatabase(prop);
             JOptionPane.showMessageDialog(frame, "Property Application Submitted, please pay fee to list now.");
             setPageToShow("PayInfoPage");

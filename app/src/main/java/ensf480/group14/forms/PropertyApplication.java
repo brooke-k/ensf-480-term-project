@@ -143,18 +143,17 @@ public class PropertyApplication implements Form {
         panel.add(furnished);
 
         panel.add(new JLabel("City Quadrant"));
-        JTextField quad = new JTextField();
-        quad.setSize(190, 20);
-        quad.setMaximumSize(new Dimension(190, 20));
-        quad.addFocusListener(new FocusListener() {
+        String cityQuadrants[] = {"", "NW", "NE", "SW", "SE" };
+        JComboBox cityQuadrantField = new JComboBox<String>(cityQuadrants);
+        cityQuadrantField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
             }
 
             public void focusLost(FocusEvent e) {
-                setCityQuad(quad.getText());
+                setCityQuad((cityQuadrantField.getItemAt(cityQuadrantField.getSelectedIndex())).toString());
             }
         });
-        panel.add(quad);
+        panel.add(cityQuadrantField);
 
         panel.add(new JLabel("Rent"));
         JTextField price = new JTextField();

@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -218,7 +219,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     // return null;
     // }
 
-    public ArrayList<Property> getPropertiesRentedIn(String startingDate,
+    public ArrayList<Property> getPropertiesIn(String startingDate,
             String endingDate) {
         return null;
     }
@@ -237,17 +238,49 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     // Returns null if no properties found.
     public ArrayList<Property> searchProperties(Search searchForm) {
-        return null;
+        BasicDBObject criteria = new BasicDBObject();
+        if(searchForm.getBuildingType() != null && !searchForm.getBuildingType().equals("")){
+            criteria.append("type", searchForm.getBuildingType());
+            
+        }
+        if(searchForm.getNumOfBedrooms() != 0){
+            criteria.append("bedroom", searchForm.getNumOfBedrooms());
+        }
+        if(searchForm.getNumOfBathrooms() != 0){
+            criteria.append("bathroom", searchForm.getNumOfBedrooms());
+        }
+        if(searchForm.getCityQuadrant() != null  && !searchForm.getBuildingType().equals("")){
+            criteria.append("city_quad", searchForm.getCityQuadrant());
+        }
+        if(searchForm.getMinPrice() != 0){
+            criteria.append("rent_cost", new Document("$gte", searchForm.getMinPrice()));
+        }
+        if(searchForm.getMaxPrice() != 0){
+            criteria.append("rent_cost", new Document("$lte", searchForm.getMaxPrice()));
+        }
+        
+        criteria.append("visible_to_renters", true);
+        criteria.append("furnished", searchForm.isFurnished());
+
+
+        ArrayList<Property> resultArray = new ArrayList<Property>(0);
+        FindIterable<Document> findIter = propertiesCollection.find(criteria);
+        MongoCursor<Document> resultCursor = findIter.iterator();
+        while (resultCursor.hasNext()) {
+            resultArray.add(Property.getProperty(resultCursor.next()));   
+        }
+
+        return resultArray;
     }
 
     public static void sendEmail(Email email) {
-        BasicDBObject dbo = new BasicDBObject();
-        dbo.put("_id", email.getId());
-        FindIterable<Document> docIter = emailCollection.find(dbo);
-        if (docIter != null) { // Email already exists
-            return;
-        }
-        emailCollection.insertOne(Email.toDocument(email));
+        Document newEmail = new Document("read", Boolean.FALSE);
+        newEmail.put("dest_addr", email.getRecipient());
+        newEmail.put("src_addr", email.getSender());
+        newEmail.put("body", email.getBody());
+        newEmail.put("subject", email.getSubject());
+        newEmail.put("_id", new ObjectId());
+        emailCollection.insertOne(newEmail);
     }
 
     public static boolean userHasEmails(String userEmail) {

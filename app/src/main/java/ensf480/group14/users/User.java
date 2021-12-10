@@ -15,6 +15,8 @@
 
 package ensf480.group14.users;
 
+import java.util.HashSet;
+
 import org.bson.types.ObjectId;
 
 public abstract class User {
@@ -59,5 +61,7 @@ public abstract class User {
 	abstract public String getLastName();
 
 	abstract public ObjectId getiD();
+	
+	abstract public void setOwnedAddresses(HashSet<String> address);
 
 };

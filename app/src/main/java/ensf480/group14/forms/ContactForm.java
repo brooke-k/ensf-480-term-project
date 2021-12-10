@@ -19,6 +19,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -41,8 +43,8 @@ import ensf480.group14.external.Email;
  */
 
 public class ContactForm implements Form {
-    // private String userEmailAddress;
-    // private String message;
+    private String sendEmailAddress;
+    private String message;
 
     /**
      * display form to contact the landlord of the property you are viewing
@@ -74,6 +76,15 @@ public class ContactForm implements Form {
         userEmail.setPreferredSize(new Dimension(190, 27));
         userEmail.setMaximumSize(userEmail.getPreferredSize());
         panel.add(userEmail);
+        userEmail.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+
+            }
+
+            public void focusLost(FocusEvent e) {
+            setSenderEmailAddress(userEmail.getText());
+            }
+        });
 
         JLabel bodyLabel = new JLabel("Body");
         bodyLabel.setAlignmentX(16);
@@ -84,6 +95,15 @@ public class ContactForm implements Form {
         emailBody.setColumns(300);
         emailBody.setLineWrap(true);
         panel.add(emailBody);
+        emailBody.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+
+            }
+
+            public void focusLost(FocusEvent e) {
+            setMessage(emailBody.getText());
+            }
+        });
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
@@ -101,6 +121,22 @@ public class ContactForm implements Form {
     Email parseEmail(String body, String sendAddr) {
         Email mail = new Email(body, sendAddr);
         return mail;
+    }
+    
+    public String getSenderEmailAddress() {
+        return sendEmailAddress;
+    }
+
+    public void setSenderEmailAddress(String senderEmail) {
+        this.sendEmailAddress = senderEmail;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     // For testing
