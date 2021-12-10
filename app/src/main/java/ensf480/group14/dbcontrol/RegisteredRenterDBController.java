@@ -206,7 +206,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         newPreference.append("bedrooms", pf.getNumOfBathrooms());
         newPreference.append("bathrooms", pf.getNumOfBathrooms());
         newPreference.append("furnished", (pf.isFurnished()));
-        newPreference.append("city_quadrant", pf.getCityQuadrant());
+        newPreference.append("city_quad", pf.getCityQuadrant());
         newPreference.append("max_price", pf.getMaxPrice());
         newPreference.append("min_price", pf.getMinPrice());
         newPreference.append("renter_id", pf.getRenterID());
@@ -249,18 +249,15 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         if(searchForm.getNumOfBathrooms() != 0){
             criteria.append("bathroom", searchForm.getNumOfBedrooms());
         }
-        if(searchForm.getCityQuadrant() != null  && !searchForm.getBuildingType().equals("")){
+        if(searchForm.getCityQuadrant() != null  && !searchForm.getCityQuadrant().equals("")){
             criteria.append("city_quad", searchForm.getCityQuadrant());
-        }
-        if(searchForm.getMinPrice() != 0){
-            criteria.append("rent_cost", new Document("$gte", searchForm.getMinPrice()));
-        }
-        if(searchForm.getMaxPrice() != 0){
-            criteria.append("rent_cost", new Document("$lte", searchForm.getMaxPrice()));
         }
         
         criteria.append("visible_to_renters", true);
-        criteria.append("furnished", searchForm.isFurnished());
+
+        if(!searchForm.getFurnished().equals("")){
+            criteria.append("furnished", searchForm.getFurnished().equals("Furnished") ? true : false);   
+        }
 
 
         ArrayList<Property> resultArray = new ArrayList<Property>(0);
@@ -269,6 +266,15 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         while (resultCursor.hasNext()) {
             resultArray.add(Property.getProperty(resultCursor.next()));   
         }
+
+        if(searchForm.getMaxPrice() > 0){
+            resultArray.removeIf(s -> s.getRentCost() > searchForm.getMaxPrice());
+        }
+        resultArray.removeIf(s -> s.getRentCost() < searchForm.getMinPrice());
+
+        // for(int i = 0;i<resultArray.size();i++){
+        //     if(re)
+        // }
 
         return resultArray;
     }

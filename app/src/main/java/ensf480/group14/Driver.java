@@ -70,7 +70,8 @@ public class Driver {
         mainPanel.add(signUp.display(listener), "renterSignUpForm");
         mainPanel.add(contact.display(listener), "contactForm");
         mainPanel.add(preferenceForm.display(listener), "preferencesForm");
-        mainPanel.add(searchForm.display(listener), "searchForm");
+        JPanel searchFormPanel = searchForm.display(listener);
+        mainPanel.add(searchFormPanel, "searchForm");
         mainPanel.add(propertyApp.display(listener), "propertyApplicationPage");
         mainPanel.add(landlordSignUpForm.display(listener), "landLordSignUpForm");
         mainPanel.add(paymentForm.display(listener), "paymentForm");
@@ -149,6 +150,9 @@ public class Driver {
             }
 
             else if (page.equals("SearchPage")) {
+                mainPanel.remove(searchFormPanel);
+                searchFormPanel = searchForm.display(listener);
+                mainPanel.add(searchFormPanel, "searchForm");
                 cardLayout.show(mainPanel, "searchForm");
             }
 
@@ -217,9 +221,6 @@ public class Driver {
                 cardLayout.show(mainPanel, "emailPage");
             }
 
-            else {
-                cardLayout.show(mainPanel, "searchForm");
-            }
 
             listener.setRefresh(false);
         }

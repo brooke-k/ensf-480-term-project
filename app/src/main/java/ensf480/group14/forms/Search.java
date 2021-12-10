@@ -40,7 +40,7 @@ public class Search implements Form {
     private String buildingType;
     private int numOfBedrooms;
     private double numOfBathrooms;
-    private boolean furnished;
+    private String furnished;
     private String cityQuadrant;
     private double maxPrice;
     private double minPrice;
@@ -50,6 +50,13 @@ public class Search implements Form {
     }
 
     public JPanel display(Listener listener) {
+        buildingType = "";
+        numOfBedrooms = 0;
+        numOfBathrooms = 0;
+        furnished = "";
+        cityQuadrant = "";
+        maxPrice  = 0;
+        minPrice = 0;
         JPanel panel = new JPanel();
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -103,14 +110,15 @@ public class Search implements Form {
         });
         panel.add(numOfBathroomsField);
 
-        JCheckBox furnishedField = new JCheckBox("Furnished");
-        furnishedField.setBackground(Color.GRAY);
+        panel.add(new JLabel("Furnishing"));
+        String furnishedStates[] = {"", "Unfurnished", "Furnished"};
+        JComboBox furnishedField = new JComboBox<String>(furnishedStates);
         furnishedField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
             }
 
             public void focusLost(FocusEvent e) {
-                setFurnished(furnishedField.isSelected());
+                setFurnished(furnishedField.getItemAt(furnishedField.getSelectedIndex()).toString());
             }
         });
         panel.add(furnishedField);
@@ -189,11 +197,11 @@ public class Search implements Form {
         this.numOfBathrooms = numOfBathrooms;
     }
 
-    public boolean isFurnished() {
+    public String getFurnished() {
         return furnished;
     }
 
-    public void setFurnished(boolean furnished) {
+    public void setFurnished(String furnished) {
         this.furnished = furnished;
     }
 

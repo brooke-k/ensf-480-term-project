@@ -64,7 +64,7 @@ public class PreferenceForm implements Form {
 	public static Document toDocument(PreferenceForm preferenceForm) {
 		Document prefDoc = new Document("_id", preferenceForm.getID());
 		prefDoc.append("building_type", preferenceForm.getBuildingType());
-		prefDoc.append("city_quadrant", preferenceForm.getCityQuadrant());
+		prefDoc.append("city_quad", preferenceForm.getCityQuadrant());
 		prefDoc.append("bedrooms", preferenceForm.getNumOfBedrooms());
 		prefDoc.append("bathrooms", preferenceForm.getNumOfBathrooms());
 		prefDoc.append("furnished", preferenceForm.isFurnished());
@@ -78,7 +78,7 @@ public class PreferenceForm implements Form {
 		PreferenceForm return_pf = new PreferenceForm();
 		return_pf.buildingType = pfDoc.get("building_type", String.class);
 		return_pf.iD = pfDoc.get("_id", ObjectId.class);
-		return_pf.cityQuadrant = pfDoc.get("city_quadrant", String.class);
+		return_pf.cityQuadrant = pfDoc.get("city_quad", String.class);
 		return_pf.numOfBathrooms = pfDoc.get("bedrooms", Double.class);
 		return_pf.numOfBedrooms = pfDoc.get("bathrooms", Integer.class);
 		return_pf.furnished = pfDoc.get("furnished", Boolean.class);
