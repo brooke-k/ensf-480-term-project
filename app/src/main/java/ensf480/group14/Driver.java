@@ -31,12 +31,8 @@ import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.forms.*;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
-import ensf480.group14.views.EditPropertyView;
-import ensf480.group14.views.EmailView;
-import ensf480.group14.views.HomePage;
-import ensf480.group14.views.Inbox;
-import ensf480.group14.views.PropertyPage;
-import ensf480.group14.views.SearchResult;
+
+import ensf480.group14.views.*;
 
 import java.awt.event.ActionEvent;
 
@@ -66,7 +62,7 @@ public class Driver {
         EmailView emailPage = new EmailView();
 
         Listener listener = new Listener(signUp, contact, preferenceForm, searchForm, propertyApp, inbox, homePage,
-                propertyPage, mainFrame, landlordSignUpForm, paymentForm);
+                propertyPage, mainFrame, landlordSignUpForm, paymentForm, editProperty);
 
         LoginForm loginForm = LoginForm.getOnlyInstance(listener);
 

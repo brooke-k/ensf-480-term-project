@@ -54,6 +54,7 @@ public class Property {
 		this.visibleToRenters = property.visibleToRenters;
 		this.type = property.type;
 		this.landlordID = property.landlordID;
+		this.furnished = property.furnished;
 	}
 
 	public Property() {
@@ -70,6 +71,7 @@ public class Property {
 		landlordEmail = null;
 		landlordID = null;
 		type = null;
+		furnished = false;
 
 		rentCost = null;
 		rented = false;
@@ -114,6 +116,7 @@ public class Property {
 		returnProp.rentCost = propertyDoc.get("rent_cost", Double.class);
 		returnProp.rented = propertyDoc.get("rented", Boolean.class);
 		returnProp.visibleToRenters = propertyDoc.get("visible_to_renters", Boolean.class);
+		returnProp.furnished = propertyDoc.get("furnished", Boolean.class);
 		return returnProp;
 
 	}
@@ -135,6 +138,7 @@ public class Property {
 		propDoc.append("rented", prop.isRented());
 		propDoc.append("visible_to_renters", prop.isVisibleToRenters());
 		propDoc.append("type", prop.getType());
+		propDoc.append("furnished", prop.isFurnished());
 		propDoc.append("landlord_id", prop.getLandlordID());
 		return propDoc;
 	}

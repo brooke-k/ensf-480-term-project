@@ -20,6 +20,8 @@ import org.bson.types.ObjectId;
 public abstract class User {
 	protected String type;
 
+	protected ObjectId iD;
+
 	protected void setType(String type) {
 		this.type = type;
 	}
@@ -30,6 +32,14 @@ public abstract class User {
 
 	User() {
 		type = "banana : )";
+	}
+
+	public void setId(ObjectId newId) {
+		iD = newId;
+	}
+
+	public ObjectId getId() {
+		return iD;
 	}
 
 	abstract public boolean owns(String address);
@@ -47,5 +57,7 @@ public abstract class User {
 	abstract public String getFirstName();
 
 	abstract public String getLastName();
+
+	abstract public ObjectId getiD();
 
 };

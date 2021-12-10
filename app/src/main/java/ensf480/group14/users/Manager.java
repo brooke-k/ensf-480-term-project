@@ -25,7 +25,6 @@ import ensf480.group14.dbcontrol.ManagerDBController;
 import ensf480.group14.dbcontrol.Report;
 
 public class Manager extends User {
-    private ObjectId iD;
     private String email;
 
     private ManagerDBController dbController;
@@ -73,12 +72,14 @@ public class Manager extends User {
         }
     }
 
-    public ObjectId getiD() {
-        return iD;
+    @Override
+    public void setiD(ObjectId iD) {
+        super.setId(iD);
     }
 
-    public void setiD(ObjectId iD) {
-        this.iD = iD;
+    @Override
+    public ObjectId getiD() {
+        return super.getId();
     }
 
     public String getEmail() {

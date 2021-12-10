@@ -81,13 +81,15 @@ public class SearchResult {
         if (user == null)
             return master;
 
-        if (props.isEmpty()) {
+        if (props == null || props.isEmpty()) {
             JLabel noResults = new JLabel("NO RESULTS :(");
             noResults.setBackground(Color.GRAY);
             noResults.setForeground(Color.RED);
             noResults.setFont(new Font("Serif", Font.BOLD, 65));
             master.add(noResults);
+            return master;
         }
+
         if (!user.getType().equals("manager") && !user.getType().equals("landlord")) {
             String[] columns = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
                     "Number of Bathrooms",
@@ -110,109 +112,108 @@ public class SearchResult {
                 }
                 model = new DefaultTableModel(properties, columns);
             }
+        }
 
-            else if (user.getType().equals("manager") || user.getType().equals("landlord")) {
-                String[] columns2 = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
-                        "Number of Bathrooms",
-                        "Furnished Status", "Visibility", "Rental Status" };
-                if (!props.isEmpty()) {
-                    String[][] properties2 = new String[props.size()][9];
-                    int i = 0;
-                    for (Property p : props) {
-                        // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
-                        String s = "$";
-                        s += String.format("%.02f", p.getRentCost());
-                        properties2[i][0] = s;
-                        properties2[i][1] = p.getAddress();
-                        properties2[i][2] = p.getCityQuad();
-                        properties2[i][3] = p.getType();
-                        properties2[i][4] = p.getNumBedrooms().toString();
-                        properties2[i][5] = p.getNumBathrooms().toString();
-                        properties2[i][6] = (p.isFurnished()) ? "Furnished" : "Unfurnished";
-                        properties2[i][7] = (p.isVisibleToRenters()) ? "Visible" : "Unlisted";
-                        properties2[i][8] = (p.isRented()) ? "Rented" : "Vacant";
-                        i++;
-                    }
-                    model = new DefaultTableModel(properties2, columns2);
+        else if (user.getType().equals("manager") || user.getType().equals("landlord")) {
+            String[] columns2 = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
+                    "Number of Bathrooms",
+                    "Furnished Status", "Visibility", "Rental Status" };
+            if (!props.isEmpty()) {
+                String[][] properties2 = new String[props.size()][9];
+                int i = 0;
+                for (Property p : props) {
+                    // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
+                    String s = "$";
+                    s += String.format("%.02f", p.getRentCost());
+                    properties2[i][0] = s;
+                    properties2[i][1] = p.getAddress();
+                    properties2[i][2] = p.getCityQuad();
+                    properties2[i][3] = p.getType();
+                    properties2[i][4] = p.getNumBedrooms().toString();
+                    properties2[i][5] = p.getNumBathrooms().toString();
+                    properties2[i][6] = (p.isFurnished()) ? "Furnished" : "Unfurnished";
+                    properties2[i][7] = (p.isVisibleToRenters()) ? "Visible" : "Unlisted";
+                    properties2[i][8] = (p.isRented()) ? "Rented" : "Vacant";
+                    i++;
                 }
-
+                model = new DefaultTableModel(properties2, columns2);
             }
 
-            JTable jTable = new JTable(model) {
-                public boolean editCellAt(int row, int column, java.util.EventObject e) {
-                    return false;
-                }
-
-            };
-
-            jTable.getTableHeader().setReorderingAllowed(false);
-            TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(jTable.getModel());
-            jTable.setRowSorter(rowSorter);
-            jTable.setBackground(Color.GRAY);
-            jTable.setForeground(Color.PINK);
-            jTable.setFont(new Font("Serif", Font.BOLD, 14));
-            jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent event) { // all these have the address of the property in a
-                                                                     // string
-                    if (!user.getType().equals("manager") && !user.getType().equals("landlord")) {
-                        listener.openProperty(jTable.getValueAt(jTable.getSelectedRow(), 1).toString()); // opens a
-                                                                                                         // property
-                                                                                                         // page
-                    } else if (user.getType().equals("manager")) {
-                        listener.openVisibilityPanel(jTable.getValueAt(jTable.getSelectedRow(), 1).toString()); // opens
-                                                                                                                // //
-                                                                                                                // the
-                                                                                                                // manager
-                                                                                                                // dialog
-                                                                                                                // // to
-                                                                                                                // edit
-                                                                                                                // visibility
-                    } else if (user.getType().equals("landlord")
-                            && (user.owns(jTable.getValueAt(jTable.getSelectedRow(), 1).toString()))) { // opens the
-                        // edit property
-                        // page
-
-                        listener.openEditProperty(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());
-
-                    }
-                }
-            });
-            master.add(new JScrollPane(jTable), BorderLayout.CENTER);
-            master.setBackground(Color.GRAY);
         }
+
+        JTable jTable = new JTable(model) {
+            public boolean editCellAt(int row, int column, java.util.EventObject e) {
+                return false;
+            }
+
+        };
+
+        jTable.getTableHeader().setReorderingAllowed(false);
+        TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(jTable.getModel());
+        jTable.setRowSorter(rowSorter);
+        jTable.setBackground(Color.GRAY);
+        jTable.setForeground(Color.PINK);
+        jTable.setFont(new Font("Serif", Font.BOLD, 14));
+        jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent event) { // all these have the address of the property in a
+                                                                 // string
+                if (!user.getType().equals("manager") && !user.getType().equals("landlord")) {
+                    listener.openProperty(jTable.getValueAt(jTable.getSelectedRow(), 1).toString()); // opens a
+                                                                                                     // property
+                                                                                                     // page
+                } else if (user.getType().equals("manager")) {
+                    listener.openVisibilityPanel(jTable.getValueAt(jTable.getSelectedRow(), 1).toString()); // opens
+                                                                                                            // //
+                                                                                                            // the
+                                                                                                            // manager
+                                                                                                            // dialog
+                                                                                                            // // to
+                                                                                                            // edit
+                                                                                                            // visibility
+                } else if (user.getType().equals("landlord")
+                        && (user.owns(jTable.getValueAt(jTable.getSelectedRow(), 1).toString()))) { // opens the
+                    // edit property
+                    // page
+
+                    listener.openEditProperty(jTable.getValueAt(jTable.getSelectedRow(), 1).toString());
+
+                }
+            }
+        });
+        master.add(new JScrollPane(jTable), BorderLayout.CENTER);
+        master.setBackground(Color.GRAY);
         return master;
     }
-
-    // For testing
-
-    // public static void main(String[] args) {
-    // JFrame frame = new JFrame();
-    // SearchResult s = new SearchResult();
-    // ObjectId id = new ObjectId();
-    // User user = new RegisteredRenter("an email", id, "registered_renter");
-    // ArrayList<Property> propertyTest = new ArrayList<Property>();
-    // for (int i = 0; i < 100; i++) {
-    // Property temp = new Property();
-    // temp.setRentCost((i + 1) * 500.1);
-    // temp.setAddress("111111" + i);
-    // temp.setCityQuad("NW");
-    // temp.setNumBedrooms(2);
-    // temp.setNumBathrooms(3.0);
-    // temp.setFurnished(true);
-    // propertyTest.add(temp);
-    //
-    // JPanel p = new JPanel();
-    // p = s.display(user, propertyTest);
-    // // JScrollPane sp = new JScrollPane(p);
-    // // frame.setContentPane(sp);
-    // frame.add(p);
-    // frame.setPreferredSize(new Dimension(900, 600));
-
-    // frame.pack();
-    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // frame.setLocationRelativeTo(null);
-    // frame.setVisible(true);
-
-    // }
-
 }
+
+// For testing
+
+// public static void main(String[] args) {
+// JFrame frame = new JFrame();
+// SearchResult s = new SearchResult();
+// ObjectId id = new ObjectId();
+// User user = new RegisteredRenter("an email", id, "registered_renter");
+// ArrayList<Property> propertyTest = new ArrayList<Property>();
+// for (int i = 0; i < 100; i++) {
+// Property temp = new Property();
+// temp.setRentCost((i + 1) * 500.1);
+// temp.setAddress("111111" + i);
+// temp.setCityQuad("NW");
+// temp.setNumBedrooms(2);
+// temp.setNumBathrooms(3.0);
+// temp.setFurnished(true);
+// propertyTest.add(temp);
+//
+// JPanel p = new JPanel();
+// p = s.display(user, propertyTest);
+// // JScrollPane sp = new JScrollPane(p);
+// // frame.setContentPane(sp);
+// frame.add(p);
+// frame.setPreferredSize(new Dimension(900, 600));
+
+// frame.pack();
+// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+// frame.setLocationRelativeTo(null);
+// frame.setVisible(true);
+
+// }

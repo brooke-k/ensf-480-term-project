@@ -287,4 +287,17 @@ public class ManagerDBController extends LandlordDBControl {
 				Updates.set("fee", changedFee));
 		feeCollection.updateOne(new Document(), updates, new UpdateOptions().upsert(true));
 	}
+
+	public double getCurrentPeriod() {
+		FindIterable<Document> docIter = feeCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		double val = (double) iter.next().get("period");
+		return val;
+	}
+
+	public void setCurrentPeriod(Double changedPeriod) {
+		Bson updates = Updates.combine(
+				Updates.set("period", changedPeriod));
+		feeCollection.updateOne(new Document(), updates, new UpdateOptions().upsert(true));
+	}
 }

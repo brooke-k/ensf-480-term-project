@@ -26,7 +26,6 @@ public class Landlord extends User {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private ObjectId iD;
 
 	private LandlordDBControl dbcontrol;
 
@@ -53,7 +52,7 @@ public class Landlord extends User {
 		ll.setEmail(lldoc.get("email").toString());
 		ll.setFirstName(lldoc.get("first_name").toString());
 		ll.setLastName(lldoc.get("last_name").toString());
-		ll.setOwnedAddresses((HashSet<String>) lldoc.get("owned_addresses"));
+		ll.ownedAddresses = LandlordDBControl.getLandlordsAddresses((ObjectId) lldoc.get("_id"));
 		ll.setType(lldoc.get("type").toString());
 		ll.setiD((ObjectId) lldoc.get("_id"));
 		return ll;
@@ -93,12 +92,14 @@ public class Landlord extends User {
 		this.email = email;
 	}
 
-	public ObjectId getiD() {
-		return iD;
+	@Override
+	public void setiD(ObjectId iD) {
+		super.setId(iD);
 	}
 
-	public void setiD(ObjectId iD) {
-		this.iD = iD;
+	@Override
+	public ObjectId getiD() {
+		return super.getId();
 	}
 
 	public HashSet<String> getOwnedAddresses() {

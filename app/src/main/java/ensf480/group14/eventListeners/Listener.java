@@ -35,14 +35,14 @@ import ensf480.group14.forms.PayInfoForm;
 import ensf480.group14.forms.PreferenceForm;
 import ensf480.group14.forms.PropertyApplication;
 import ensf480.group14.forms.RenterSignUpForm;
-import ensf480.group14.forms.Search;
+import ensf480.group14.forms.*;
 import ensf480.group14.users.Landlord;
 import ensf480.group14.users.Manager;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 import ensf480.group14.views.HomePage;
 import ensf480.group14.views.Inbox;
-import ensf480.group14.views.PropertyPage;
+import ensf480.group14.views.*;
 
 public class Listener implements ActionListener {
     String pageToShow;
@@ -68,11 +68,13 @@ public class Listener implements ActionListener {
     PropertyPage propertyPage;
     JFrame frame;
     PayInfoForm paymentForm;
+    EditPropertyView editPropertyView;
 
     public Listener(RenterSignUpForm signUpForm,
             ContactForm contactForm, PreferenceForm preferenceForm, Search searchForm,
             PropertyApplication propertyAppForm, Inbox inbox, HomePage homePage, PropertyPage propertyPage,
-            JFrame frame, LandlordSignUpForm landlordSignUpForm, PayInfoForm paymentForm) {
+            JFrame frame, LandlordSignUpForm landlordSignUpForm, PayInfoForm paymentForm,
+            EditPropertyView editProperty) {
         this.renterController = new RegisteredRenterDBController();
         this.signUpForm = signUpForm;
         this.contactForm = contactForm;
@@ -86,6 +88,7 @@ public class Listener implements ActionListener {
         this.landlordSignUpForm = landlordSignUpForm;
         this.paymentForm = paymentForm;
         this.pageToShow = "LoginPage";
+        this.editPropertyView = editProperty;
         this.refresh = false;
     }
 
@@ -224,6 +227,9 @@ public class Listener implements ActionListener {
             Property prop = new Property(propertyAppForm.getAddress(), propertyAppForm.getCityQuad(),
                     propertyAppForm.getNumBed(), propertyAppForm.getNumBath(), propertyAppForm.isFurnished(),
                     propertyAppForm.getPrice(), propertyAppForm.getType());
+            prop.setLandlordEmail(user.getEmail());
+            prop.setLandlordName(user.getFirstName() + " " + user.getLastName());
+            prop.setLandlordID(user.getiD());
 
             landlordController.addPropertyToDatabase(prop);
             JOptionPane.showMessageDialog(frame, "Property Application Submitted, please pay fee to list now.");
@@ -246,8 +252,8 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Save Changes")) {
-            // changeProperty()
-            // To do
+            landlordController.editProperty(editPropertyView);
+            setPageToShow("ManagePropertiesPage");
         }
     }
 
@@ -339,7 +345,7 @@ public class Listener implements ActionListener {
     }
 
     public void getLandlordsProperties() {
-        landlordController.getAllProperties();
+        properties = landlordController.getAllProperties();
     }
 
     public void setPageToShow(String pageToShow) {

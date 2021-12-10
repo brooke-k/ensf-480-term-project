@@ -15,6 +15,8 @@
 
 package ensf480.group14.dbcontrol;
 
+import java.util.HashSet;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
@@ -24,6 +26,7 @@ import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PayInfoForm;
@@ -83,5 +86,17 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 
 	public Boolean payFee(PayInfoForm paymentForm, PropertyApplication propertyAppForm) {
 		return null;
+	}
+
+	public static HashSet<String> getLandlordsAddresses(ObjectId id) {
+		FindIterable<Document> findIter = propertiesCollection.find(new Document("landlord_id", id));
+		MongoCursor<Document> resultCursor = findIter.iterator();
+
+		HashSet<String> props = new HashSet<>(0);
+		while (resultCursor.hasNext()) {
+			props.add((String) resultCursor.next().get("address"));
+		}
+
+		return props;
 	}
 }

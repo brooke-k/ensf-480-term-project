@@ -30,7 +30,6 @@ public class RegisteredRenter extends User {
 	RegisteredRenterDBController dbcontroller;
 	PreferenceForm prefs;
 	ArrayList<Property> lastMatchedProperties;
-	ObjectId iD;
 
 	public RegisteredRenter(String emailAddress, ObjectId renterId, String type) {
 		this.emailAddress = emailAddress;
@@ -97,14 +96,6 @@ public class RegisteredRenter extends User {
 		this.prefs = prefs;
 	}
 
-	public ObjectId getiD() {
-		return iD;
-	}
-
-	public void setiD(ObjectId iD) {
-		this.iD = iD;
-	}
-
 	public void addPreference(PreferenceForm prefForm) {
 		if (this.iD == null) {
 			return;
@@ -144,6 +135,16 @@ public class RegisteredRenter extends User {
 	public String getLastName() {
 		// TODO Auto-generated method stub
 		return "";
+	}
+
+	@Override
+	public void setiD(ObjectId iD) {
+		super.setId(iD);
+	}
+
+	@Override
+	public ObjectId getiD() {
+		return super.getId();
 	}
 
 }
