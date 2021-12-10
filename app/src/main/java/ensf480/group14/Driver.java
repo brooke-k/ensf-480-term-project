@@ -81,7 +81,7 @@ public class Driver {
         mainPanel.add(emailJPanel, "emailPage");
         JPanel homePagePanel = homePage.display(new RegisteredRenter(69), listener);
         mainPanel.add(homePagePanel, "homePage");
-        JPanel searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
+        JPanel searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties(), listener);
         mainPanel.add(searchResultsPanel, "searchResultsPage");
         JPanel inboxPagePanel = inbox.display(listener.getMail(), listener);
         mainPanel.add(inboxPagePanel, "inboxPage");
@@ -154,7 +154,7 @@ public class Driver {
 
             else if (page.equals("SearchResultsPage")) {
                 mainPanel.remove(searchResultsPanel);
-                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
+                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties(), listener);
                 mainPanel.add(searchResultsPanel, "searchResultsPage");
                 cardLayout.show(mainPanel, "searchResultsPage");
             }
@@ -179,14 +179,14 @@ public class Driver {
 
             else if (page.equals("DatabasePage")) {
                 mainPanel.remove(searchResultsPanel);
-                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
+                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties(), listener);
                 mainPanel.add(searchResultsPanel, "searchResultsPage");
                 cardLayout.show(mainPanel, "searchResultsPage");
             }
 
             else if (page.equals("ManagePropertiesPage")) {
                 mainPanel.remove(searchResultsPanel);
-                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties());
+                searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties(), listener);
                 mainPanel.add(searchResultsPanel, "searchResultsPage");
                 cardLayout.show(mainPanel, "searchResultsPage");
             }

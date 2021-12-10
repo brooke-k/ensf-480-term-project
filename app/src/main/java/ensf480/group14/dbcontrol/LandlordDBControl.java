@@ -23,6 +23,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -84,8 +85,17 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 				new UpdateOptions().upsert(true));
 	}
 
-	public Boolean payFee(PayInfoForm paymentForm, PropertyApplication propertyAppForm) {
-		return null;
+	public Boolean payFee(PayInfoForm paymentForm, Property propertyAppForm) {
+		Bson updates = Updates.combine(
+				Updates.set("visible_to_renters", true));
+		UpdateResult res = propertiesCollection.updateOne(new Document("address", propertyAppForm.getAddress()),
+				updates,
+				new UpdateOptions().upsert(false));
+		if (res.getMatchedCount() > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static HashSet<String> getLandlordsAddresses(ObjectId id) {

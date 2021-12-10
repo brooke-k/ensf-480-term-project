@@ -115,6 +115,23 @@ public class Listener implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Username or Password is Incorrect");
                 setPageToShow("LoginPage");
             }
+        } else if (e.getActionCommand().equals("Login Debug")) {
+            LoginForm login = LoginForm.getOnlyInstance(this);
+            user = renterController.checkLogin("j@gmail.com", "Pass");
+            if (user instanceof RegisteredRenter) {
+                renterController = new RegisteredRenterDBController();
+            } else if (user instanceof Landlord) {
+                landlordController = new LandlordDBControl();
+            } else {
+                managerController = new ManagerDBController();
+            }
+
+            if (user != null) {
+                setPageToShow("HomePage");
+            } else {
+                JOptionPane.showMessageDialog(null, "Username or Password is Incorrect");
+                setPageToShow("LoginPage");
+            }
         }
 
         else if (e.getActionCommand().equals("Continue without Logging in")) {
@@ -178,7 +195,7 @@ public class Listener implements ActionListener {
         else if (e.getActionCommand().equals("Adjust Fees")) {
             Double currFee = managerController.getCurrentFee();
             Double changedFee = Double.parseDouble((String) JOptionPane.showInputDialog(frame, "Change fees to",
-                    "Change Fees", JOptionPane.PLAIN_MESSAGE, null, null, "10" /* currFee */));
+                    "Change Fees", JOptionPane.PLAIN_MESSAGE, null, null, currFee));
             if (changedFee != null) {
                 managerController.setNewFee(changedFee);
             }
@@ -241,7 +258,7 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Submit Payment")) {
-            Boolean res = landlordController.payFee(paymentForm, propertyAppForm);
+            Boolean res = landlordController.payFee(paymentForm, property);
             if (res) {
                 JOptionPane.showMessageDialog(frame, "Property Payment Success");
                 setPageToShow("HomePage");

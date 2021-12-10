@@ -136,6 +136,10 @@ public class LoginForm implements Form {
         loginButton.addActionListener(listener);
         panel.add(loginButton);
 
+        JButton loginTestButton = new JButton("Login Debug");
+        loginTestButton.addActionListener(listener);
+        panel.add(loginTestButton);
+
         JButton signUpButton = new JButton("Or Sign Up");
         signUpButton.addActionListener(listener);
         panel.add(signUpButton);
@@ -170,12 +174,12 @@ public class LoginForm implements Form {
     // For testing
 
     // public static void main(String[] args) {
-    //     JFrame frame = new JFrame();
-    //     LoginForm login = new LoginForm();
-    //     frame.add(login.display());
-    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //     frame.pack();
-    //     frame.setVisible(true);
+    // JFrame frame = new JFrame();
+    // LoginForm login = new LoginForm();
+    // frame.add(login.display());
+    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // frame.pack();
+    // frame.setVisible(true);
     // }
 
 }

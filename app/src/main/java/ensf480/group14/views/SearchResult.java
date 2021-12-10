@@ -74,8 +74,8 @@ public class SearchResult {
      * @param: User object, and props for the Properties
      * @returns: All of them displayed in a JTable
      */
-    public JPanel display(User user, ArrayList<Property> props) {
-
+    public JPanel display(User user, ArrayList<Property> props, Listener listen) {
+        listener = listen;
         JPanel master = new JPanel(new BorderLayout());
         DefaultTableModel model = null;
         if (user == null)
