@@ -22,8 +22,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
@@ -270,5 +273,19 @@ public class ManagerDBController extends LandlordDBControl {
 
 		// DatabaseController dbc = new DatabaseController();
 
+	}
+
+    public double getCurrentFee() {
+		FindIterable<Document> docIter = feeCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		double val = (double)iter.next().get("fee");
+		return val;
+	}
+
+	public void setNewFee(Double changedFee) {
+		Bson updates = Updates.combine(
+			Updates.set("fee", changedFee)
+		);
+		feeCollection.updateOne(new Document(), updates, new UpdateOptions().upsert(true));
 	}
 }

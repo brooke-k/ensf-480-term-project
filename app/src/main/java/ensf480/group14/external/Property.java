@@ -32,6 +32,7 @@ public class Property {
 	private Double numBathrooms;
 	private String landlordEmail;
 	private Double rentCost;
+	private Boolean rented;
 	private Boolean furnished;
 	private String type;
 	private Boolean visibleToRenters;
@@ -49,6 +50,7 @@ public class Property {
 		this.numBathrooms = property.numBathrooms;
 		this.landlordEmail = property.landlordEmail;
 		this.rentCost = property.rentCost;
+		this.rented = property.rented;
 		this.visibleToRenters = property.visibleToRenters;
 		this.type = property.type;
 		this.landlordID = property.landlordID;
@@ -70,6 +72,7 @@ public class Property {
 		type = null;
 
 		rentCost = null;
+		rented = false;
 		visibleToRenters = false;
 	}
 
@@ -93,6 +96,7 @@ public class Property {
 		returnProp.numBedrooms = propertyDoc.get("bedrooms", Integer.class);
 		returnProp.numBathrooms = propertyDoc.get("bathrooms", Double.class);
 		returnProp.rentCost = propertyDoc.get("rent_cost", Double.class);
+		returnProp.rented = propertyDoc.get("rented", Boolean.class);
 		returnProp.visibleToRenters = propertyDoc.get("visible_to_renters", Boolean.class);
 		return returnProp;
 
@@ -112,6 +116,7 @@ public class Property {
 		propDoc.append("bathrooms", prop.getNumBathrooms());
 		propDoc.append("bedrooms", prop.getNumBedrooms());
 		propDoc.append("rent_cost", prop.getRentCost());
+		propDoc.append("rented", prop.isRented());
 		propDoc.append("visible_to_renters", prop.isVisibleToRenters());
 		propDoc.append("type", prop.getType());
 		propDoc.append("landlord_id", prop.getLandlordID());
@@ -249,6 +254,13 @@ public class Property {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public boolean isRented() {
+		return rented;
+	}
+	public void setRented(boolean rented) {
+		this.rented = rented;
 	}
 
 }

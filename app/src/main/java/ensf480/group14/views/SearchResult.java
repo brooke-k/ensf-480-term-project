@@ -67,9 +67,7 @@ public class SearchResult {
     /**
      * The listeners need to be defined in the constructor
      */
-    public SearchResult(Listener listen) {
-        listener = listen;
-    }
+   
 
     /**
      * Takes in the User and it's properties which are assigned to it
@@ -83,7 +81,7 @@ public class SearchResult {
         DefaultTableModel model = null;
         if(user == null) return master;
 
-        if (!user.getType().equals("manager")) {
+        if (!user.getType().equals("manager")&&!user.getType().equals("landlord")) {
             String[] columns = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
                     "Number of Bathrooms",
                     "Furnished Status" };
@@ -106,12 +104,12 @@ public class SearchResult {
                   model = new DefaultTableModel(properties, columns);
             }
 
-            else if (user.getType().equals("manager")) {
+            else if (user.getType().equals("manager")||user.getType().equals("landlord")) {
                 String[] columns2 = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
                         "Number of Bathrooms",
-                        "Furnished Status", "Visibility" };
+                        "Furnished Status", "Visibility","Rental Status"};
                 if (!props.isEmpty()) {
-                    String[][] properties2 = new String[props.size()][8];
+                    String[][] properties2 = new String[props.size()][9];
                     int i = 0;
                     for (Property p : props) {
                         // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
@@ -125,13 +123,14 @@ public class SearchResult {
                         properties2[i][5] = p.getNumBathrooms().toString();
                         properties2[i][6] = (p.isFurnished()) ? "Furnished" : "Unfurnished";
                         properties2[i][7] = (p.isVisibleToRenters()) ? "Visible" : "Unlisted";
+                        properties2[i][8] = (p.isRented()) ? "Rented" : "Vacant";
                         i++;
                     }
                     model = new DefaultTableModel(properties2, columns2);
                 }
                 
             }
-           
+            
 
             JTable jTable = new JTable(model) {
                 public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -139,6 +138,8 @@ public class SearchResult {
                 }
 
             };
+
+            
             jTable.getTableHeader().setReorderingAllowed(false);
             TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(jTable.getModel());
             jTable.setRowSorter(rowSorter);

@@ -87,9 +87,14 @@ public class HomePage {
 		}
 		if (user.getType().equals("manager")) {
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
-			JButton accessButton = new JButton("Access Database"); // opens search results with all properties
-			accessButton.addActionListener(listener);
-			panel.add(accessButton);
+			JButton accessPropertiesButton = new JButton("Access Properties"); // opens search results with all properties
+			accessPropertiesButton.addActionListener(listener);
+			panel.add(accessPropertiesButton);
+
+			panel.add(Box.createRigidArea(new Dimension(1, 5)));
+			JButton accessUsersButton = new JButton("Access Users"); // opens search results with all properties
+			accessUsersButton.addActionListener(listener);
+			panel.add(accessUsersButton);
 
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
 			JButton feesButton = new JButton("Adjust Fees"); // opens dialog box with pay period and amount

@@ -187,21 +187,22 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Send")) {
-            RegisteredRenterDBController.sendEmail(contactForm, property);
+            RegisteredRenterDBController.sendEmail(email);
             JOptionPane.showMessageDialog(frame, "Message Sent.");
             setPageToShow("SearchResultsPage");
             // Send Contact Form
         }
 
         else if (e.getActionCommand().equals("Save Preference")) {
-            RegisteredRenterDBController.savePreference(preferenceForm, user);
+            renterController.savePreference(preferenceForm, user);
             JOptionPane.showMessageDialog(frame, "Preferences Saved.");
             setPageToShow("HomePage");
             // Saves preference form
         }
 
         else if (e.getActionCommand().equals("Submit Application")) {
-            LandlordDBControl.submitPropertyApplication(propertyAppForm, user);
+            Property prop = new Property();
+            landlordController.addPropertyToDatabase(prop);
             JOptionPane.showMessageDialog(frame, "Property Application Submitted, please pay fee to list now.");
             setPageToShow("PayInfoPage");
         }
@@ -212,7 +213,7 @@ public class Listener implements ActionListener {
 
         else if (e.getActionCommand().equals("Submit Payment")) {
             Boolean res = landlordController.payFee(paymentForm, propertyAppForm);
-            if (res true) {
+            if (res) {
                 JOptionPane.showMessageDialog(frame, "Property Payment Success");
                 setPageToShow("HomePage");
             } else {

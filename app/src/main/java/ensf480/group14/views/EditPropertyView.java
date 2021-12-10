@@ -50,6 +50,7 @@ public class EditPropertyView {
     boolean furnish;
     String cityQuad;
     double price;
+    boolean rented;
 
     private Listener listener;
 
@@ -126,7 +127,7 @@ public class EditPropertyView {
 
         JLabel checkLabel = new JLabel("Furnished");
         panel.add(checkLabel);
-        JCheckBox furnished = new JCheckBox(prop.isFurnished() ? "Furnished" : "Unfurnished");
+        JCheckBox furnished = new JCheckBox();
         furnished.setOpaque(false);
         furnished.setMaximumSize(new Dimension(190, 20));
         furnished.addFocusListener(new FocusListener() {
@@ -138,6 +139,22 @@ public class EditPropertyView {
             }
         });
         panel.add(furnished);
+
+         JLabel checkLabel = new JLabel("Rented");
+        panel.add(checkLabel);
+        JCheckBox rentedBox = new JCheckBox(prop.isRented());
+        rentedBox.setOpaque(false);
+        rentedBox.setMaximumSize(new Dimension(190, 20));
+        rentedBox.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+            }
+
+            public void focusLost(FocusEvent e) {
+                setRented(prop.isRented());
+            }
+        });
+        panel.add(rentedBox);
+
 
         panel.add(new JLabel("City Quadrant"));
         JTextField quad = new JTextField(prop.getCityQuad());
@@ -215,6 +232,14 @@ public class EditPropertyView {
 
     public void setFurnish(boolean furnish) {
         this.furnish = furnish;
+    }
+
+    public boolean isRented() {
+        return furnish;
+    }
+
+    public void setRented(boolean rented) {
+        this.rented = rented;
     }
 
     public String getCityQuad() {

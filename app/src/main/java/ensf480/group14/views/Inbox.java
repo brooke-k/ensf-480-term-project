@@ -75,15 +75,25 @@ public class Inbox {
         if (mail == null) {
             return master;
         }
-        String[] columns = { "Sender", "Address" };
-        String[][] mails = new String[mail.size()][3];
+        if(mail.isEmpty()){
+            JLabel noEmails = new JLabel("NO EMAILS :(");
+            noEmails.setBackground(Color.GRAY);
+            noEmails.setForeground(Color.PINK);
+            noEmails.setFont(new Font("Serif", Font.BOLD, 65));
+            header.add(noEmails);
+        }
+        
+
+        String[] columns = { "Sender", "Address" ,"Body","ID"};
+        String[][] mails = new String[mail.size()][4];
         int i = 0;
         for (Email m : mail) {
             // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
-            mails[i][0] = m.getId().toString();
+            
             mails[i][1] = m.getSender();
             mails[i][2] = m.getSubject();
-
+            mails[i][3] = m.getBody();
+            mails[i][4] = m.getId().toString();
             // mails[i][1] = m.getAddress();
             // mails[i][2] = m.getEmailID();
             i++;
@@ -97,6 +107,8 @@ public class Inbox {
             }
 
         };
+        table.getColumnModel().getColumn(3).setMinWidth(0);
+        table.getColumnModel().getColumn(3).setMaxWidth(0)
         jTable.getTableHeader().setReorderingAllowed(false);
         TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(jTable.getModel());
         jTable.setRowSorter(rowSorter);

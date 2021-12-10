@@ -53,6 +53,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     protected static MongoCollection<Document> propertiesCollection;
     protected static MongoCollection<Document> emailCollection;
     protected static MongoCollection<Document> preferenceCollection;
+    protected static MongoCollection<Document> feeCollection;
 
     private ArrayList<DatabaseObserver> observers;
 
@@ -441,5 +442,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
             return null;
         }
     }
+
+    
 
 }

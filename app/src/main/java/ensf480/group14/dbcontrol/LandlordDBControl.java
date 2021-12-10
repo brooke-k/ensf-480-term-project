@@ -14,7 +14,6 @@
  */
 
 package ensf480.group14.dbcontrol;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
@@ -23,6 +22,8 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import ensf480.group14.external.Property;
+import ensf480.group14.forms.PayInfoForm;
+import ensf480.group14.forms.PropertyApplication;
 
 public class LandlordDBControl extends RegisteredRenterDBController {
 
@@ -62,5 +63,9 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 		resultCursor.close();
 
 		propertiesCollection.insertOne(Property.toDocument(property));
+	}
+
+	public Boolean payFee(PayInfoForm paymentForm, PropertyApplication propertyAppForm) {
+		return null;
 	}
 }
