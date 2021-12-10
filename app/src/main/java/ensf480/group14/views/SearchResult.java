@@ -157,7 +157,7 @@ public class SearchResult {
         jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) { // all these have the address of the property in a
                                                                  // string
-                if (!user.getType().equals("manager") && !user.getType().equals("landlord")) {
+                if (((!user.getType().equals("manager") &&(!user.getType().equals("landlord"))) || ((user.getType().equals("landlord"))&&(!user.owns(jTable.getValueAt(jTable.getSelectedRow(), 1).toString()))))) {
                     listener.openProperty(jTable.getValueAt(jTable.getSelectedRow(), 1).toString()); // opens a
                                                                                                      // property
                                                                                                      // page

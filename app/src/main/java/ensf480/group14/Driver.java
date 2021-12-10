@@ -19,7 +19,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 import java.awt.CardLayout;
 
-import javax.swing.JFrame;
+import javax.swing.JFrame; 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;

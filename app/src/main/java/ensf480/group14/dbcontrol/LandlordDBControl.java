@@ -40,7 +40,7 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 		super();
 	}
 
-	protected void removePropertyFromDatabase(String address) {
+	public void removePropertyFromDatabase(String address) {
 		System.out.println("Removing property with the address \"" + address + "\" from database");
 		propertiesCollection.deleteOne(Filters.eq("address", address));
 		System.out.println("Property with the address \"" + address + "\" has been removed from the database");

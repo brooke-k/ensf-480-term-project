@@ -30,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import ensf480.group14.eventListeners.Listener;
@@ -61,22 +62,23 @@ public class RenterSignUpForm implements Form {
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
-        panel.add(new JLabel("Username"));
-        JTextField usernameField = new JTextField();
-        usernameField.setSize(190, 20);
-        usernameField.setMaximumSize(new Dimension(190, 20));
-        usernameField.addFocusListener(new FocusListener() {
+        panel.add(new JLabel("Email"));
+        JTextField emailField = new JTextField();
+        emailField.setSize(190, 20);
+        emailField.setMaximumSize(new Dimension(190, 20));
+        emailField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
             }
 
             public void focusLost(FocusEvent e) {
-                setUsername(usernameField.getText());
+                setUsername(emailField.getText());
             }
         });
-        panel.add(usernameField);
+        panel.add(emailField);
 
         panel.add(new JLabel("Password"));
-        JTextField passwordField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setEchoChar('*');
         passwordField.setMaximumSize(new Dimension(190, 20));
         passwordField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
@@ -89,7 +91,8 @@ public class RenterSignUpForm implements Form {
         panel.add(passwordField);
 
         panel.add(new JLabel("Confirm Password"));
-        JTextField confirmPasswordField = new JTextField();
+        JPasswordField confirmPasswordField = new JPasswordField();
+        confirmPasswordField.setEchoChar('*');
         confirmPasswordField.setMaximumSize(new Dimension(190, 20));
         panel.add(confirmPasswordField);
 

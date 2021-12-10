@@ -23,11 +23,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,12 +45,19 @@ public class Search implements Form {
     private String cityQuadrant;
     private double maxPrice;
     private double minPrice;
+    Pattern pat;
+    Matcher mat;
+    Pattern patBed;
+    boolean notNumerical;
 
     public Search() {
-
+        pat = Pattern.compile("[^0-9.]");
+        patBed = Pattern.compile("[^0-9]");
+        notNumerical = false;
     }
 
     public JPanel display(Listener listener) {
+
         buildingType = "";
         numOfBedrooms = 0;
         numOfBathrooms = 0;
@@ -77,6 +85,8 @@ public class Search implements Form {
             }
 
             public void focusLost(FocusEvent e) {
+
+                
                 setBuildingType((buildingTypeField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
             }
         });
@@ -91,7 +101,13 @@ public class Search implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setNumOfBedrooms(Integer.parseInt(numOfBedroomsField.getText()));
+                mat = patBed.matcher(numOfBedroomsField.getText());
+                notNumerical = mat.find();
+                if(notNumerical){
+                    setNumOfBedrooms(-1);
+                } else {
+                    setNumOfBedrooms(Integer.parseInt(numOfBedroomsField.getText()));
+                }
             }
         });
         panel.add(numOfBedroomsField);
@@ -105,7 +121,13 @@ public class Search implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setNumOfBathrooms(Double.parseDouble(numOfBathroomsField.getText()));
+                mat = pat.matcher(numOfBathroomsField.getText());
+                notNumerical = mat.find();
+                if(notNumerical){
+                    setNumOfBathrooms(-1);
+                } else {
+                    setNumOfBathrooms(Double.parseDouble(numOfBathroomsField.getText()));
+                }
             }
         });
         panel.add(numOfBathroomsField);
@@ -145,7 +167,14 @@ public class Search implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setMaxPrice(Double.parseDouble(maxPriceField.getText()));
+                mat = pat.matcher(maxPriceField.getText());
+                notNumerical = mat.find();
+                if(notNumerical){
+                    setMaxPrice(-1);
+                } else {
+                    setMaxPrice(Integer.parseInt(maxPriceField.getText()));
+                }
+      
             }
         });
         panel.add(maxPriceField);
@@ -159,7 +188,13 @@ public class Search implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setMinPrice(Double.parseDouble(minPriceField.getText()));
+                mat = pat.matcher(maxPriceField.getText());
+                notNumerical = mat.find();
+                if(notNumerical){
+                    setMinPrice(-1);
+                } else {
+                    setMinPrice(Double.parseDouble(minPriceField.getText()));
+                }
             }
         });
         panel.add(minPriceField);

@@ -224,8 +224,15 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return null;
     }
 
-    public Property getPropertyWithLandlord(int landlordID) {
-        return null;
+    public ArrayList<Property> getPropertyWithLandlord(ObjectId landlordID) {
+        ArrayList<Property> propArray = new ArrayList<>(0);
+        FindIterable<Document> docIter = propertiesCollection.find(new Document("landlord_id", landlordID));
+        MongoCursor<Document> iter = docIter.iterator();
+        while (iter.hasNext()) {
+            propArray.add(Property.getProperty(iter.next()));
+        }
+        return propArray;
+    
     }
 
     public Property getPropertyByID(int iDnum) {
@@ -244,10 +251,10 @@ public class RegisteredRenterDBController implements DatabaseSubject {
             
         }
         if(searchForm.getNumOfBedrooms() != 0){
-            criteria.append("bedroom", searchForm.getNumOfBedrooms());
+            criteria.append("bedrooms", searchForm.getNumOfBedrooms());
         }
         if(searchForm.getNumOfBathrooms() != 0){
-            criteria.append("bathroom", searchForm.getNumOfBedrooms());
+            criteria.append("bathrooms", searchForm.getNumOfBathrooms());
         }
         if(searchForm.getCityQuadrant() != null  && !searchForm.getCityQuadrant().equals("")){
             criteria.append("city_quad", searchForm.getCityQuadrant());

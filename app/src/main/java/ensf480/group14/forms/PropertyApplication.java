@@ -23,6 +23,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -47,6 +49,16 @@ public class PropertyApplication implements Form {
     double price;
     String type;
 
+    Pattern pat;
+    Matcher mat;
+    Pattern patBed;
+    boolean notNumerical;
+
+    public PropertyApplication() {
+        pat = Pattern.compile("[^0-9.]");
+        patBed = Pattern.compile("[^0-9]");
+        notNumerical = false;
+    }
     public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
@@ -105,7 +117,14 @@ public class PropertyApplication implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setNumBed(Integer.parseInt(numBedrooms.getText()));
+                mat = patBed.matcher(numBedrooms.getText());
+                notNumerical = mat.find();
+                if(notNumerical){
+                    setNumBed(-1);
+                } else {
+                    setNumBed(Integer.parseInt(numBedrooms.getText()));
+                }
+                
             }
         });
         panel.add(numBedrooms);
@@ -119,7 +138,14 @@ public class PropertyApplication implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setNumBath(Double.parseDouble(numBathrooms.getText()));
+                mat = pat.matcher(numBathrooms.getText());
+                notNumerical = mat.find();
+                 if(notNumerical){
+                    setNumBath(-1);
+                } else {
+                    setNumBath(Double.parseDouble(numBathrooms.getText()));
+                }
+                
             }
         });
         panel.add(numBathrooms);
@@ -143,7 +169,7 @@ public class PropertyApplication implements Form {
         panel.add(furnished);
 
         panel.add(new JLabel("City Quadrant"));
-        String cityQuadrants[] = {"", "NW", "NE", "SW", "SE" };
+        String cityQuadrants[] = {"NW", "NE", "SW", "SE" };
         JComboBox cityQuadrantField = new JComboBox<String>(cityQuadrants);
         cityQuadrantField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
@@ -164,7 +190,14 @@ public class PropertyApplication implements Form {
             }
 
             public void focusLost(FocusEvent e) {
-                setPrice(Double.parseDouble(price.getText()));
+                mat = pat.matcher(price.getText());
+                notNumerical = mat.find();
+                if(notNumerical){
+                    setPrice(-1);
+                } else {
+                    setPrice(Double.parseDouble(price.getText()));
+                }
+                
             }
         });
         panel.add(price);

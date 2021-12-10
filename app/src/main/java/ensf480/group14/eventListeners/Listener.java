@@ -154,8 +154,14 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Search")) {
-            searchProperties();
-            setPageToShow("SearchResultsPage");
+            boolean res = searchProperties();
+            if(res){
+                setPageToShow("SearchResultsPage");
+            }else{
+                JOptionPane.showMessageDialog(null, "Error: Invalid search criteria\n\rPlease correct your search requirements and try again.");
+                setPageToShow("SearchPage");
+                setRefresh(true);
+            }
         }
 
         else if (e.getActionCommand().equals("Notifications Settings")) {
@@ -200,12 +206,13 @@ public class Listener implements ActionListener {
 
         else if (e.getActionCommand().equals("Remove Property")) {
 
-            int res = JOptionPane.showConfirmDialog(null, "Confirm Delete Property",
-                    "Remove Property at " + property.getAddress() + "?",
+            int res = JOptionPane.showConfirmDialog(null,"Remove Property at " + property.getAddress() + "?", 
+            "Confirm Delete Property",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (res == JOptionPane.OK_OPTION) {
+                landlordController.removePropertyFromDatabase(property.getAddress());
+                getLandlordsProperties();
                 setPageToShow("ManagePropertiesPage");
-                // delete property
                 setRefresh(true); // refresh in driver
             }
 
@@ -227,17 +234,22 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Submit Application")) {
-            Property prop = new Property(propertyAppForm.getAddress(), propertyAppForm.getCityQuad(),
-                    propertyAppForm.getNumBed(), propertyAppForm.getNumBath(), propertyAppForm.isFurnished(),
-                    propertyAppForm.getPrice(), propertyAppForm.getType());
-            prop.setLandlordEmail(user.getEmail());
-            prop.setLandlordName(user.getFirstName() + " " + user.getLastName());
-            prop.setLandlordID(user.getiD());
+            if(propertyAppForm.getPrice() <= 0 || propertyAppForm.getNumBath() <= 0 || propertyAppForm.getNumBed() <= 0){
+                JOptionPane.showMessageDialog(null, "Error: Invalid application criteria\n\rPlease correct your application and try again.");
+                setRefresh(true);
+            }else{
+                Property prop = new Property(propertyAppForm.getAddress(), propertyAppForm.getCityQuad(),
+                        propertyAppForm.getNumBed(), propertyAppForm.getNumBath(), propertyAppForm.isFurnished(),
+                        propertyAppForm.getPrice(), propertyAppForm.getType());
+                prop.setLandlordEmail(user.getEmail());
+                prop.setLandlordName(user.getFirstName() + " " + user.getLastName());
+                prop.setLandlordID(user.getiD());
 
-            property = prop;
-            landlordController.addPropertyToDatabase(prop);
-            JOptionPane.showMessageDialog(frame, "Property Application Submitted, please pay fee to list now.");
-            setPageToShow("PayInfoPage");
+                property = prop;
+                landlordController.addPropertyToDatabase(prop);
+                JOptionPane.showMessageDialog(frame, "Property Application Submitted, please pay fee to list now.");
+                setPageToShow("PayInfoPage");
+            }
         }
 
         else if (e.getActionCommand().equals("Contact Owner")) {
@@ -300,9 +312,14 @@ public class Listener implements ActionListener {
         }
     }
 
-    public void searchProperties() {
-        ArrayList<Property> res = renterController.searchProperties(searchForm);
-        setProperties(res);
+    public boolean searchProperties() {
+        if(searchForm.getMaxPrice() < 0 || searchForm.getMinPrice() > searchForm.getMaxPrice() || searchForm.getNumOfBathrooms() < 0 || searchForm.getNumOfBedrooms() < 0){
+            return false;
+        }else{
+            ArrayList<Property> res = renterController.searchProperties(searchForm);
+            setProperties(res);
+            return true; 
+        }
     }
 
     public void openProperty(String address) {// property page
@@ -360,7 +377,7 @@ public class Listener implements ActionListener {
     }
 
     public void getLandlordsProperties() {
-        properties = landlordController.getAllProperties();
+        properties = landlordController.getPropertyWithLandlord(user.getId());
     }
 
     public void setPageToShow(String pageToShow) {

@@ -57,15 +57,13 @@ public class Inbox {
 
         listener = listen;
         JPanel master = new JPanel(new BorderLayout());
-        if (mail == null) {
-            return master;
-        }
-        if (mail.isEmpty()) {
+       
+        if (mail == null||mail.isEmpty()) {
             JLabel noEmails = new JLabel("NO EMAILS :(");
             noEmails.setBackground(Color.GRAY);
             noEmails.setForeground(Color.PINK);
             noEmails.setFont(new Font("Serif", Font.BOLD, 65));
-            master.add(noEmails);
+            master.add(noEmails,BorderLayout.CENTER);
             return master;
         }
 
