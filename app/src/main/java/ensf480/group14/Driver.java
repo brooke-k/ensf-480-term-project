@@ -206,14 +206,14 @@ public class Driver {
             else if (page.equals("EditPropertyPage")) {
                 mainPanel.remove(editPropertyPanel);
                 editPropertyPanel = editProperty.display(listener.getProperty(), listener);
-                mainPanel.add(editPropertyPanel);
+                mainPanel.add(editPropertyPanel, "editPropertyPage");
                 cardLayout.show(mainPanel, "editPropertyPage");
             }
 
             else if (page.equals("EmailPage")) {
                 mainPanel.remove(emailJPanel);
                 emailJPanel = emailPage.display(listener.getEmail(), listener);
-                mainPanel.add(emailJPanel);
+                mainPanel.add(emailJPanel, "emailPage");
                 cardLayout.show(mainPanel, "emailPage");
             }
 

@@ -80,7 +80,9 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 				Updates.set("bedrooms", prop.getNumBed()),
 				Updates.set("furnished", prop.isFurnished()),
 				Updates.set("rent_cost", prop.getPrice()),
+				Updates.set("visible_to_renters", !prop.isRented()),
 				Updates.set("rented", prop.isRented()));
+
 		propertiesCollection.updateOne(new Document("address", prop.getAddress()), updates,
 				new UpdateOptions().upsert(true));
 	}

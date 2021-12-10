@@ -136,9 +136,6 @@ public class LoginForm implements Form {
         loginButton.addActionListener(listener);
         panel.add(loginButton);
 
-        JButton loginTestButton = new JButton("Login Debug");
-        loginTestButton.addActionListener(listener);
-        panel.add(loginTestButton);
 
         JButton signUpButton = new JButton("Or Sign Up");
         signUpButton.addActionListener(listener);

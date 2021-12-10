@@ -133,6 +133,7 @@ public class EditPropertyView {
         JLabel furnishCheckLabel = new JLabel("Furnished");
         panel.add(furnishCheckLabel);
         JCheckBox furnished = new JCheckBox();
+        furnished.setSelected (prop.isFurnished());
         furnished.setOpaque(false);
         furnished.setMaximumSize(new Dimension(190, 20));
         furnished.addFocusListener(new FocusListener() {
@@ -145,21 +146,7 @@ public class EditPropertyView {
         });
         panel.add(furnished);
 
-        JLabel rentCheckLabel = new JLabel("Rented");
-        panel.add(rentCheckLabel);
-        JCheckBox rentedBox = new JCheckBox();
-        rentedBox.setOpaque(false);
-        rentedBox.setMaximumSize(new Dimension(190, 20));
-        rentedBox.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {
-            }
-
-            public void focusLost(FocusEvent e) {
-                setRented(prop.isRented());
-            }
-        });
-        panel.add(rentedBox);
-
+       
         panel.add(new JLabel("City Quadrant"));
         JTextField quad = new JTextField(prop.getCityQuad());
         quad.setSize(190, 20);
@@ -181,6 +168,23 @@ public class EditPropertyView {
             }
         });
         panel.add(price);
+
+        JLabel rentCheckLabel = new JLabel("Rented");
+        panel.add(rentCheckLabel);
+        JCheckBox rentedBox = new JCheckBox();
+        rentedBox.setSelected (prop.isRented());
+        rentedBox.setOpaque(false);
+        rentedBox.setMaximumSize(new Dimension(190, 20));
+        rentedBox.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+            }
+
+            public void focusLost(FocusEvent e) {
+                setRented(rentedBox.isSelected());
+            }
+        });
+        panel.add(rentedBox);
+
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
@@ -228,7 +232,7 @@ public class EditPropertyView {
     }
 
     public boolean isRented() {
-        return furnish;
+        return rented;
     }
 
     public void setRented(boolean rented) {

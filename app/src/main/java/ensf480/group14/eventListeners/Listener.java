@@ -115,23 +115,6 @@ public class Listener implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Username or Password is Incorrect");
                 setPageToShow("LoginPage");
             }
-        } else if (e.getActionCommand().equals("Login Debug")) {
-            LoginForm login = LoginForm.getOnlyInstance(this);
-            user = renterController.checkLogin("j@gmail.com", "Pass");
-            if (user instanceof RegisteredRenter) {
-                renterController = new RegisteredRenterDBController();
-            } else if (user instanceof Landlord) {
-                landlordController = new LandlordDBControl();
-            } else {
-                managerController = new ManagerDBController();
-            }
-
-            if (user != null) {
-                setPageToShow("HomePage");
-            } else {
-                JOptionPane.showMessageDialog(null, "Username or Password is Incorrect");
-                setPageToShow("LoginPage");
-            }
         }
 
         else if (e.getActionCommand().equals("Continue without Logging in")) {
@@ -270,6 +253,7 @@ public class Listener implements ActionListener {
 
         else if (e.getActionCommand().equals("Save Changes")) {
             landlordController.editProperty(editPropertyView);
+            getLandlordsProperties();
             setPageToShow("ManagePropertiesPage");
         }
     }

@@ -17,10 +17,10 @@ package ensf480.group14.billcontrol;
 
 import java.util.ArrayList;
 
+
 public class BillingController {
     public ArrayList<String> personDetailsPaid;
 
-    // Constructor
     public BillingController(ArrayList<String> personDetailsPaid) {
         personDetailsPaid = new ArrayList<String>();
     }
