@@ -182,7 +182,7 @@ public class ManagerDBController extends LandlordDBControl {
 		return arr;
 	}
 
-	public ArrayList<Property> getPropertiesListedWithin(Calendar startDate, Calendar endDate) {
+	public ArrayList<Property> getPropertiesListedWithin(String startDate, String endDate) {
 		FindIterable<Document> docIter = preferenceCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
 		if (!iter.hasNext()) {
@@ -200,7 +200,7 @@ public class ManagerDBController extends LandlordDBControl {
 		return arr;
 	}
 
-	public ArrayList<Property> getPropertiesRentedWithin(Calendar startDate, Calendar endDate) {
+	public ArrayList<Property> getPropertiesRentedWithin(String startDate, String endDate) {
 		FindIterable<Document> docIter = propertiesCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
 		if (!iter.hasNext()) {
@@ -275,17 +275,16 @@ public class ManagerDBController extends LandlordDBControl {
 
 	}
 
-    public double getCurrentFee() {
+	public double getCurrentFee() {
 		FindIterable<Document> docIter = feeCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
-		double val = (double)iter.next().get("fee");
+		double val = (double) iter.next().get("fee");
 		return val;
 	}
 
 	public void setNewFee(Double changedFee) {
 		Bson updates = Updates.combine(
-			Updates.set("fee", changedFee)
-		);
+				Updates.set("fee", changedFee));
 		feeCollection.updateOne(new Document(), updates, new UpdateOptions().upsert(true));
 	}
 }

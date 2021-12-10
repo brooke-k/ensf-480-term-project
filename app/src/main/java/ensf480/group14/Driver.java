@@ -99,9 +99,11 @@ public class Driver {
             public void menuSelected(MenuEvent e) {
                 listener.setPageToShow("HomePage");
             }
+
             @Override
             public void menuDeselected(MenuEvent e) {
             }
+
             @Override
             public void menuCanceled(MenuEvent e) {
             }
@@ -117,7 +119,7 @@ public class Driver {
         while (true) {
             page = listener.getPageToShow();
 
-            if(prevPage.equals(page)){
+            if (prevPage.equals(page) && !listener.getRefresh()) {
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
@@ -137,7 +139,7 @@ public class Driver {
                 cardLayout.show(mainPanel, "renterSignUpForm");
             }
 
-            else if (page.equals("LandlordSignUpPage")){
+            else if (page.equals("LandlordSignUpPage")) {
                 cardLayout.show(mainPanel, "landLordSignUpForm");
             }
 
@@ -222,6 +224,8 @@ public class Driver {
             else {
                 cardLayout.show(mainPanel, "searchForm");
             }
+
+            listener.setRefresh(false);
         }
     }
 }

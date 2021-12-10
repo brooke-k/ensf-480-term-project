@@ -58,7 +58,7 @@ public class RegisteredRenter extends User {
 
 	public static RegisteredRenter getRegisteredRenter(Document renterDoc) {
 		RegisteredRenter newRenter = new RegisteredRenter();
-		newRenter.setEmailAddress(renterDoc.get("email").toString());
+		newRenter.setEmail(renterDoc.get("email").toString());
 		// newRenter.setPrefs(prefs);
 		newRenter.setType(renterDoc.get("type").toString());
 		newRenter.setDbcontroller(new RegisteredRenterDBController());
@@ -68,7 +68,7 @@ public class RegisteredRenter extends User {
 	}
 
 	public static Document toDocument(RegisteredRenter rRenter) {
-		Document finalDoc = rRenter.dbcontroller.getFirstObject("email", rRenter.getEmailAddress(), "users");
+		Document finalDoc = rRenter.dbcontroller.getFirstObject("email", rRenter.getEmail(), "users");
 		return finalDoc;
 	}
 
@@ -77,12 +77,8 @@ public class RegisteredRenter extends User {
 		System.out.printf("\n\r email: %s\n\r type: %s\n\r ID: %s\n\r", emailAddress, type, iD);
 	}
 
-	public String getEmailAddress() {
+	public String getEmail() {
 		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
 	}
 
 	public RegisteredRenterDBController getDbcontroller() {
@@ -119,23 +115,35 @@ public class RegisteredRenter extends User {
 
 	}
 
-	public boolean owns(String address){
+	public boolean owns(String address) {
 		return false;
 	}
 
 	@Override
 	public void setFirstName(String firstName) {
-		
+
 	}
 
 	@Override
 	public void setLastName(String lastName) {
-		
+
 	}
 
 	@Override
 	public void setEmail(String emailAddress) {
-		
+		this.emailAddress = emailAddress;
+	}
+
+	@Override
+	public String getFirstName() {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
+	@Override
+	public String getLastName() {
+		// TODO Auto-generated method stub
+		return "";
 	}
 
 }

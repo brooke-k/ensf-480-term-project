@@ -31,17 +31,21 @@ public abstract class User {
 	User() {
 		type = "banana : )";
 	}
-	
+
 	abstract public boolean owns(String address);
 
 	abstract public void setEmail(String emailAddress);
 
+	abstract public String getEmail();
+
 	abstract public void setiD(ObjectId iD);
 
 	abstract public void setFirstName(String firstName);
-	
-	abstract public void setLastName(String lastName) ;
 
+	abstract public void setLastName(String lastName);
 
+	abstract public String getFirstName();
+
+	abstract public String getLastName();
 
 };

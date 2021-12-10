@@ -15,7 +15,7 @@
 
 package ensf480.group14.external;
 
-import java.util.Calendar;
+// import java.util.Calendar; Not using it for now using a string
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -26,8 +26,8 @@ public class Property {
 	private String cityQuad;
 	private String rentalState;
 	private String landlordName;
-	private Calendar dateLastListed;
-	private Calendar dateRented;
+	private String dateLastListed;
+	private String dateRented;
 	private Integer numBedrooms;
 	private Double numBathrooms;
 	private String landlordEmail;
@@ -81,6 +81,22 @@ public class Property {
 
 	}
 
+	public Property(String address, String cityQuad, int numBed,
+			double numBath, boolean furnished, double price, String type) {
+		this.address = address;
+		this.cityQuad = cityQuad;
+		this.numBedrooms = Integer.valueOf(numBed);
+		this.numBathrooms = Double.valueOf(numBath);
+		this.furnished = Boolean.valueOf(furnished);
+		this.rentCost = Double.valueOf(price);
+		this.rented = false;
+		this.rentalState = "unlisted";
+		this.dateLastListed = java.time.LocalDate.now().toString();
+		this.dateRented = "";
+		this.visibleToRenters = false;
+		this.type = type;
+	}
+
 	public static Property getProperty(Document propertyDoc) {
 		Property returnProp = new Property();
 		returnProp.address = propertyDoc.get("address", String.class);
@@ -91,8 +107,8 @@ public class Property {
 		returnProp.landlordID = propertyDoc.get("landlord_id", ObjectId.class);
 		returnProp.landlordEmail = propertyDoc.get("landlord_email", String.class);
 		returnProp.type = propertyDoc.get("type", String.class);
-		returnProp.dateLastListed = propertyDoc.get("date_last_listed", Calendar.class);
-		returnProp.dateRented = propertyDoc.get("date_rented", Calendar.class);
+		returnProp.dateLastListed = propertyDoc.get("date_last_listed", String.class);
+		returnProp.dateRented = propertyDoc.get("date_rented", String.class);
 		returnProp.numBedrooms = propertyDoc.get("bedrooms", Integer.class);
 		returnProp.numBathrooms = propertyDoc.get("bathrooms", Double.class);
 		returnProp.rentCost = propertyDoc.get("rent_cost", Double.class);
@@ -163,19 +179,19 @@ public class Property {
 		this.landlordName = landlordName;
 	}
 
-	public Calendar getDateLastListed() {
+	public String getDateLastListed() {
 		return dateLastListed;
 	}
 
-	public void setDateLastListed(Calendar dateLastListed) {
+	public void setDateLastListed(String dateLastListed) {
 		this.dateLastListed = dateLastListed;
 	}
 
-	public Calendar getDateRented() {
+	public String getDateRented() {
 		return dateRented;
 	}
 
-	public void setDateRented(Calendar dateRented) {
+	public void setDateRented(String dateRented) {
 		this.dateRented = dateRented;
 	}
 
@@ -259,6 +275,7 @@ public class Property {
 	public boolean isRented() {
 		return rented;
 	}
+
 	public void setRented(boolean rented) {
 		this.rented = rented;
 	}

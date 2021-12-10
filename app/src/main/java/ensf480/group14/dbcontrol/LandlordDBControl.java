@@ -14,16 +14,21 @@
  */
 
 package ensf480.group14.dbcontrol;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PayInfoForm;
 import ensf480.group14.forms.PropertyApplication;
+import ensf480.group14.views.EditPropertyView;
 
 public class LandlordDBControl extends RegisteredRenterDBController {
 
@@ -63,6 +68,17 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 		resultCursor.close();
 
 		propertiesCollection.insertOne(Property.toDocument(property));
+	}
+
+	public void editProperty(EditPropertyView prop) {
+		Bson updates = Updates.combine(
+				Updates.set("bathrooms", prop.getNumBath()),
+				Updates.set("bedrooms", prop.getNumBed()),
+				Updates.set("furnished", prop.isFurnished()),
+				Updates.set("rent_cost", prop.getPrice()),
+				Updates.set("rented", prop.isRented()));
+		propertiesCollection.updateOne(new Document("address", prop.getAddress()), updates,
+				new UpdateOptions().upsert(true));
 	}
 
 	public Boolean payFee(PayInfoForm paymentForm, PropertyApplication propertyAppForm) {

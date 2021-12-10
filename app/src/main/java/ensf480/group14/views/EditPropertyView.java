@@ -33,6 +33,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.bson.types.ObjectId;
+
 import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.external.Property;
 
@@ -43,7 +45,7 @@ import ensf480.group14.external.Property;
 public class EditPropertyView {
     // private String userEmailAddress;
     // private String message;
-    int id;
+
     String addr;
     int numBed;
     double numBath;
@@ -59,10 +61,20 @@ public class EditPropertyView {
      * basically preference form except we overwrite an existing property
      */
     public JPanel display(Property prop, Listener listen) {
-        
+
         listener = listen;
         JPanel panel = new JPanel();
-        if(prop == null) return panel;
+        if (prop == null)
+            return panel;
+
+        addr = prop.getAddress();
+        numBed = prop.getNumBedrooms();
+        numBath = prop.getNumBathrooms();
+        furnish = prop.isFurnished();
+        cityQuad = prop.getCityQuad();
+        price = prop.getRentCost();
+        rented = prop.isRented();
+
         Dimension expectDimension = new Dimension(300, 300);
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
@@ -86,15 +98,9 @@ public class EditPropertyView {
         panel.add(new JLabel("Address"));
         JTextField address = new JTextField(prop.getAddress());
         address.setSize(190, 20);
+        address.setEditable(false);
         address.setMaximumSize(new Dimension(190, 20));
-        address.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {
-            }
 
-            public void focusLost(FocusEvent e) {
-                setAddress(address.getText());
-            }
-        });
         panel.add(address);
 
         panel.add(new JLabel("Number of Bedrooms"));
@@ -110,7 +116,6 @@ public class EditPropertyView {
             }
         });
         panel.add(numBedrooms);
-
         panel.add(new JLabel("Number of Bathrooms"));
         JTextField numBathrooms = new JTextField(prop.getNumBedrooms().toString());
         numBathrooms.setSize(190, 20);
@@ -125,8 +130,8 @@ public class EditPropertyView {
         });
         panel.add(numBathrooms);
 
-        JLabel checkLabel = new JLabel("Furnished");
-        panel.add(checkLabel);
+        JLabel furnishCheckLabel = new JLabel("Furnished");
+        panel.add(furnishCheckLabel);
         JCheckBox furnished = new JCheckBox();
         furnished.setOpaque(false);
         furnished.setMaximumSize(new Dimension(190, 20));
@@ -140,9 +145,9 @@ public class EditPropertyView {
         });
         panel.add(furnished);
 
-         JLabel checkLabel = new JLabel("Rented");
-        panel.add(checkLabel);
-        JCheckBox rentedBox = new JCheckBox(prop.isRented());
+        JLabel rentCheckLabel = new JLabel("Rented");
+        panel.add(rentCheckLabel);
+        JCheckBox rentedBox = new JCheckBox();
         rentedBox.setOpaque(false);
         rentedBox.setMaximumSize(new Dimension(190, 20));
         rentedBox.addFocusListener(new FocusListener() {
@@ -155,19 +160,11 @@ public class EditPropertyView {
         });
         panel.add(rentedBox);
 
-
         panel.add(new JLabel("City Quadrant"));
         JTextField quad = new JTextField(prop.getCityQuad());
         quad.setSize(190, 20);
         quad.setMaximumSize(new Dimension(190, 20));
-        quad.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {
-            }
-
-            public void focusLost(FocusEvent e) {
-                setCityQuad(quad.getText());
-            }
-        });
+        quad.setEditable(false);
         panel.add(quad);
 
         panel.add(new JLabel("Rent Amount"));
@@ -190,16 +187,12 @@ public class EditPropertyView {
         JButton saveButton = new JButton("Save Changes");
         saveButton.addActionListener(listener);
         panel.add(saveButton);
-        
+
+        JButton removeButton = new JButton("Remove Property");
+        removeButton.addActionListener(listener);
+        panel.add(removeButton);
+
         return panel;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getAddress() {

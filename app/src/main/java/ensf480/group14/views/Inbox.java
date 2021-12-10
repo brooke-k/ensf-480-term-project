@@ -15,38 +15,23 @@
 
 package ensf480.group14.views;
 
-import ensf480.group14.eventListeners.Listener;
-import ensf480.group14.external.Email;
-import ensf480.group14.external.Property;
-import ensf480.group14.users.RegisteredRenter;
-import ensf480.group14.users.User;
-
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusListener;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import javax.swing.*;
-import java.awt.*;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import ensf480.group14.eventListeners.Listener;
+import ensf480.group14.external.Email;
 
 /**
  * Makes the emails in a neat form as a table into the Inbox
@@ -69,31 +54,30 @@ public class Inbox {
      * @returns: All of them displayed in a JTable
      */
     public JPanel display(ArrayList<Email> mail, Listener listen) {
-        
+
         listener = listen;
         JPanel master = new JPanel(new BorderLayout());
         if (mail == null) {
             return master;
         }
-        if(mail.isEmpty()){
+        if (mail.isEmpty()) {
             JLabel noEmails = new JLabel("NO EMAILS :(");
             noEmails.setBackground(Color.GRAY);
             noEmails.setForeground(Color.PINK);
             noEmails.setFont(new Font("Serif", Font.BOLD, 65));
-            header.add(noEmails);
+            master.add(noEmails);
         }
-        
 
-        String[] columns = { "Sender", "Address" ,"Body","ID"};
+        String[] columns = { "Sender", "Address", "Body", "ID" };
         String[][] mails = new String[mail.size()][4];
         int i = 0;
         for (Email m : mail) {
             // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
-            
-            mails[i][1] = m.getSender();
-            mails[i][2] = m.getSubject();
-            mails[i][3] = m.getBody();
-            mails[i][4] = m.getId().toString();
+
+            mails[i][0] = m.getSender();
+            mails[i][1] = m.getSubject();
+            mails[i][2] = m.getBody().substring(0, 15) + "...";
+            mails[i][3] = m.getId().toString();
             // mails[i][1] = m.getAddress();
             // mails[i][2] = m.getEmailID();
             i++;
@@ -107,8 +91,8 @@ public class Inbox {
             }
 
         };
-        table.getColumnModel().getColumn(3).setMinWidth(0);
-        table.getColumnModel().getColumn(3).setMaxWidth(0)
+        jTable.getColumnModel().getColumn(3).setMinWidth(0);
+        jTable.getColumnModel().getColumn(3).setMaxWidth(0);
         jTable.getTableHeader().setReorderingAllowed(false);
         TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(jTable.getModel());
         jTable.setRowSorter(rowSorter);
@@ -118,7 +102,7 @@ public class Inbox {
         jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 // takes an email ID opens email view
-                listener.openEmail(jTable.getValueAt(jTable.getSelectedRow(), 0).toString());
+                listener.openEmail(jTable.getValueAt(jTable.getSelectedRow(), 3).toString());
             }
         });
         master.add(new JScrollPane(jTable), BorderLayout.CENTER);
@@ -129,25 +113,27 @@ public class Inbox {
     // For testing
 
     // public static void main(String[] args) {
-    //     JFrame frame = new JFrame();
-    //     Inbox s = new Inbox();
-    //     // User user = new RegisteredRenter("an email", "an ID", "registered_renter");
-    //     ArrayList<Email> emailTest = new ArrayList<Email>();
-    //     for (int i = 0; i < 40; i++) {
-    //         emailTest.add(new Email("HI", "Renter" + i + "@aol.com", "231" + i + "12 NorthMount Dr"));
+    // JFrame frame = new JFrame();
+    // Inbox s = new Inbox();
+    // // User user = new RegisteredRenter("an email", "an ID",
+    // "registered_renter");
+    // ArrayList<Email> emailTest = new ArrayList<Email>();
+    // for (int i = 0; i < 40; i++) {
+    // emailTest.add(new Email("HI", "Renter" + i + "@aol.com", "231" + i + "12
+    // NorthMount Dr"));
 
-    //     }
-    //     JPanel p = new JPanel();
-    //     p = s.display(emailTest);
-    //     // JScrollPane sp = new JScrollPane(p);
-    //     // frame.setContentPane(sp);
-    //     frame.add(p);
-    //     frame.setPreferredSize(new Dimension(900, 600));
+    // }
+    // JPanel p = new JPanel();
+    // p = s.display(emailTest);
+    // // JScrollPane sp = new JScrollPane(p);
+    // // frame.setContentPane(sp);
+    // frame.add(p);
+    // frame.setPreferredSize(new Dimension(900, 600));
 
-    //     frame.pack();
-    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //     frame.setLocationRelativeTo(null);
-    //     frame.setVisible(true);
+    // frame.pack();
+    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // frame.setLocationRelativeTo(null);
+    // frame.setVisible(true);
 
     // }
 

@@ -54,6 +54,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     protected static MongoCollection<Document> emailCollection;
     protected static MongoCollection<Document> preferenceCollection;
     protected static MongoCollection<Document> feeCollection;
+    protected static MongoCollection<Document> logCollection;
 
     private ArrayList<DatabaseObserver> observers;
 
@@ -105,7 +106,8 @@ public class RegisteredRenterDBController implements DatabaseSubject {
             propertiesCollection = dbMongo.getCollection("properties");
             emailCollection = dbMongo.getCollection("email");
             preferenceCollection = dbMongo.getCollection("preferences");
-
+            feeCollection = dbMongo.getCollection("fee");
+            logCollection = dbMongo.getCollection("log");
         }
     }
 
@@ -153,7 +155,8 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return true;
     }
 
-    public boolean addUserToDatabase(String email, String password, String userType, String firstName, String lastName) {
+    public boolean addUserToDatabase(String email, String password, String userType, String firstName,
+            String lastName) {
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("email", email);
         FindIterable<Document> findIter = usersCollection.find(searchQuery);
@@ -173,7 +176,8 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         resultCursor.close();
         Document newUser = new Document("email", email);
         emailCollection.insertOne(newUser);
-        newUser.append("password", password).append("type", userType).append("first_name", firstName).append("last_name", lastName);
+        newUser.append("password", password).append("type", userType).append("first_name", firstName)
+                .append("last_name", lastName);
         usersCollection.insertOne(newUser);
         System.out.println("User with email \"" + email + "\" added to the database.");
         return true;
@@ -343,9 +347,9 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     private boolean emailTaken(String email) {
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("email", email);
-        //usersCollection.
+        // usersCollection.
         FindIterable<Document> findIter = usersCollection.find(new Document("email", email));
-        //FindIterable<Document> findIter = usersCollection.find(searchQuery);
+        // FindIterable<Document> findIter = usersCollection.find(searchQuery);
         if (findIter.first() != null) {
             return true;
         }
@@ -355,7 +359,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     // Return new user if sign up successful,
     // Return null if email already taken
     public User signUp(String email, String password, String type) {
-        if (emailTaken(email))       {
+        if (emailTaken(email)) {
             return null;
         }
 
@@ -364,13 +368,13 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         Manager user3;
         if (type.equals("registered_renter")) {
             user1 = new RegisteredRenter();
-           addUserToDatabase(email, password, type);
+            addUserToDatabase(email, password, type);
             user1 = RegisteredRenter.getRegisteredRenter(getUserByEmail(email));
             return user1;
         } else if (type.equals("landlord")) {
-            //user2 = new Landlord();
-           addUserToDatabase(email, password, type);
-           user2 = Landlord.getLandlord(getUserByEmail(email));
+            // user2 = new Landlord();
+            addUserToDatabase(email, password, type);
+            user2 = Landlord.getLandlord(getUserByEmail(email));
             return user2;
         } else if (type.equals("manager")) {
             user3 = new Manager();
@@ -382,10 +386,10 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return null;
     }
 
-        // Return new user if sign up successful,
+    // Return new user if sign up successful,
     // Return null if email already taken
     public User signUp(String email, String password, String type, String firstName, String lastName) {
-        if (emailTaken(email))       {
+        if (emailTaken(email)) {
             return null;
         }
 
@@ -394,13 +398,13 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         Manager user3;
         if (type.equals("registered_renter")) {
             user1 = new RegisteredRenter();
-           addUserToDatabase(email, password, type);
+            addUserToDatabase(email, password, type);
             user1 = RegisteredRenter.getRegisteredRenter(getUserByEmail(email));
             return user1;
         } else if (type.equals("landlord")) {
-            //user2 = new Landlord();
-           addUserToDatabase(email, password, type, firstName, lastName);
-           user2 = Landlord.getLandlord(getUserByEmail(email));
+            // user2 = new Landlord();
+            addUserToDatabase(email, password, type, firstName, lastName);
+            user2 = Landlord.getLandlord(getUserByEmail(email));
             return user2;
         } else if (type.equals("manager")) {
             user3 = new Manager();
@@ -443,6 +447,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         }
     }
 
-    
+    public void savePreference(PreferenceForm preferenceForm, User user) {
 
+    }
 }

@@ -20,14 +20,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import ensf480.group14.external.Property;
 
 public class Report {
     // Attributes
-    private Calendar dateRangeStart;
-    private Calendar dateRangeEnd;
+    private String dateRangeStart;
+    private String dateRangeEnd;
     private int numPropertiesListed;
     private int numPropertiesRented;
     private int numPropertiesActive;
@@ -41,7 +40,7 @@ public class Report {
     // Currently throws an error because the Property class has not been made yet.
 
     // Methods
-    public Report(Calendar startDate, Calendar endDate) throws IOException {
+    public Report(String startDate, String endDate) throws IOException {
         dateRangeStart = startDate;
         dateRangeEnd = endDate;
         generateReport();
@@ -109,19 +108,19 @@ public class Report {
 
     }
 
-    public Calendar getDateRangeStart() {
+    public String getDateRangeStart() {
         return dateRangeStart;
     }
 
-    public void setDateRangeStart(Calendar dateRangeStart) {
+    public void setDateRangeStart(String dateRangeStart) {
         this.dateRangeStart = dateRangeStart;
     }
 
-    public Calendar getDateRangeEnd() {
+    public String getDateRangeEnd() {
         return dateRangeEnd;
     }
 
-    public void setDateRangeEnd(Calendar dateRangeEnd) {
+    public void setDateRangeEnd(String dateRangeEnd) {
         this.dateRangeEnd = dateRangeEnd;
     }
 

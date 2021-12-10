@@ -56,7 +56,7 @@ public class Manager extends User {
         newDoc.append("type", man.type);
         return newDoc;
     }
-    
+
     public static Manager getManager(Document manDoc) {
         Manager man = new Manager();
         man.email = (String) manDoc.get("email");
@@ -65,7 +65,7 @@ public class Manager extends User {
         return man;
     }
 
-    public void generateReport(Calendar startDate, Calendar endDate) {
+    public void generateReport(String startDate, String endDate) {
         try {
             Report report = new Report(startDate, endDate);
         } catch (IOException e) {
@@ -89,18 +89,38 @@ public class Manager extends User {
         this.email = email;
     }
 
-    public boolean owns(String address){
+    public boolean owns(String address) {
         return false;
     }
 
-	@Override
-	public void setFirstName(String firstName) {
-		
-	}
+    @Override
+    public void setFirstName(String firstName) {
 
-	@Override
-	public void setLastName(String lastName) {
-		
-	}
+    }
+
+    @Override
+    public void setLastName(String lastName) {
+
+    }
+
+    @Override
+    public String getType() {
+        return super.getType();
+    }
+
+    @Override
+    protected void setType(String type) {
+        super.setType(type);
+    }
+
+    @Override
+    public String getFirstName() {
+        return "";
+    }
+
+    @Override
+    public String getLastName() {
+        return "";
+    }
 
 }

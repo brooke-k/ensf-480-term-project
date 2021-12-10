@@ -20,11 +20,15 @@ import java.util.HashSet;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import ensf480.group14.dbcontrol.LandlordDBControl;
+
 public class Landlord extends User {
 	private String firstName;
 	private String lastName;
 	private String email;
 	private ObjectId iD;
+
+	private LandlordDBControl dbcontrol;
 
 	private HashSet<String> ownedAddresses;
 
@@ -40,7 +44,7 @@ public class Landlord extends User {
 		ownedAddresses.remove(address);
 	}
 
-	public Landlord(){
+	public Landlord() {
 		this.type = "landlord";
 	}
 

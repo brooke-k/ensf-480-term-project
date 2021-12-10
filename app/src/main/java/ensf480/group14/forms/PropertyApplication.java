@@ -28,6 +28,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -44,6 +45,7 @@ public class PropertyApplication implements Form {
     boolean furnish;
     String cityQuad;
     double price;
+    String type;
 
     public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
@@ -66,6 +68,19 @@ public class PropertyApplication implements Form {
         panel.add(contactLabel);
 
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
+
+        panel.add(new JLabel("Building Type"));
+        String buildingTypes[] = { "House", "Apartment", "TownHouse" };
+        JComboBox buildingTypeField = new JComboBox<String>(buildingTypes);
+        buildingTypeField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+            }
+
+            public void focusLost(FocusEvent e) {
+                setType((buildingTypeField.getItemAt(buildingTypeField.getSelectedIndex())).toString());
+            }
+        });
+        panel.add(buildingTypeField);
 
         panel.add(new JLabel("Address"));
         JTextField address = new JTextField();
@@ -218,6 +233,14 @@ public class PropertyApplication implements Form {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return this.type;
     }
 
     // For testing

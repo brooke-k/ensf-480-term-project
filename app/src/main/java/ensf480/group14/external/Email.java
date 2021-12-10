@@ -60,6 +60,13 @@ public class Email {
 
     }
 
+    public Email(String bod, String send, String sub, String recipient) {
+        this.body = bod;
+        this.sender = send;
+        this.subject = sub;
+        this.recipient = recipient;
+    }
+
     public String getRecipient() {
         return recipient;
     }

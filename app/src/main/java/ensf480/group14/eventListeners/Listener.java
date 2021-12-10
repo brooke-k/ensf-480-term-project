@@ -55,6 +55,7 @@ public class Listener implements ActionListener {
 
     Property property;
     Email email;
+    boolean refresh;
 
     RenterSignUpForm signUpForm;
     LandlordSignUpForm landlordSignUpForm;
@@ -85,6 +86,7 @@ public class Listener implements ActionListener {
         this.landlordSignUpForm = landlordSignUpForm;
         this.paymentForm = paymentForm;
         this.pageToShow = "LoginPage";
+        this.refresh = false;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -134,7 +136,8 @@ public class Listener implements ActionListener {
 
         else if (e.getActionCommand().equals("Sign Up as Landlord")) {
             Boolean res = signUpLandlord(landlordSignUpForm.getUsername(), landlordSignUpForm.getPassword(),
-                    landlordSignUpForm.getConfirmPassword(), landlordSignUpForm.getFirstName(), landlordSignUpForm.getLastName());
+                    landlordSignUpForm.getConfirmPassword(), landlordSignUpForm.getFirstName(),
+                    landlordSignUpForm.getLastName());
             if (res == true) {
                 setPageToShow("HomePage");
             } else {
@@ -172,7 +175,7 @@ public class Listener implements ActionListener {
         else if (e.getActionCommand().equals("Adjust Fees")) {
             Double currFee = managerController.getCurrentFee();
             Double changedFee = Double.parseDouble((String) JOptionPane.showInputDialog(frame, "Change fees to",
-                    "Change Fees", JOptionPane.PLAIN_MESSAGE, null, null, "10" /*currFee*/));
+                    "Change Fees", JOptionPane.PLAIN_MESSAGE, null, null, "10" /* currFee */));
             if (changedFee != null) {
                 managerController.setNewFee(changedFee);
             }
@@ -182,8 +185,25 @@ public class Listener implements ActionListener {
             setPageToShow("PropertyApplicationPage");
         }
 
-        else if (e.getActionCommand().equals("Access Database")) {
+        else if (e.getActionCommand().equals("Access Properties")) {
             setPageToShow("SearchResultPage");
+        }
+
+        else if (e.getActionCommand().equals("Access Users")) {
+            setPageToShow("UserAccessPage");
+        }
+
+        else if (e.getActionCommand().equals("Remove Property")) {
+
+            int res = JOptionPane.showConfirmDialog(null, "Confirm Delete Property",
+                    "Remove Property at " + property.getAddress() + "?",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (res == JOptionPane.OK_OPTION) {
+                setPageToShow("ManagePropertiesPage");
+                // delete property
+                setRefresh(true); // refresh in driver
+            }
+
         }
 
         else if (e.getActionCommand().equals("Send")) {
@@ -201,7 +221,10 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Submit Application")) {
-            Property prop = new Property();
+            Property prop = new Property(propertyAppForm.getAddress(), propertyAppForm.getCityQuad(),
+                    propertyAppForm.getNumBed(), propertyAppForm.getNumBath(), propertyAppForm.isFurnished(),
+                    propertyAppForm.getPrice(), propertyAppForm.getType());
+
             landlordController.addPropertyToDatabase(prop);
             JOptionPane.showMessageDialog(frame, "Property Application Submitted, please pay fee to list now.");
             setPageToShow("PayInfoPage");
@@ -222,7 +245,8 @@ public class Listener implements ActionListener {
             }
         }
 
-        else if (e.getActionCommand().equals("Save Changes")){
+        else if (e.getActionCommand().equals("Save Changes")) {
+            // changeProperty()
             // To do
         }
     }
@@ -241,7 +265,8 @@ public class Listener implements ActionListener {
         }
     }
 
-    public boolean signUpLandlord(String username, String password, String confirmPassword, String firstName, String lastName) {
+    public boolean signUpLandlord(String username, String password, String confirmPassword, String firstName,
+            String lastName) {
         if (!password.equals(confirmPassword)) {
             return false;
         }
@@ -276,10 +301,10 @@ public class Listener implements ActionListener {
                 property = pp;
             }
         }
-        Object[] possible = { "Visible", "Unvisible" };
-        String visible = (property.isVisibleToRenters() ? "Visible" : "Unvisible");
-        String s = (String) JOptionPane.showInputDialog(frame, "Change fees to",
-        "Change Fees", JOptionPane.PLAIN_MESSAGE, null, possible, visible);
+        Object[] possible = { "Visible", "Unlisted" };
+        String visible = (property.isVisibleToRenters() ? "Visible" : "Unlisted");
+        String s = (String) JOptionPane.showInputDialog(frame, "Change Visibility to",
+                "Change Visiblity", JOptionPane.PLAIN_MESSAGE, null, possible, visible);
         if (s != null) {
             managerController.changePropertyState(address, s);
         }
@@ -295,7 +320,7 @@ public class Listener implements ActionListener {
                 property = pp;
             }
         }
-        if (property.isVisibleToRenters()) {
+        if (property.isVisibleToRenters() || property.isRented()) {
             setPageToShow("EditPropertyPage");
         } else {
             setPageToShow("PayInfoPage");
@@ -313,7 +338,7 @@ public class Listener implements ActionListener {
         setPageToShow("EmailPage");
     }
 
-    public void getLandlordsProperties(){
+    public void getLandlordsProperties() {
         landlordController.getAllProperties();
     }
 
@@ -363,5 +388,13 @@ public class Listener implements ActionListener {
 
     public Email getEmail() {
         return email;
+    }
+
+    public void setRefresh(boolean b) {
+        this.refresh = b;
+    }
+
+    public boolean getRefresh() {
+        return this.refresh;
     }
 }
