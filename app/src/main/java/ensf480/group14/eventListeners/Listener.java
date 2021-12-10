@@ -163,6 +163,7 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Inbox")) {
+            setMail(LandlordDBControl.getAllEmails(user.getEmail()));
             setPageToShow("InboxPage");
         }
 
@@ -212,7 +213,7 @@ public class Listener implements ActionListener {
 
         else if (e.getActionCommand().equals("Send")) {
 
-            Email em = new Email(contactForm.getMessage(),contactForm.getSenderEmailAddress(), property.getAddress());
+            Email em = new Email(contactForm.getMessage(),contactForm.getSenderEmailAddress(), property.getAddress(), property.getLandlordEmail());
             RegisteredRenterDBController.sendEmail(em);
             JOptionPane.showMessageDialog(frame, "Message Sent.");
             setPageToShow("SearchResultsPage");
@@ -258,6 +259,16 @@ public class Listener implements ActionListener {
             landlordController.editProperty(editPropertyView);
             getLandlordsProperties();
             setPageToShow("ManagePropertiesPage");
+        }
+
+        else if (e.getActionCommand().equals("Back to Inbox")){
+            setPageToShow("InboxPage");
+        }
+
+        else if (e.getActionCommand().equals("Delete Email")){
+            LandlordDBControl.deleteEmail(email.getId());
+            setMail(LandlordDBControl.getAllEmails(user.getEmail()));
+            setPageToShow("InboxPage");
         }
     }
 

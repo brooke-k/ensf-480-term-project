@@ -275,8 +275,8 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     public static void sendEmail(Email email) {
         Document newEmail = new Document("read", Boolean.FALSE);
-        newEmail.put("dest_addr", email.getRecipient());
-        newEmail.put("src_addr", email.getSender());
+        newEmail.put("recipient", email.getRecipient());
+        newEmail.put("sender", email.getSender());
         newEmail.put("body", email.getBody());
         newEmail.put("subject", email.getSubject());
         newEmail.put("_id", new ObjectId());
@@ -299,7 +299,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     public static ArrayList<Email> getAllEmails(String userEmail) {
         BasicDBObject query = new BasicDBObject();
-        query.put("dest_addr", userEmail);
+        query.put("recipient", userEmail);
         FindIterable<Document> docIter = emailCollection.find(query);
         MongoCursor<Document> iter = docIter.cursor();
         if (!iter.hasNext()) {
@@ -317,17 +317,17 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     public static void deleteAllEmails(String userEmail) {
         BasicDBObject query = new BasicDBObject();
-        query.put("dest_addr", userEmail);
+        query.put("recipient", userEmail);
         emailCollection.deleteMany(query);
     }
 
     public static void deleteAllReadEmails(String userEmail) {
-        emailCollection.deleteMany(Filters.and(Filters.eq("dest_addr", userEmail), Filters.eq("read", Boolean.TRUE)));
+        emailCollection.deleteMany(Filters.and(Filters.eq("recipient", userEmail), Filters.eq("read", Boolean.TRUE)));
     }
 
     public static ArrayList<Email> getAllUnreadEmails(String userEmail) {
         FindIterable<Document> docIter = emailCollection
-                .find(Filters.and(Filters.eq("dest_addr", userEmail), Filters.eq("read", Boolean.TRUE)));
+                .find(Filters.and(Filters.eq("recipient", userEmail), Filters.eq("read", Boolean.TRUE)));
         MongoCursor<Document> iter = docIter.iterator();
         if (!iter.hasNext()) {
             return null;

@@ -66,6 +66,7 @@ public class Inbox {
             noEmails.setForeground(Color.PINK);
             noEmails.setFont(new Font("Serif", Font.BOLD, 65));
             master.add(noEmails);
+            return master;
         }
 
         String[] columns = { "Sender", "Address", "Body", "ID" };
@@ -76,7 +77,7 @@ public class Inbox {
 
             mails[i][0] = m.getSender();
             mails[i][1] = m.getSubject();
-            mails[i][2] = m.getBody().substring(0, 15) + "...";
+            mails[i][2] = m.getBody();
             mails[i][3] = m.getId().toString();
             // mails[i][1] = m.getAddress();
             // mails[i][2] = m.getEmailID();

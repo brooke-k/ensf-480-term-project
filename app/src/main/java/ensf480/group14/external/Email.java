@@ -38,16 +38,16 @@ public class Email {
         Email email = new Email();
         email.setBody(emailDoc.get("body").toString());
         email.setId((ObjectId) emailDoc.get("_id"));
-        email.setRecipient(emailDoc.get("dest_addr").toString());
-        email.setSender(emailDoc.get("src_addr").toString());
+        email.setRecipient(emailDoc.get("recipient").toString());
+        email.setSender(emailDoc.get("sender").toString());
         email.setSubject(emailDoc.get("subject").toString());
         return email;
     }
 
     public static Document toDocument(Email email) {
         Document emailDoc = new Document("_id", email.getId());
-        emailDoc.append("dest_addr", email.getRecipient());
-        emailDoc.append("src_addr", email.getSender());
+        emailDoc.append("recipient", email.getRecipient());
+        emailDoc.append("sender", email.getSender());
         emailDoc.append("subject", email.getSubject());
         emailDoc.append("body", email.getBody());
         return emailDoc;
