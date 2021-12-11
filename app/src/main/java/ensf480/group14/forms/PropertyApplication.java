@@ -357,21 +357,35 @@ public class PropertyApplication implements Form {
 
     /**
 	 * Sets the price from the property application. 
-	 * @params: Takes inthe price from the property application. 
-	 * @returns: Returns 
+	 * @params: Takes in the price from the property application. 
+	 * @returns: Returns Nothing.
 	 */
     public void setPrice(double price) {
         this.price = price;
     }
 
+    /**
+	 * Gets the type from the property application. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the type from the property application. 
+	 */
     public void setType(String type) {
         this.type = type;
     }
 
+     /**
+	 * Sets the type from the property application. 
+	 * @params: Takes in the type from the property application. 
+	 * @returns: Returns Nothing.
+	 */
     public String getType() {
         return this.type;
     }
 
+    /**
+    * This is how we were testing the forms sepeartely when the whole application was still building. 
+    */
+    
     // For testing
     // public static void main(String[] args) {
     // JFrame frame = new JFrame();
