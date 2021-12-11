@@ -46,8 +46,13 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 		System.out.println("Property with the address \"" + address + "\" has been removed from the database");
 	}
 
-	public void changePropertyState(String address, String newState) {
-		// TODO
+	public void changePropertyState(String address, boolean visible) {
+		Bson updates = Updates.combine(
+			Updates.set("visible_to_renters", visible));
+
+
+	propertiesCollection.updateOne(new Document("address", address), updates,
+			new UpdateOptions().upsert(false));
 	}
 
 	public Property getProperty(String address) {

@@ -47,6 +47,13 @@ public class Landlord extends User {
 		this.type = "landlord";
 	}
 
+	public Landlord(Document next) {
+		setEmail(next.get("email").toString());
+		setType("landlord");
+		setFirstName(next.get("first_name").toString());
+		setLastName(next.get("last_name").toString());
+	}
+
 	public static Landlord getLandlord(Document lldoc) {
 		Landlord ll = new Landlord();
 		ll.setEmail(lldoc.get("email").toString());

@@ -60,12 +60,15 @@ public class Driver {
         PayInfoForm paymentForm = new PayInfoForm();
         EditPropertyView editProperty = new EditPropertyView();
         EmailView emailPage = new EmailView();
+        AllUserView allUserPage = new AllUserView();
 
         Listener listener = new Listener(signUp, contact, preferenceForm, searchForm, propertyApp, inbox, homePage,
                 propertyPage, mainFrame, landlordSignUpForm, paymentForm, editProperty);
 
         LoginForm loginForm = LoginForm.getOnlyInstance(listener);
 
+        JPanel allUserPagePanel = allUserPage.display(listener.getUsers(), listener);
+        mainPanel.add(allUserPagePanel, "UserAccessPage");
         mainPanel.add(loginForm.display(listener), "loginForm");
         mainPanel.add(signUp.display(listener), "renterSignUpForm");
         mainPanel.add(contact.display(listener), "contactForm");
@@ -223,6 +226,13 @@ public class Driver {
                 emailJPanel = emailPage.display(listener.getEmail(), listener);
                 mainPanel.add(emailJPanel, "emailPage");
                 cardLayout.show(mainPanel, "emailPage");
+            }
+
+            else if (page.equals("UserAccessPage")){
+                mainPanel.remove(allUserPagePanel);
+                allUserPagePanel = allUserPage.display(listener.getUsers(), listener);
+                mainPanel.add(allUserPagePanel, "UserAccessPage");
+                cardLayout.show(mainPanel,"UserAccessPage");
             }
 
 

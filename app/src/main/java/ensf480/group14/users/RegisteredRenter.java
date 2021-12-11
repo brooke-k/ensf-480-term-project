@@ -56,6 +56,11 @@ public class RegisteredRenter extends User {
 
 	}
 
+	public RegisteredRenter(Document next) {
+		setEmail(next.get("email").toString());
+		this.type = "registered_renter";
+	}
+
 	public static RegisteredRenter getRegisteredRenter(Document renterDoc) {
 		RegisteredRenter newRenter = new RegisteredRenter();
 		newRenter.setEmail(renterDoc.get("email").toString());

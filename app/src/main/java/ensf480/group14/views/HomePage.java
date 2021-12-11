@@ -102,6 +102,11 @@ public class HomePage {
 			panel.add(feesButton);
 
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
+			JButton periodButton = new JButton("Adjust Payment Period"); // opens dialog box with pay period and amount
+			periodButton.addActionListener(listener); // also needs to change those in DB/Billing
+			panel.add(periodButton);
+
+			panel.add(Box.createRigidArea(new Dimension(1, 5)));
 			JButton reportButton = new JButton("Generate Report"); // generates report as txt file and opens it
 			reportButton.addActionListener(listener); // brooke already made this in Report
 			panel.add(reportButton);

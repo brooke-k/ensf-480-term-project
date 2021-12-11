@@ -17,6 +17,7 @@ package ensf480.group14.users;
 
 import java.util.HashSet;
 
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 public abstract class User {

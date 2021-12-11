@@ -31,6 +31,7 @@ import org.bson.conversions.Bson;
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
+import ensf480.group14.users.Landlord;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
@@ -131,8 +132,12 @@ public class ManagerDBController extends LandlordDBControl {
 		ArrayList<User> arr = new ArrayList<>(0);
 
 		while (iter.hasNext()) {
-			// TODO
-			// arr.add(User.getUser(iter.next()));
+			Document us = iter.next();
+			if(us.get("type").equals("landlord")){
+				arr.add(new Landlord(us));
+			}else if (us.get("type").equals("registered_renter")){
+				arr.add(new RegisteredRenter(us));
+			}
 		}
 
 		return arr;

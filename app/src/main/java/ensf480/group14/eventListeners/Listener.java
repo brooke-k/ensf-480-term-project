@@ -49,10 +49,11 @@ public class Listener implements ActionListener {
     User user;
     ArrayList<Property> properties;
     ArrayList<Email> mail;
+    ArrayList<User> users;
     RegisteredRenterDBController renterController;
     ManagerDBController managerController;
     LandlordDBControl landlordController;
-
+    
     Property property;
     Email email;
     boolean refresh;
@@ -202,10 +203,12 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Access Properties")) {
-            setPageToShow("SearchResultPage");
+            setProperties(managerController.getAllProperties());
+            setPageToShow("SearchResultsPage");
         }
 
         else if (e.getActionCommand().equals("Access Users")) {
+            setUsers(managerController.getAllUsers());
             setPageToShow("UserAccessPage");
         }
 
@@ -287,6 +290,23 @@ public class Listener implements ActionListener {
             setMail(LandlordDBControl.getAllEmails(user.getEmail()));
             setPageToShow("InboxPage");
         }
+
+        else if (e.getActionCommand().equals("Adjust Payment Period")){
+            Double currPeriod = managerController.getCurrentPeriod();
+            Double changedPeriod = Double.parseDouble((String) JOptionPane.showInputDialog(frame, "Change period to",
+                    "Change Period", JOptionPane.PLAIN_MESSAGE, null, null, currPeriod));
+            if (changedPeriod != null) {
+                managerController.setCurrentPeriod(changedPeriod);
+            }
+        }
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
     }
 
     public boolean signUpRenter(String username, String password, String confirmPassword) {
@@ -349,7 +369,9 @@ public class Listener implements ActionListener {
         String s = (String) JOptionPane.showInputDialog(frame, "Change Visibility to",
                 "Change Visiblity", JOptionPane.PLAIN_MESSAGE, null, possible, visible);
         if (s != null) {
-            managerController.changePropertyState(address, s);
+            managerController.changePropertyState(address, s.equals("Visible") ? true : false);
+            setProperties(managerController.getAllProperties());
+            setRefresh(true);
         }
     }
 
