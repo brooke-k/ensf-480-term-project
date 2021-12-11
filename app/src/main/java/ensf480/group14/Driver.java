@@ -65,6 +65,8 @@ public class Driver {
         Listener listener = new Listener(signUp, contact, preferenceForm, searchForm, propertyApp, inbox, homePage,
                 propertyPage, mainFrame, landlordSignUpForm, paymentForm, editProperty);
 
+        listener.startUpRoutine();
+
         LoginForm loginForm = LoginForm.getOnlyInstance(listener);
 
         JPanel allUserPagePanel = allUserPage.display(listener.getUsers(), listener);

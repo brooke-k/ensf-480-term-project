@@ -37,6 +37,7 @@ public class Property {
 	private String type;
 	private Boolean visibleToRenters;
 	private ObjectId landlordID;
+	private String dateLastPaid;
 
 	private Property(Property property) {
 		this.iD = property.iD;
@@ -55,7 +56,9 @@ public class Property {
 		this.type = property.type;
 		this.landlordID = property.landlordID;
 		this.furnished = property.furnished;
+		this.dateLastPaid = property.dateLastPaid;
 	}
+
 
 	public Property() {
 
@@ -65,6 +68,7 @@ public class Property {
 		landlordName = null;
 		dateRented = null;
 		dateLastListed = null;
+		dateLastPaid = null;
 
 		numBedrooms = null;
 		numBathrooms = null;
@@ -92,11 +96,12 @@ public class Property {
 		this.furnished = Boolean.valueOf(furnished);
 		this.rentCost = Double.valueOf(price);
 		this.rented = false;
-		this.rentalState = "unlisted";
+		this.rentalState = "suspended";
 		this.dateLastListed = java.time.LocalDate.now().toString();
 		this.dateRented = "";
 		this.visibleToRenters = false;
 		this.type = type;
+		this.dateLastPaid = "";
 	}
 
 	public static Property getProperty(Document propertyDoc) {
@@ -117,6 +122,7 @@ public class Property {
 		returnProp.rented = propertyDoc.get("rented", Boolean.class);
 		returnProp.visibleToRenters = propertyDoc.get("visible_to_renters", Boolean.class);
 		returnProp.furnished = propertyDoc.get("furnished", Boolean.class);
+		returnProp.dateLastPaid = propertyDoc.get("date_last_paid", String.class);
 		return returnProp;
 
 	}
@@ -140,6 +146,7 @@ public class Property {
 		propDoc.append("type", prop.getType());
 		propDoc.append("furnished", prop.isFurnished());
 		propDoc.append("landlord_id", prop.getLandlordID());
+		propDoc.append("date_last_paid", prop.getDateLastPaid());
 		return propDoc;
 	}
 
@@ -282,6 +289,13 @@ public class Property {
 
 	public void setRented(boolean rented) {
 		this.rented = rented;
+	}
+	public String getDateLastPaid() {
+		return dateLastPaid;
+	}
+
+	public void setDateLastPaid(String dateLastPaid) {
+		this.dateLastPaid = dateLastPaid;
 	}
 
 }

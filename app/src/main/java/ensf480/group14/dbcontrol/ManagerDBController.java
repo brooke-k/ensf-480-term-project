@@ -13,10 +13,14 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.dbcontrol;
-
+/**
+ * The import statements used in order for the code to work. 
+ */
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -35,11 +39,25 @@ import ensf480.group14.users.Landlord;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
+/**
+ * Controller for the user type Managers and builds on the functionalities of the landlord database controller. 
+ * It lets the manager to access more than the users which are mentioned in the project document, they can adjust 
+ * the period, fees for the user. Also let's them access all users and properties. If this was a hireachy model of 
+ * the controllers they have the most access in the program. 
+ */
 public class ManagerDBController extends LandlordDBControl {
+	/**
+	 * Default constructor 
+	 */
 	public ManagerDBController() {
 		super();
 	}
 
+	/**
+	 * This prints the current users in the system and interfaces with the database to reterive them and find it. 
+	 * @params: Nothing
+	 * @returns: Nothing interfacing with the database in this function. 
+	 */
 	private void printUsers() {
 		System.out.println();
 		System.out.println("Current Users:");
@@ -54,6 +72,11 @@ public class ManagerDBController extends LandlordDBControl {
 
 	}
 
+	/**
+	 * This prints the current emails in the system and interfaces with the database to reterive them and find it. 
+	 * @params: Nothing
+	 * @returns: Nothing interfacing with the database in this function. 
+	 */
 	private void printEmail() {
 		System.out.println();
 		System.out.println("Current Emails:");
@@ -68,6 +91,12 @@ public class ManagerDBController extends LandlordDBControl {
 
 	}
 
+	/**
+	 * This prints the current propeties in the system and interfaces with the database to reterive them and find it. 
+	 * Used later in the code when the Manager wants to access all of the properties. 
+	 * @params: Nothing
+	 * @returns: Nothing interfacing with the database in this function. 
+	 */
 	protected void printProperties() {
 		System.out.println();
 		System.out.println("Current Properties:");
@@ -81,6 +110,11 @@ public class ManagerDBController extends LandlordDBControl {
 
 	}
 
+	/**
+	 * This resets the users collection and email collection. 
+	 * @params: Nothing
+	 * @returns: Nothing interfacing with the database in this function. 
+	 */
 	private void resetUsers() {
 		System.out.println();
 		System.out.println("Removing all users from the database");
@@ -92,6 +126,12 @@ public class ManagerDBController extends LandlordDBControl {
 
 	}
 
+	/**
+	 * This removes the user from the database based on the email which is passed in since the Manager has the ability 
+	 * to kick out the user from using the system. 
+	 * @params: Takes in the email of the user. 
+	 * @returns: Nothing interfacing with the database in this function removes the user from the collection. 
+	 */
 	private void removeUserFromDatabase(String email) {
 		BasicDBObject searchQuery = new BasicDBObject();
 		System.out.println("Removing user with the email address \"" + email + "\" from database");
@@ -99,6 +139,11 @@ public class ManagerDBController extends LandlordDBControl {
 		System.out.println("User with the email address \"" + email + "\" has been removed from the database");
 	}
 
+	/**
+	 * This prints the preferences which are being stored in the database for the user. 
+	 * @params: Nothing 
+	 * @returns: Nothing interfacing with the database only. 
+	 */
 	private void printPreferences() {
 		System.out.println();
 		System.out.println("Currently Store Preferences (All users):");
@@ -113,6 +158,11 @@ public class ManagerDBController extends LandlordDBControl {
 
 	}
 
+	/**
+	 * This resets the propeties collection. 
+	 * @params: Nothing
+	 * @returns: Nothing interfacing with the database in this function. 
+	 */
 	private void resetProperties() {
 		System.out.println();
 		System.out.println("Removing all properties from the database");
@@ -123,6 +173,13 @@ public class ManagerDBController extends LandlordDBControl {
 
 	}
 
+	
+	/**
+	 * Retrieves the users from the database which are in the user collection, checks for the types 
+	 * and based on that will create a new user based on their type. 
+	 * @params: Nothing
+	 * @returns: Returns the arraylist of the users in the database. 
+	 */
 	public ArrayList<User> getAllUsers() {
 		FindIterable<Document> docIter = usersCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
@@ -143,6 +200,12 @@ public class ManagerDBController extends LandlordDBControl {
 		return arr;
 	}
 
+	/**
+	 * Retrieves the emails from the database which are in the email collection, checks if there is an email 
+	 * or not in the database. 
+	 * @params: Nothing
+	 * @returns: Returns the arraylist of the emails in the database. 
+	 */
 	public ArrayList<Email> getAllEmails() {
 		FindIterable<Document> docIter = emailCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
@@ -158,6 +221,12 @@ public class ManagerDBController extends LandlordDBControl {
 		return arr;
 	}
 
+	/**
+	 * Retrieves the properties from the database which are in the properties collection, checks if there is a property 
+	 * or not in the database. 
+	 * @params: Nothing
+	 * @returns: Returns the arraylist of the properties in the database. 
+	 */
 	public ArrayList<Property> getAllProperties() {
 		FindIterable<Document> docIter = propertiesCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
@@ -173,6 +242,12 @@ public class ManagerDBController extends LandlordDBControl {
 		return arr;
 	}
 
+	/**
+	 * Retrieves the preferences from the database which are in the properties collection, checks if there is a preference 
+	 * or not in the database. 
+	 * @params: Nothing
+	 * @returns: Returns the arraylist of the preferences in the database. 
+	 */
 	public ArrayList<PreferenceForm> getAllPreferences() {
 		FindIterable<Document> docIter = preferenceCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
@@ -186,7 +261,13 @@ public class ManagerDBController extends LandlordDBControl {
 
 		return arr;
 	}
-
+	
+	/**
+	 * Retrieves the properties from the database which are in the preference collection, checks if there is a property like this 
+	 * or not, based on the user liking which they fill out in the preference form. 
+	 * @params: Takes in two parameters which are startDate and endDate to get in a range. 
+	 * @returns: Returns the arraylist of the propeties in the database within a start date and end date. 
+	 */
 	public ArrayList<Property> getPropertiesListedWithin(String startDate, String endDate) {
 		FindIterable<Document> docIter = preferenceCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
@@ -205,6 +286,12 @@ public class ManagerDBController extends LandlordDBControl {
 		return arr;
 	}
 
+	/**
+	 * Retrieves the properties from the database which are in the propeties collection, checks if there is a property like this 
+	 * or not, based on the rented within a date. 
+	 * @params: Takes in two parameters which are startDate and endDate to get in a range. 
+	 * @returns: Returns the arraylist of the propeties in the database within a start date and end date. 
+	 */
 	public ArrayList<Property> getPropertiesRentedWithin(String startDate, String endDate) {
 		FindIterable<Document> docIter = propertiesCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
@@ -222,7 +309,13 @@ public class ManagerDBController extends LandlordDBControl {
 		}
 		return arr;
 	}
-
+	/**
+	 * Retrieves the properties from the database which are in the propeties collection, checks if there is a property like this 
+	 * or not, based on the rented within a date and checks their rental state as mentioned 
+	 * in the document this is just for the active properties. 
+	 * @params: Takes in nothing.
+	 * @returns: Returns the arraylist of the propeties with rental state active which means to us that they are listed and payed. 
+	 */
 	public ArrayList<Property> getActiveProperties() {
 		FindIterable<Document> docIter = propertiesCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
@@ -241,68 +334,66 @@ public class ManagerDBController extends LandlordDBControl {
 	}
 
 	/**
-	 * For testing, to clear the terminal of previous information.
+	 * Retrieves the current fee from the database which are in the fee collection.
+	 * @params: Takes in nothing.
+	 * @returns: Returns the fee amount which is currently in the database. 
 	 */
-	protected static void clearTerminal() {
-		System.out.println("\u001B[1;1H\u001B[2J");
-	}
-
-	public static void main(String args[]) {
-		ManagerDBController.clearTerminal();
-		ManagerDBController db = new ManagerDBController();
-		// db.printEmail();
-		RegisteredRenter testRenter;
-
-		db.resetProperties();
-
-		Property testProperty = new Property();
-		testProperty.setAddress("Test address 73");
-		testProperty.setCityQuad("EW");
-		// testProperty.setDateLastListed(Calendar());
-		testProperty.setFurnished(true);
-		// testProperty.setDateLastListed("01/01/00");
-		testProperty.setLandlordEmail("Return_To_Sender");
-		testProperty.setNumBathrooms(804595.0);
-		testProperty.setNumBedrooms(1);
-		testProperty.setRentCost(2.0);
-		testProperty.setRentalState("Haunted");
-		testProperty.setLandlordName("Mr. Aristotle Berkinghamshire");
-		// testProperty.setLandlordID("LMAO");
-		db.addPropertyToDatabase(testProperty);
-
-		// db.printProperties();
-
-		for (Property p : db.getAllProperties()) {
-			p.print();
-		}
-
-		// DatabaseController dbc = new DatabaseController();
-
-	}
-
-	public double getCurrentFee() {
+	public static double getCurrentFee() {
 		FindIterable<Document> docIter = feeCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
 		double val = (double) iter.next().get("fee");
 		return val;
 	}
 
+	/**
+	 * Sets the current fee into the database which will be updated in the fee colleciton. 
+	 * @params: Takes in changedFee which the manager changes. 
+	 * @returns: Nothing just sets in the database. 
+	 */
 	public void setNewFee(Double changedFee) {
 		Bson updates = Updates.combine(
 				Updates.set("fee", changedFee));
 		feeCollection.updateOne(new Document(), updates, new UpdateOptions().upsert(true));
 	}
 
-	public double getCurrentPeriod() {
-		FindIterable<Document> docIter = feeCollection.find();
-		MongoCursor<Document> iter = docIter.iterator();
-		double val = (double) iter.next().get("period");
-		return val;
-	}
+	// /**
+	//  * For testing, to clear the terminal of previous information.
+	//  * Not being used in the code just for testing the functionalities in the class. 
+	//  */
+	// protected static void clearTerminal() {
+	// 	System.out.println("\u001B[1;1H\u001B[2J");
+	// }
 
-	public void setCurrentPeriod(Double changedPeriod) {
-		Bson updates = Updates.combine(
-				Updates.set("period", changedPeriod));
-		feeCollection.updateOne(new Document(), updates, new UpdateOptions().upsert(true));
-	}
+	// public static void main(String args[]) {
+	// 	ManagerDBController.clearTerminal();
+	// 	ManagerDBController db = new ManagerDBController();
+	// 	// db.printEmail();
+	// 	RegisteredRenter testRenter;
+
+	// 	db.resetProperties();
+
+	// 	Property testProperty = new Property();
+	// 	testProperty.setAddress("Test address 73");
+	// 	testProperty.setCityQuad("EW");
+	// 	// testProperty.setDateLastListed(Calendar());
+	// 	testProperty.setFurnished(true);
+	// 	// testProperty.setDateLastListed("01/01/00");
+	// 	testProperty.setLandlordEmail("Return_To_Sender");
+	// 	testProperty.setNumBathrooms(804595.0);
+	// 	testProperty.setNumBedrooms(1);
+	// 	testProperty.setRentCost(2.0);
+	// 	testProperty.setRentalState("Haunted");
+	// 	testProperty.setLandlordName("Mr. Aristotle Berkinghamshire");
+	// 	// testProperty.setLandlordID("LMAO");
+	// 	db.addPropertyToDatabase(testProperty);
+
+	// 	// db.printProperties();
+
+	// 	for (Property p : db.getAllProperties()) {
+	// 		p.print();
+	// 	}
+
+	// 	// DatabaseController dbc = new DatabaseController();
+
+	// }
 }

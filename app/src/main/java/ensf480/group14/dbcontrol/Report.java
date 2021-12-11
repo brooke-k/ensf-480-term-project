@@ -78,9 +78,13 @@ public class Report {
             propertyArray.clear();
             propertyArray = dbControl.getPropertiesRentedWithin(dateRangeStart, dateRangeEnd);
 
+
+
             bufReportWriter.write("\n\rTotal number of properties rented between ");
             bufReportWriter.write(dateRangeStart.toString() + " and ");
             bufReportWriter.write(dateRangeEnd.toString() + ": " + propertyArray.size() + "\n\r");
+
+
 
             propertyArray.clear();
             propertyArray = dbControl.getActiveProperties();

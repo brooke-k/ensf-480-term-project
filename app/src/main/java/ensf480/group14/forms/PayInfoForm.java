@@ -64,7 +64,7 @@ public class PayInfoForm implements Form {
         panel.setBackground(Color.GRAY);
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel paymentLabel = new JLabel("Payment $" + "TODO"); // need get price from db // TODO
+        JLabel paymentLabel = new JLabel("Payment $" + listener.getCurrentFee()); // need get price from db // TODO
         paymentLabel.setFont(new Font("Serif", Font.BOLD, 35));
         paymentLabel.setSize(40, 40);
         paymentLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

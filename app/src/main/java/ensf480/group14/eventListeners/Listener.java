@@ -93,6 +93,10 @@ public class Listener implements ActionListener {
         this.refresh = false;
     }
 
+    public void startUpRoutine(){
+        renterController.checkPayments();
+    }
+
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getSource()); // test this
         if (e.getActionCommand().equals("Or Sign Up")) {
@@ -190,7 +194,7 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Adjust Fees")) {
-            Double currFee = managerController.getCurrentFee();
+            Double currFee = ManagerDBController.getCurrentFee();
             Double changedFee = Double.parseDouble((String) JOptionPane.showInputDialog(frame, "Change fees to",
                     "Change Fees", JOptionPane.PLAIN_MESSAGE, null, null, currFee));
             if (changedFee != null) {
@@ -218,7 +222,7 @@ public class Listener implements ActionListener {
             "Confirm Delete Property",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (res == JOptionPane.OK_OPTION) {
-                landlordController.removePropertyFromDatabase(property.getAddress());
+                landlordController.cancelProperty(property.getAddress());
                 getLandlordsProperties();
                 setPageToShow("ManagePropertiesPage");
                 setRefresh(true); // refresh in driver
@@ -298,6 +302,10 @@ public class Listener implements ActionListener {
             if (changedPeriod != null) {
                 managerController.setCurrentPeriod(changedPeriod);
             }
+        }
+
+        else if (e.getActionCommand().equals("Generate Report")){
+
         }
     }
 
@@ -401,6 +409,10 @@ public class Listener implements ActionListener {
             }
         }
         setPageToShow("EmailPage");
+    }
+
+    public double getCurrentFee(){
+        return ManagerDBController.getCurrentFee(); 
     }
 
     public void getLandlordsProperties() {

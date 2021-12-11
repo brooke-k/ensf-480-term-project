@@ -114,10 +114,10 @@ public class SearchResult {
             }
         }
 
-        else if (user.getType().equals("manager") || user.getType().equals("landlord")) {
+        else if (user.getType().equals("landlord")) {
             String[] columns2 = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
                     "Number of Bathrooms",
-                    "Furnished Status", "Visibility", "Rental Status" };
+                    "Furnished Status", "Visibility", "State" };
             if (!props.isEmpty()) {
                 String[][] properties2 = new String[props.size()][9];
                 int i = 0;
@@ -133,10 +133,37 @@ public class SearchResult {
                     properties2[i][5] = p.getNumBathrooms().toString();
                     properties2[i][6] = (p.isFurnished()) ? "Furnished" : "Unfurnished";
                     properties2[i][7] = (p.isVisibleToRenters()) ? "Visible" : "Unlisted";
-                    properties2[i][8] = (p.isRented()) ? "Rented" : "Vacant";
+                    properties2[i][8] = p.getRentalState();
                     i++;
                 }
                 model = new DefaultTableModel(properties2, columns2);
+            }
+
+        }
+
+        else if (user.getType().equals("manager")) {
+            String[] columns3 = { "Rent", "Address", "City Quadrant", "Type", "Number of Bedrooms",
+                    "Number of Bathrooms",
+                    "Furnished Status", "Visibility", "State" };
+            if (!props.isEmpty()) {
+                String[][] properties3 = new String[props.size()][9];
+                int i = 0;
+                for (Property p : props) {
+                    // String s = new DecimalFormat("#.0#").format(p.getListingPrice());
+                    String s = "$";
+                    s += String.format("%.02f", p.getRentCost());
+                    properties3[i][0] = s;
+                    properties3[i][1] = p.getAddress();
+                    properties3[i][2] = p.getCityQuad();
+                    properties3[i][3] = p.getType();
+                    properties3[i][4] = p.getNumBedrooms().toString();
+                    properties3[i][5] = p.getNumBathrooms().toString();
+                    properties3[i][6] = (p.isFurnished()) ? "Furnished" : "Unfurnished";
+                    properties3[i][7] = (p.isVisibleToRenters()) ? "Visible" : "Unlisted";
+                    properties3[i][8] = p.getRentalState();
+                    i++;
+                }
+                model = new DefaultTableModel(properties3, columns3);
             }
 
         }

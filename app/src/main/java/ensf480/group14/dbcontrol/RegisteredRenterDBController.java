@@ -13,14 +13,22 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.dbcontrol;
+/**
+ * The import statements used in order for the code to work. 
+ */
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDate;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -30,8 +38,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import ensf480.group14.external.Email;
@@ -43,6 +54,11 @@ import ensf480.group14.users.Manager;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 
+/**
+ * Controller for the user type RegisteredRenter and builds on the functionalities of the database subject. 
+ * It lets the registered renter to view the properties, search for them as well, and an unregistered renter will be 
+ * able to do this as well. Other functionalities which interface with the database are also in this class. 
+ */
 public class RegisteredRenterDBController implements DatabaseSubject {
     public static boolean databaseOpen; // Public to allow for any
     // calling function or class to mark it as "closed" if an exception
@@ -58,12 +74,20 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     protected static MongoCollection<Document> logCollection;
 
     private ArrayList<DatabaseObserver> observers;
-
+    /**
+     * Default Constructor which intializes the monogo connection to the database which actually let's
+     * us talk to the database. 
+     */
     public RegisteredRenterDBController() {
         mongoClient = null;
         createConnection();
     }
-
+    /**
+     * This is using the credentials which are stored in the connection.txt file and reading them in and not nested 
+     * in our code for security purposes since nobody on the internet can access our database. 
+     * Also initializes the collections usersCollection, propertiesCollection, emailCollection, preferenceCollection
+     * feeCollection, and logCollection the tables in the database. 
+     */
     private void createConnection() {
         if (mongoClient == null) {
             File connectionFile = new File("./connection.txt");
@@ -111,17 +135,23 @@ public class RegisteredRenterDBController implements DatabaseSubject {
             logCollection = dbMongo.getCollection("log");
         }
     }
-
+    /**
+     * If you need to add an observer using the design pattern from the lecture slides. 
+     */
     @Override
     public void addObserver(DatabaseObserver dbo) {
         observers.add(dbo);
     }
-
+    /**
+     * If you need to remove an observer using the design pattern from the lecture slides. 
+     */
     @Override
     public void removeObserver(DatabaseObserver dbo) {
         observers.remove(dbo);
     }
-
+    /**
+     * Notifies the observer based on any changes in the database. 
+     */
     @Override
     public void notifiyAllObservers() {
         for (DatabaseObserver o : observers) {
@@ -129,7 +159,12 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         }
 
     }
-
+    /**
+     * Makes the user in the database which is added to the collection, checks if they exist in the 
+     * datbase or not. For the user registered renter since they do not have a first name and last name.
+     * @params: Takes in the users email, password, and usertype for the user. 
+     * @returns: A boolean based on the status of the user creation and the status of the user in the database. 
+     */
     public boolean addUserToDatabase(String email, String password, String userType) {
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("email", email);
@@ -155,7 +190,13 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         System.out.println("User with email \"" + email + "\" added to the database.");
         return true;
     }
-
+    
+    /**
+     * Makes the user in the database which is added to the collection, checks if they exist in the 
+     * datbase or not. For the user landlord since they do have a first name and last name.
+     * @params: Takes in the users email, password, and usertype for the user. 
+     * @returns: A boolean based on the status of the user creation and the status of the user in the database. 
+     */
     public boolean addUserToDatabase(String email, String password, String userType, String firstName,
             String lastName) {
         BasicDBObject searchQuery = new BasicDBObject();
@@ -229,7 +270,10 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         FindIterable<Document> docIter = propertiesCollection.find(new Document("landlord_id", landlordID));
         MongoCursor<Document> iter = docIter.iterator();
         while (iter.hasNext()) {
-            propArray.add(Property.getProperty(iter.next()));
+            Document prop = iter.next();
+            if(!prop.get("rental_state").equals("cancelled")){
+                propArray.add(Property.getProperty(prop));
+            }
         }
         return propArray;
     
@@ -241,6 +285,40 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     public static void setDatabaseOpen(boolean databaseOpen) {
         RegisteredRenterDBController.databaseOpen = databaseOpen;
+    }
+    
+    public void checkPayments(){
+        ArrayList<Property> propArray = new ArrayList<>(0);
+        FindIterable<Document> docIter = propertiesCollection.find();
+        MongoCursor<Document> iter = docIter.iterator();
+        while (iter.hasNext()) {
+            Document prop = iter.next();
+            if(prop.get("rental_state").equals("active")){
+                propArray.add(Property.getProperty(prop));
+            }
+        }
+        
+        for(int i = 0;i<propArray.size();i++){
+            String lastYear = propArray.get(i).getDateLastPaid().split("-")[0];
+            String lastMonth = propArray.get(i).getDateLastPaid().split("-")[1];
+            String lastDay = propArray.get(i).getDateLastPaid().split("-")[2];
+
+            Date lastPaidDate = new Date(Integer.parseInt(lastYear)-1900, Integer.parseInt(lastMonth)-1, Integer.parseInt(lastDay));
+            Date currDate = new Date();
+            Double period = getCurrentPeriod();
+
+            if(((currDate.getTime()/86400000) - (lastPaidDate.getTime()/86400000)) <= period){
+                propArray.remove(propArray.get(i));
+                i--;
+            }
+        }
+
+        for(Property prop : propArray){
+            Bson updates = Updates.combine(
+				Updates.set("visible_to_renters", false),
+                Updates.set("rental_state", "suspended"));
+		    propertiesCollection.updateOne(new Document("address", prop.getAddress()), updates, new UpdateOptions().upsert(false));
+        }
     }
 
     // Returns null if no properties found.
@@ -261,12 +339,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         }
         
         criteria.append("visible_to_renters", true);
-
+        criteria.append("rental_state", "active");
         if(!searchForm.getFurnished().equals("")){
             criteria.append("furnished", searchForm.getFurnished().equals("Furnished") ? true : false);   
         }
-
-
+      
         ArrayList<Property> resultArray = new ArrayList<Property>(0);
         FindIterable<Document> findIter = propertiesCollection.find(criteria);
         MongoCursor<Document> resultCursor = findIter.iterator();
@@ -496,4 +573,17 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     public void savePreference(PreferenceForm preferenceForm, User user) {
 
     }
+
+    public double getCurrentPeriod() {
+		FindIterable<Document> docIter = feeCollection.find();
+		MongoCursor<Document> iter = docIter.iterator();
+		double val = (double) iter.next().get("period");
+		return val;
+	}
+
+	public void setCurrentPeriod(Double changedPeriod) {
+		Bson updates = Updates.combine(
+				Updates.set("period", changedPeriod));
+		feeCollection.updateOne(new Document(), updates, new UpdateOptions().upsert(true));
+	}
 }
