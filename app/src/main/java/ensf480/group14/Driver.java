@@ -90,7 +90,7 @@ public class Driver {
         mainPanel.add(reportSettingsPanel, "reportSettingPage");
         JPanel emailJPanel = emailPage.display(listener.getEmail(), listener);
         mainPanel.add(emailJPanel, "emailPage");
-        JPanel homePagePanel = homePage.display(new RegisteredRenter(69), listener);
+        JPanel homePagePanel = homePage.display(new RegisteredRenter(1), listener);
         mainPanel.add(homePagePanel, "homePage");
         JPanel searchResultsPanel = searchResults.display(listener.getUser(), listener.getProperties(), listener);
         mainPanel.add(searchResultsPanel, "searchResultsPage");
