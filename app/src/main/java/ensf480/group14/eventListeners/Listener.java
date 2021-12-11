@@ -292,9 +292,15 @@ public class Listener implements ActionListener {
                 prop.setLandlordID(user.getiD());
 
                 property = prop;
-                landlordController.addPropertyToDatabase(prop);
-                JOptionPane.showMessageDialog(frame, "Property Application Submitted, please pay fee to list now.");
-                setPageToShow("PayInfoPage");
+                boolean res = landlordController.addPropertyToDatabase(prop);
+                if(res){
+                    JOptionPane.showMessageDialog(frame, "Property Application Submitted, please pay fee to list now.");
+                    setPageToShow("PayInfoPage");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Property with this address already exists");
+                    setPageToShow("PropertyApplicationPage");
+                    setRefresh(true);
+                }
             }
         }
 
@@ -343,6 +349,16 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Get Report")){
+
+            if(reportSettings.getStartYear() < 1 || reportSettings.getStartDay() < 1||reportSettings.getStartMonth() < 1||reportSettings.getEndYear() < 1
+            || reportSettings.getEndDay() < 1 
+            ||reportSettings.getEndMonth()<1
+            || reportSettings.getStartYear() > reportSettings.getStartYear()
+            ){
+            JOptionPane.showMessageDialog(null, "Error: Invalid Dates.");
+            setRefresh(true);
+            }
+            else{
             String start = reportSettings.getStartYear() + "-" + reportSettings.getStartMonth() + "-" + reportSettings.getStartDay();
             String end = reportSettings.getEndYear()+"-"+reportSettings.getEndMonth()+"-"+reportSettings.getEndDay();
             
@@ -354,22 +370,34 @@ public class Listener implements ActionListener {
                 JOptionPane.showMessageDialog(frame, "Report Could Not Be Generated");
             }
             setPageToShow("HomePage");
+            }
         }
     }
 
     /**
-     * Gets all of 
-     * @params: Takes in the action event e. 
-     * @returns: Displaying the proper page. 
+     * Gets all of the users in an array. 
+     * @params: Takes in nothing
+     * @returns: An user arraylist which are in the system. 
      */
     public ArrayList<User> getUsers() {
         return users;
     }
 
+    /**
+     * Sets the users which are being passed. 
+     * @params: Takes in an arraylist of the User object which has users created. 
+     * @returns: Nothing. 
+     */
     public void setUsers(ArrayList<User> users) {
         this.users = users;
     }
-
+    
+    /**
+     * Signs up the renter based on the username, password and gives an option for confirming the password. 
+     * And if the user is not equal it will not let the renter sign up the passwords need to match. 
+     * @params: Takes in a username, password, and confirmPassword. 
+     * @returns: Returns the boolean based on the success on it.  
+     */
     public boolean signUpRenter(String username, String password, String confirmPassword) {
 
         if (!password.equals(confirmPassword)) {
@@ -384,6 +412,12 @@ public class Listener implements ActionListener {
         }
     }
 
+    /**
+     * Signs up the landlord based on the username, password and gives an option for confirming the password.
+     * And if the user is not equal it will not let the landlord sign up the passwords need to match. 
+     * @params: Takes in a username, password, and confirmPassword, firstName and lastName of the user. 
+     * @returns: Returns the boolean based on the success on it.  
+     */
     public boolean signUpLandlord(String username, String password, String confirmPassword, String firstName,
             String lastName) {
         if (!password.equals(confirmPassword)) {
@@ -398,6 +432,11 @@ public class Listener implements ActionListener {
         }
     }
 
+    /**
+     * Goes and searches for properties and does error checking for correct values which are being passed in by the user. 
+     * @params: Takes in nothing
+     * @returns: Returns the boolean based on a sucessful search or not.
+     */
     public boolean searchProperties() {
         if(searchForm.getMaxPrice() < 0 || searchForm.getMinPrice() > searchForm.getMaxPrice() || searchForm.getNumOfBathrooms() < 0 || searchForm.getNumOfBedrooms() < 0){
             return false;
@@ -408,6 +447,11 @@ public class Listener implements ActionListener {
         }
     }
 
+    /**
+     * Opens the property page when the user decides to click on a specific property in a view. 
+     * @params: Takes in the address which is a unique id for the property. 
+     * @returns: Returns nothing just displays the property page. 
+     */
     public void openProperty(String address) {// property page
         for (Property pp : properties) {
             if (pp.getAddress().equals(address)) {
@@ -417,9 +461,12 @@ public class Listener implements ActionListener {
         setPageToShow("PropertyPage");
     }
 
+    /**
+     * Opens the visibility dialog and can be only clicked by the manager and changed to a proper visibility. 
+     * @params: Takes in the address which is a unique id for the property. 
+     * @returns: Returns nothing just displays the visbility panel which can be changed based on the manager options. 
+     */
     public void openVisibilityPanel(String address) {
-        // takes address clicked by manager
-        // opens dialog to change property visiblity
         for (Property pp : properties) {
             if (pp.getAddress().equals(address)) {
                 property = pp;
@@ -436,11 +483,13 @@ public class Listener implements ActionListener {
         }
     }
 
+    /**
+     * Opens edit property page to edit the attributes of a property. 
+     * @params: Takes in the address which is a unique id for the property. 
+     * @returns: Returns nothing just displays edit property page for a user to edit their application based on changes which 
+     * could be made. 
+     */
     public void openEditProperty(String address) {
-        // takes address owned by the landlord
-        // check if property is paid for
-        // if it is open edit view
-        // if it isn't, do something to make them pay
         for (Property pp : properties) {
             if (pp.getAddress().equals(address)) {
                 property = pp;
@@ -453,9 +502,13 @@ public class Listener implements ActionListener {
         }
     }
 
+    /**
+     * Opens the email page when the user presses in the inbox and takes you to the viewing of the email which is for
+      * the user. 
+     * @params: Takes in the email which is a unique id for the user
+     * @returns: Returns nothing just displays the email page. 
+     */
     public void openEmail(String emailID) {
-        // Is taking the unique emailID
-        // Then matches the emailID to extract information from it
         for (Email e : mail) {
             if (e.getId().toString().equals(emailID)) {
                 email = e;
@@ -464,66 +517,146 @@ public class Listener implements ActionListener {
         setPageToShow("EmailPage");
     }
 
+    /**
+     * Gets the current fee from the Manager database controller. 
+     * @params: Takes in nothing
+     * @returns: Returns a double which is the fee. 
+     */
     public double getCurrentFee(){
         return ManagerDBController.getCurrentFee(); 
     }
 
+    /**
+     * Gets the landlord properties from the landlord controller. 
+     * @params: Takes in nothing
+     * @returns: Returns a property which is associated with their id. 
+     */
     public void getLandlordsProperties() {
         properties = landlordController.getPropertyWithLandlord(user.getId());
     }
 
+    /**
+     * Sets the page to show and passes in the page name into it. 
+     * @params: Takes in the string of the page which needs to be shown to the user. 
+     * @returns: Returns nothing. 
+     */
     public void setPageToShow(String pageToShow) {
         this.pageToShow = pageToShow;
     }
 
+    /**
+     * Gets the current page to show in the page to show on the panel/ 
+     * @params: Takes in nothing
+     * @returns: Returns a string which will need to be shown. 
+     */
     public String getPageToShow() {
         return pageToShow;
     }
 
+    /**
+     * Gets the user which is in the system
+     * @params: Takes in nothing
+     * @returns: Returns an User object. 
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     * Sets the user into the object based on it. 
+     * @params: Takes in the User object of user which can be assigned.  
+     * @returns: Returns nothing. 
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Gets the properties in the system which is collected in an array list. 
+     * @params: Takes in nothing
+     * @returns: Returns an arraylist of the properties. 
+     */
     public ArrayList<Property> getProperties() {
         return properties;
     }
 
+    /**
+     * Sets the properties into the array list. 
+     * @params: Takes in the an array list of object property. 
+     * @returns: Returns nothing. 
+     */
     public void setProperties(ArrayList<Property> properties) {
         this.properties = properties;
     }
 
+    /**
+     * Gets the emails in the system
+     * @params: Takes in nothing
+     * @returns: Returns an arraylist of the emails. 
+     */
     public ArrayList<Email> getMail() {
         return mail;
     }
 
+    /**
+     * Sets the mails into the array list. 
+     * @params: Takes in the an array list of object email. 
+     * @returns: Returns nothing. 
+     */
     public void setMail(ArrayList<Email> mail) {
         this.mail = mail;
     }
 
+    /**
+     * Gets the property in the system
+     * @params: Takes in nothing
+     * @returns: Returns a object of a Property. 
+     */
     public Property getProperty() {
         return property;
     }
 
+    /**
+     * Sets the property into the object. 
+     * @params: Takes in the object of property and sets it.
+     * @returns: Returns nothing. 
+     */
     public void setProperty(Property property) {
         this.property = property;
     }
 
+    /**
+     * Sets the email e into it. 
+     * @params: Takes in the object of email and sets it.
+     * @returns: Returns nothing. 
+     */
     public void setEmail(Email e) {
         email = e;
     }
 
+    /**
+     * Gets the email in the system
+     * @params: Takes in nothing
+     * @returns: Returns a object of an email. 
+     */
     public Email getEmail() {
         return email;
     }
 
+    /**
+     * Sets the refresh the of the boolean status into it. 
+     * @params: Takes in the boolean of the refresh flag. 
+     * @returns: Returns nothing. 
+     */
     public void setRefresh(boolean b) {
         this.refresh = b;
     }
 
+    /**
+     * For refreshing between the pages this flag helps us keep in check to update a screen. 
+     * @params: Takes in nothing
+     * @returns: Returns a boolean of the current status of the refresh. 
+     */
     public boolean getRefresh() {
         return this.refresh;
     }

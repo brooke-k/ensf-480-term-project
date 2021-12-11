@@ -29,6 +29,7 @@ import javax.swing.event.MenuListener;
 import ensf480.group14.dbcontrol.DatabaseSubject;
 import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.forms.*;
+import ensf480.group14.forms.ReportSettings;
 import ensf480.group14.users.RegisteredRenter;
 import ensf480.group14.users.User;
 

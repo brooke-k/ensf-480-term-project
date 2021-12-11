@@ -68,13 +68,21 @@ public class Report {
     private String generateReport() {
         ManagerDBController dbControl = new ManagerDBController();
 
-        reportFile = new File("./src/main/outputs/report.txt");
+        reportFile = new File("./reports/report"+java.time.LocalDateTime.now().toString()+".txt");
         if (reportFile.exists()) {
             reportFile.delete(); // Done to clear any older report copies,
             // for testing
             try {
                 reportFile.createNewFile();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+
+            try {
+                reportFile.createNewFile();
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
         } else {
@@ -89,41 +97,41 @@ public class Report {
             bufReportWriter = new BufferedWriter(new FileWriter(reportFile));
             
 
-            int numberListedProperties = ManagerDBController.getNumProeprtiesListedWithin(dateRangeStart, dateRangeEnd);
+            int numberListedProperties = ManagerDBController.getNumPropertiesListedWithin(dateRangeStart, dateRangeEnd);
 
             ArrayList<Property> rentalArray = ManagerDBController.getPropertiesRentedWithin(dateRangeStart, dateRangeEnd);
             int numRentals = rentalArray.size();
             int totalActive = ManagerDBController.getActiveProperties().size();
 
-            bufReportWriter.write("MANAGERIAL REPORT\n\r");
-            bufReportWriter.write("--------------------------------------------------------------\n\r");
-            bufReportWriter.write("Generated for dates between " + dateRangeStart + " and " + dateRangeEnd + "\n\r");
+            bufReportWriter.write("        MANAGERIAL REPORT\n\r");
+            bufReportWriter.write("--------------------------------------------------------------------------------");
+            bufReportWriter.write("\n\r    Generated for dates between " + dateRangeStart + " and " + dateRangeEnd + "\n\r");
             bufReportWriter.write("\n\n\n\r");
 
-            bufReportWriter.write("\n\rTotal number of properties listed between ");
-            bufReportWriter.write(dateRangeStart.toString() + " and ");
+            bufReportWriter.write("\n\r    Total number of properties listed between ");
+            bufReportWriter.write("    " + dateRangeStart.toString() + " and ");
             bufReportWriter.write(dateRangeEnd.toString() + ": " + numberListedProperties + "\n\r");
-            bufReportWriter.write("--------------------------------------------------------------\n\r");
+            bufReportWriter.write("--------------------------------------------------------------------------------");
             
-            bufReportWriter.write("\n\rTotal number of properties rented between ");
-            bufReportWriter.write(dateRangeStart.toString() + " and ");
+            bufReportWriter.write("\n\r    Total number of properties rented between ");
+            bufReportWriter.write("    " + dateRangeStart.toString() + " and ");
             bufReportWriter.write(dateRangeEnd.toString() + ": " + numRentals + "\n\r");        
-            bufReportWriter.write("--------------------------------------------------------------\n\r");
+            bufReportWriter.write("--------------------------------------------------------------------------------");
 
-            bufReportWriter.write("\n\rTotal number of active properties");
-            bufReportWriter.write(dateRangeStart.toString() + " and ");
+            bufReportWriter.write("\n\r    Total number of active properties");
+            bufReportWriter.write("    " + dateRangeStart.toString() + " and ");
             bufReportWriter.write(dateRangeEnd.toString() + ": " + totalActive + "\n\r");
             
-            bufReportWriter.write("--------------------------------------------------------------\n\r");
+            bufReportWriter.write("--------------------------------------------------------------------------------");
 
-            bufReportWriter.write("\n\rProperties rented between ");
-            bufReportWriter.write(dateRangeStart.toString() + " and ");
+            bufReportWriter.write("\n\r    Properties rented between ");
+            bufReportWriter.write("    " + dateRangeStart.toString() + " and ");
             bufReportWriter.write(dateRangeEnd.toString() + ":\n\r");
             for (Property p : rentalArray) {
-                bufReportWriter.write("\n\r" + p.toString());
+                bufReportWriter.write("\n\r    " + p.toString());
             }
-            bufReportWriter.write("--------------------------------------------------------------\n\r");
-            bufReportWriter.write("END OF REPORT\n\r");
+            bufReportWriter.write("--------------------------------------------------------------------------------");
+            bufReportWriter.write("\n\r        END OF REPORT\n\r");
             bufReportWriter.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -22,6 +22,8 @@ package ensf480.group14.dbcontrol;
  */
 import java.util.HashSet;
 
+import javax.swing.JOptionPane;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
@@ -96,28 +98,25 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 	 * @params: The property which has been created, and will be put into the database. 
 	 * @returns: Nothing just interfaces with the database. 
 	 */
-	public void addPropertyToDatabase(Property property) {
+	public boolean addPropertyToDatabase(Property property) {
 		BasicDBObject searchQuery = new BasicDBObject();
 		searchQuery.put("address", property.getAddress());
 		FindIterable<Document> findIter = propertiesCollection.find(searchQuery);
 		MongoCursor<Document> resultCursor = findIter.iterator();
 		if (resultCursor.hasNext()) { // Meaning the property already exists in the
 										// database and should not be added as a duplicate
-			System.out.println("A property with the address \"" + property.getAddress() +
-					"\" already exists.");
-			System.out.println(
-					"The property with address \"" + property.getAddress() + "\" was not added to the database.");
 			resultCursor.close();
-			return;
+			return false;
 		}
 
 		resultCursor.close();
 
 		propertiesCollection.insertOne(Property.toDocument(property)); //add prop same addy
 		logCollection.insertOne(new Document()
-			.append("date", java.time.LocalDate.now())
+			.append("date", java.time.LocalDate.now().toString())
 			.append("type", "listing")
 		);
+		return true;
 	}
 
 	

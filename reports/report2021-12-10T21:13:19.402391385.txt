@@ -1,0 +1,27 @@
+        MANAGERIAL REPORT
+--------------------------------------------------------------------------------
+    Generated for dates between 2020-1-2 and 2022-1-1
+
+
+
+
+    Total number of properties listed between     2020-1-2 and 2022-1-1: 4
+--------------------------------------------------------------------------------
+    Total number of properties rented between     2020-1-2 and 2022-1-1: 2
+--------------------------------------------------------------------------------
+    Total number of active properties    2020-1-2 and 2022-1-1: 2
+--------------------------------------------------------------------------------
+    Properties rented between     2020-1-2 and 2022-1-1:
+
+    
+    Name of landlord: Nick knf
+    ID: 61b422cf726a8b4700bfc320
+    Address: 2359 Street, Calgary
+
+    
+    Name of landlord: Nick Knaop
+    ID: 61b422f006f0137bcfb0eeb7
+    Address: 5367 Ave, Calgary
+--------------------------------------------------------------------------------
+        END OF REPORT
+

@@ -139,13 +139,13 @@ public class ReportSettings implements Form{
 
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel editPropertyLabel = new JLabel("Edit Property");
-        editPropertyLabel.setFont(new Font("Serif", Font.BOLD, 35));
-        editPropertyLabel.setSize(40, 40);
-        panel.add(editPropertyLabel);
+        JLabel reportSettingsLabel = new JLabel("Report Settings");
+        reportSettingsLabel.setFont(new Font("Serif", Font.BOLD, 35));
+        reportSettingsLabel.setSize(40, 40);
+        panel.add(reportSettingsLabel);
 
 
-        panel.add(new JLabel("end Date"));
+        panel.add(new JLabel("Start Date"));
         JTextField startDayField = new JTextField("Day");
         startDayField.setSize(190, 20);
         startDayField.setMaximumSize(new Dimension(190, 20));
@@ -163,6 +163,7 @@ public class ReportSettings implements Form{
                 }
             }
         });
+        panel.add(startDayField);
         JTextField startMonthField = new JTextField("Month");
         startMonthField.setSize(190, 20);
         startMonthField.setMaximumSize(new Dimension(190, 20));
@@ -181,6 +182,7 @@ public class ReportSettings implements Form{
                 
             }
         });
+        panel.add(startMonthField);
         JTextField startYearField = new JTextField("Year");
         startYearField.setSize(190, 20);
         startYearField.setMaximumSize(new Dimension(190, 20));
@@ -189,10 +191,16 @@ public class ReportSettings implements Form{
             }
 
             public void focusLost(FocusEvent e) {
-                setStartYear(Integer.parseInt(startYearField.getText()));
+                if(notNumerical){
+                    setStartYear(-1);
+                } else {
+                    setStartYear(Integer.parseInt(startYearField.getText()));
+                }
             }
         });
-        panel.add(new JLabel("end Date"));
+        panel.add(startYearField);
+
+        panel.add(new JLabel("End Date"));
         JTextField endDayField = new JTextField("Day");
         endDayField.setSize(190, 20);
         endDayField.setMaximumSize(new Dimension(190, 20));
@@ -211,6 +219,7 @@ public class ReportSettings implements Form{
                 
             }
         });
+        panel.add(endDayField);
         JTextField endMonthField = new JTextField("Month");
         endMonthField.setSize(190, 20);
         endMonthField.setMaximumSize(new Dimension(190, 20));
@@ -231,6 +240,7 @@ public class ReportSettings implements Form{
                 
                 
         });
+        panel.add(endMonthField);
         JTextField endYearField = new JTextField("Year");
         endYearField.setSize(190, 20);
         endYearField.setMaximumSize(new Dimension(190, 20));
@@ -249,7 +259,7 @@ public class ReportSettings implements Form{
           
             }
         });
-
+        panel.add(endYearField);
 
 
 

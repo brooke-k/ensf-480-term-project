@@ -33,6 +33,7 @@ import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import org.bson.types.ObjectId;
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
@@ -269,8 +270,8 @@ public class ManagerDBController extends LandlordDBControl {
 	 * @params: Takes in two parameters which are startDate and endDate to get in a range. 
 	 * @returns: Returns the integer value of the number of properties in the database within a start date and end date. 
 	 */
-	public static int getNumProeprtiesListedWithin(String startDate, String endDate) {
-		FindIterable<Document> docIter = logCollection.find(new Document("type", "listed"));
+	public static int getNumPropertiesListedWithin(String startDate, String endDate) {
+		FindIterable<Document> docIter = logCollection.find(new Document("type", "listing"));
 		MongoCursor<Document> iter = docIter.iterator();
 		if (!iter.hasNext()) {
 			return 0;
@@ -331,7 +332,7 @@ public class ManagerDBController extends LandlordDBControl {
 			Date curr = new Date(Integer.parseInt(currYear)-1900, Integer.parseInt(currMonth)-1, Integer.parseInt(currDay));
 
 			if(((end.getTime()/86400000) - (curr.getTime()/86400000)) > 0 && ((curr.getTime()/86400000) - (start.getTime()/86400000)) > 0){
-				arr.add(new Property(res.get("landlord_name").toString(), res.get("landlord_email").toString(), res.get("address").toString()));
+				arr.add(new Property(res.get("landlord_name").toString(), (ObjectId)res.get("_id"), res.get("address").toString()));
 			}
 		}
 

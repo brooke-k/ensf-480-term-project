@@ -1,0 +1,25 @@
+        MANAGERIAL REPORT
+--------------------------------------------------------------------------------
+    Generated for dates between 2019-1-1 and 2022-1-1
+
+
+
+
+    Total number of properties listed between     2019-1-1 and     2022-1-1: 0
+--------------------------------------------------------------------------------
+
+    Total number of properties rented between     2019-1-1 and     2022-1-1: 1
+--------------------------------------------------------------------------------
+
+Total number of active properties    2019-1-1 and     2022-1-1: 2
+--------------------------------------------------------------------------------
+
+    Properties rented between     2019-1-1 and     2022-1-1:
+
+    
+Name of landlord: Nick Knaop
+ID: 61b40ea8fc9dd96f0e7a7d9e
+Address: Ur Grandmas Place
+--------------------------------------------------------------------------------
+        END OF REPORT
+

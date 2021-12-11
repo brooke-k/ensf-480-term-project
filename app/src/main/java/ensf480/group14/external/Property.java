@@ -13,13 +13,21 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.external;
-
-// import java.util.Calendar; Not using it for now using a string
-
+/**
+ * The import statements used in order for the code to work. 
+ */
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+/**
+ * This class basically creates a property object with the following attributes and is used when 
+ * creating a new property object we can use the default constructors to instantiate them. Also
+ * keeps a track of attributes. Also has the option to wheter to make it visible to the renters or not. 
+ */
 public class Property {
 	private ObjectId iD;
 	private String address;
@@ -39,6 +47,11 @@ public class Property {
 	private ObjectId landlordID;
 	private String dateLastPaid;
 
+	/**
+	 * Constructor takes a property object in and instantiates the variables. 
+	 * @params: Takes in the property object
+	 * @returns: Nothing. 
+	 */
 	private Property(Property property) {
 		this.iD = property.iD;
 		this.address = property.address;
@@ -59,7 +72,11 @@ public class Property {
 		this.dateLastPaid = property.dateLastPaid;
 	}
 
-
+	/**
+	 * Default constructor which sets the attributes which are null, or false based on the values. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Nothing. 
+	 */
 	public Property() {
 
 		address = null;
@@ -82,6 +99,11 @@ public class Property {
 		visibleToRenters = false;
 	}
 
+	/**
+	 * Constructor which gets the property collection. 
+	 * @params: Takes in the property document. 
+	 * @returns: Nothing. 
+	 */
 	public Property(Document propertyDocument) {
 		this(Property.getProperty(propertyDocument));
 
@@ -104,9 +126,9 @@ public class Property {
 		this.dateLastPaid = "";
 	}
 
-	public Property(String landlordName, String landlordEmail, String address){
+	public Property(String landlordName, ObjectId id, String address){
 		this.landlordName = landlordName;
-		this.landlordEmail = landlordEmail;
+		this.iD = id;
 		this.address = address;
 	}
 
@@ -254,9 +276,9 @@ public class Property {
 
 	public String toString() {
 		String asString = "\n\r";
-		asString = asString + "Name of landlord: " + landlordName + "\n\r";
-		asString = asString + "ID: " + iD + "\n\r";
-		asString = asString + "Address: " + address + "\n\r";
+		asString = asString + "    Name of landlord: " + landlordName + "\n\r";
+		asString = asString + "    ID: " + iD + "\n\r";
+		asString = asString + "    Address: " + address + "\n\r";
 
 		return asString;
 	}
