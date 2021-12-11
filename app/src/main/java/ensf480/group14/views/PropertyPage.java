@@ -100,26 +100,27 @@ public class PropertyPage {
         details.setEditable(false);
         details.setBackground(Color.GRAY);
         details.setForeground(Color.PINK);
-        details.setFont(new Font("Serif", Font.BOLD, 40));
+        details.setFont(new Font("Serif", Font.BOLD, 25));
         panel.add(details, BorderLayout.EAST);
         panel.setBackground(Color.GRAY);
 
-        ImageIcon imageIcon1 = new ImageIcon(this.getClass().getResource("images/" + 1 + ".png"));
+
         //ImageIcon imageIcon2 = new ImageIcon(this.getClass().getResource("images/" + 2 + ".png"));
         //ImageIcon imageIcon3 = new ImageIcon(this.getClass().getResource("images/" + 3 + ".png"));
         // Left/Center Panel
-        // if (prop.getType().equals("House")) {
-           
-        // } else if (prop.getType().equals("TownHouse")) {
-            
-        // } else if (prop.getType().equals("Apartment")) {
-           
-        // }
+        
+        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("images/" + 1 + ".png"));
 
-        Image image = imageIcon1.getImage();
-        Image newimg = image.getScaledInstance(250, 250, java.awt.Image.SCALE_SMOOTH);
-        imageIcon1 = new ImageIcon(newimg);
-        JLabel img = new JLabel(imageIcon1);
+         if (prop.getType().equals("TownHouse")) {
+                imageIcon =  new ImageIcon(this.getClass().getResource("images/" + 2 + ".png"));
+         } else if (prop.getType().equals("Apartment")) {
+                imageIcon = new ImageIcon(this.getClass().getResource("images/" + 3 + ".png"));
+         }
+
+        Image image = imageIcon.getImage();
+        Image newimg = image.getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(newimg);
+        JLabel img = new JLabel(imageIcon);
         // test.setBackground(Color.GRAY);
         // test.setForeground(Color.PINK);
         // test.setFont(new Font("Serif", Font.BOLD, 40));
