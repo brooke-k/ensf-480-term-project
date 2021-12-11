@@ -123,13 +123,18 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Sign up as renter")) {
-            Boolean res = signUpRenter(signUpForm.getUsername(), signUpForm.getPassword(),
+            if(!signUpForm.getConfirmPassword().equals(signUpForm.getPassword())){
+                JOptionPane.showMessageDialog(null, "Passwords do not match.");
+                
+            }else{
+                Boolean res = signUpRenter(signUpForm.getUsername(), signUpForm.getPassword(),
                     signUpForm.getConfirmPassword());
-            if (res == true) {
-                setPageToShow("HomePage");
-            } else {
-                setPageToShow("SignUpPage");
-                JOptionPane.showMessageDialog(null, "Username is taken");
+                if (res == true) {
+                    setPageToShow("HomePage");
+                } else {
+                    setPageToShow("SignUpPage");
+                    JOptionPane.showMessageDialog(null, "Username is taken");
+                }
             }
         }
 

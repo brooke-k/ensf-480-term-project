@@ -58,7 +58,10 @@ public class PropertyApplication implements Form {
         pat = Pattern.compile("[^0-9.]");
         patBed = Pattern.compile("[^0-9]");
         notNumerical = false;
+        type = "House";
+        cityQuad = "NW";
     }
+    
     public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);

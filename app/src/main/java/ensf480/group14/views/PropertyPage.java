@@ -91,7 +91,7 @@ public class PropertyPage {
         String s = "";
         s += prop.getType() + "\n";
         s += "Bedrooms: " + prop.getNumBedrooms().toString() + "\n";
-        s += "Bathrooms: " + prop.getNumBathrooms().toString() + "             \n";
+        s += "Bathrooms: " + prop.getNumBathrooms().toString() + "\n";
         s += ((prop.isFurnished()) ? "Furnished" : "Unfurnished") + "\n";
         s += "Rent: $";
         s += String.format("%.02f", prop.getRentCost());
@@ -104,20 +104,22 @@ public class PropertyPage {
         panel.add(details, BorderLayout.EAST);
         panel.setBackground(Color.GRAY);
 
-        ImageIcon imageIcon = null;
+        ImageIcon imageIcon1 = new ImageIcon(this.getClass().getResource("images/" + 1 + ".png"));
+        //ImageIcon imageIcon2 = new ImageIcon(this.getClass().getResource("images/" + 2 + ".png"));
+        //ImageIcon imageIcon3 = new ImageIcon(this.getClass().getResource("images/" + 3 + ".png"));
         // Left/Center Panel
-        if (prop.getType().equals("House")) {
-            imageIcon = new ImageIcon(this.getClass().getResource("images/" + 1 + ".png"));
-        } else if (prop.getType().equals("Townhouse")) {
-            imageIcon = new ImageIcon(this.getClass().getResource("images/" + 3 + ".png"));
-        } else if (prop.getType().equals("Apartment")) {
-            imageIcon = new ImageIcon(this.getClass().getResource("images/" + 2 + ".png"));
-        }
+        // if (prop.getType().equals("House")) {
+           
+        // } else if (prop.getType().equals("TownHouse")) {
+            
+        // } else if (prop.getType().equals("Apartment")) {
+           
+        // }
 
-        Image image = imageIcon.getImage();
+        Image image = imageIcon1.getImage();
         Image newimg = image.getScaledInstance(250, 250, java.awt.Image.SCALE_SMOOTH);
-        imageIcon = new ImageIcon(newimg);
-        JLabel img = new JLabel(imageIcon);
+        imageIcon1 = new ImageIcon(newimg);
+        JLabel img = new JLabel(imageIcon1);
         // test.setBackground(Color.GRAY);
         // test.setForeground(Color.PINK);
         // test.setFont(new Font("Serif", Font.BOLD, 40));

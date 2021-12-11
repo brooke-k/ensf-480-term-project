@@ -72,7 +72,8 @@ public class Driver {
         mainPanel.add(preferenceForm.display(listener), "preferencesForm");
         JPanel searchFormPanel = searchForm.display(listener);
         mainPanel.add(searchFormPanel, "searchForm");
-        mainPanel.add(propertyApp.display(listener), "propertyApplicationPage");
+        JPanel propertyAppPanel = propertyApp.display(listener);
+        mainPanel.add(propertyAppPanel, "propertyApplicationPage");
         mainPanel.add(landlordSignUpForm.display(listener), "landLordSignUpForm");
         mainPanel.add(paymentForm.display(listener), "paymentForm");
         JPanel editPropertyPanel = editProperty.display(listener.getProperty(), listener);
@@ -196,6 +197,9 @@ public class Driver {
             }
 
             else if (page.equals("PropertyApplicationPage")) {
+                mainPanel.remove(propertyAppPanel);
+                propertyAppPanel = propertyApp.display(listener);
+                mainPanel.add(propertyAppPanel, "propertyApplicationPage");
                 cardLayout.show(mainPanel, "propertyApplicationPage");
             }
 

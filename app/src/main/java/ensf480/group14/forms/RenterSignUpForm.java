@@ -94,8 +94,15 @@ public class RenterSignUpForm implements Form {
         JPasswordField confirmPasswordField = new JPasswordField();
         confirmPasswordField.setEchoChar('*');
         confirmPasswordField.setMaximumSize(new Dimension(190, 20));
-        panel.add(confirmPasswordField);
+        confirmPasswordField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+            }
 
+            public void focusLost(FocusEvent e) {
+                setConfirmPassword(confirmPasswordField.getText());
+            }
+        });
+        panel.add(confirmPasswordField);
         panel.add(Box.createRigidArea(new Dimension(1, 5)));
 
         JButton submitButton = new JButton("Sign up as renter");
