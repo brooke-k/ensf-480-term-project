@@ -224,7 +224,12 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         System.out.println("User with email \"" + email + "\" added to the database.");
         return true;
     }
-
+     /**
+     * Makes the preference form in the database which is being stored in the database, also checks for 
+     * if it exists in the database or not. 
+     * @params: Takes in the preference form which is displayed ot user. 
+     * @returns: Nothing just for interfacing with the database.
+     */
     public void addPreferenceFormToDatabase(PreferenceForm pf) {
         if (pf.getID() != null) {
             BasicDBObject searchQuery = new BasicDBObject();
@@ -260,11 +265,22 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     // return null;
     // }
 
+    /**
+     * Gets the properties as a array list. 
+     * @params: Takes in the startingDate and the endingDate
+     * @returns: Returns null. 
+     */
     public ArrayList<Property> getPropertiesIn(String startingDate,
             String endingDate) {
         return null;
     }
 
+    /**
+     * Gets the properties which belong to the landlords. and checks if the landlord has any in the rental 
+     * state in cancelled which means it has been taken off. 
+     * @params: Takes in the landlord id for searching in the database the landlord id. 
+     * @returns: Returns an arraylist of the properties which are in the current state. 
+     */
     public ArrayList<Property> getPropertyWithLandlord(ObjectId landlordID) {
         ArrayList<Property> propArray = new ArrayList<>(0);
         FindIterable<Document> docIter = propertiesCollection.find(new Document("landlord_id", landlordID));
@@ -278,15 +294,32 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return propArray;
     
     }
-
+    
+    /**
+     * Gets the properties by their id. 
+     * @params: Takes in the id of he property. 
+     * @returns: Returns null. 
+     */
     public Property getPropertyByID(int iDnum) {
         return null;
     }
 
+    /**
+     * Opens the database based on the controller. 
+     * @params: Takes in the boolean if the database is opened or not. 
+     * @returns: Nothing.
+     */
     public static void setDatabaseOpen(boolean databaseOpen) {
         RegisteredRenterDBController.databaseOpen = databaseOpen;
     }
-    
+    /**
+     * For checking the valid payment if the state is active or not will find that in the properties collection.
+     * This math is for finding the period and verfying the frequency if it makes sense or not and we parse the date whcih the user 
+     * last paid and splits them into to compare with the current date and time. Makes the state suspened if the property is not 
+     * paid properly. 
+     * @params: Takes in nothing  
+     * @returns: Nothing. 
+     */
     public void checkPayments(){
         ArrayList<Property> propArray = new ArrayList<>(0);
         FindIterable<Document> docIter = propertiesCollection.find();
@@ -320,8 +353,15 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 		    propertiesCollection.updateOne(new Document("address", prop.getAddress()), updates, new UpdateOptions().upsert(false));
         }
     }
-
-    // Returns null if no properties found.
+    
+    /**
+     * For the search form creation it has the attributes of a property which also has error checking implemented 
+     * making sure that the user cannot input some funky into the form. This also appends to their criteriea that 
+     * the user desires to view after as a result of the property. 
+     * @params: Takes in the search form view. 
+     * @returns: Displays the form to the user, and returns the properties in an arraylist to be used within the search form. 
+     *  Returns null if no properties found.
+     */
     public ArrayList<Property> searchProperties(Search searchForm) {
         BasicDBObject criteria = new BasicDBObject();
         if(searchForm.getBuildingType() != null && !searchForm.getBuildingType().equals("")){
@@ -363,6 +403,13 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return resultArray;
     }
 
+    /**
+     * This is for sending an email when the user wants to contact the landlord about the property for instance. 
+     * Has attributes about the email for example who sent it or recieves it. We also do an id for the email since multiple senders
+     * can contact about the same property. 
+     * @params: Takes in object of Email which by default is not read when sending the email. 
+     * @returns: Nothing in just for inserting the email into the colleciton. 
+     */
     public static void sendEmail(Email email) {
         Document newEmail = new Document("read", Boolean.FALSE);
         newEmail.put("recipient", email.getRecipient());
@@ -373,6 +420,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         emailCollection.insertOne(newEmail);
     }
 
+    /**
+     * This method is for filtering the users emails and basically finding their email associated to put it into the inbox view. 
+     * @params: Takes in email of the user for setting up the inbox. 
+     * @returns: Returns a boolean based on if there is any emails or not. 
+     */
     public static boolean userHasEmails(String userEmail) {
         BasicDBObject dbo = new BasicDBObject();
         FindIterable<Document> docIter = emailCollection
@@ -380,6 +432,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return docIter != null;
     }
 
+    /**
+     * This method is for removing the emails based on the email id from the collection. 
+     * @params: Takes in email id does not matter here if the email is attached with the user. 
+     * @returns: Nothing. 
+     */
     public static void deleteEmail(ObjectId emailID) {
         BasicDBObject query = new BasicDBObject();
         query.put("_id", emailID);
@@ -387,6 +444,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return;
     }
 
+    /**
+     * This method is for getting all emails for the user based on their email and retrieving it in the email arraylist. 
+     * @params: Takes in email which is users. 
+     * @returns: Arraylist of emails is returned. 
+     */
     public static ArrayList<Email> getAllEmails(String userEmail) {
         BasicDBObject query = new BasicDBObject();
         query.put("recipient", userEmail);
@@ -405,16 +467,32 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return emails;
     }
 
+    /**
+     * This method is for removing all emails for the user based on their email and deleting from the database. 
+     * @params: Takes in email which is users. 
+     * @returns: Nothing just for interfacing with the user. 
+     */
     public static void deleteAllEmails(String userEmail) {
         BasicDBObject query = new BasicDBObject();
         query.put("recipient", userEmail);
         emailCollection.deleteMany(query);
     }
 
+    /**
+     * This method is for removing all emails for the user based on their email and deleting from the database based on if it has been read.  
+     * @params: Takes in email which is users. 
+     * @returns: Nothing just for interfacing with the user. 
+     */
     public static void deleteAllReadEmails(String userEmail) {
         emailCollection.deleteMany(Filters.and(Filters.eq("recipient", userEmail), Filters.eq("read", Boolean.TRUE)));
     }
 
+    /**
+     * This method is for getting all emails for the user based on their email and retrieving it in the email arraylist. 
+     * Also if it's unread for the reciepent it will be for them. 
+     * @params: Takes in email which is users. 
+     * @returns: Arraylist of emails is returned. 
+     */
     public static ArrayList<Email> getAllUnreadEmails(String userEmail) {
         FindIterable<Document> docIter = emailCollection
                 .find(Filters.and(Filters.eq("recipient", userEmail), Filters.eq("read", Boolean.TRUE)));
@@ -429,6 +507,13 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return emails;
     }
 
+    /**
+     * This method is for checking the users login credentials if it matches what they signed up with or not, and also
+     * checks if the user email does exist or not.  
+     * Also checks their type as well and will create a user object based on that. 
+     * @params: Takes in email which is users and the password as well. 
+     * @returns: A user is returned based on the information which is passed in. 
+     */
     public User checkLogin(String email, String password) {
 
         BasicDBObject query = new BasicDBObject();
@@ -455,6 +540,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
     }
 
+    /**
+     * This function is for getting the email based on the email which checks in the database and gets it. 
+     * @params: Takes in email which is users by their email address. 
+     * @returns: A udocument which is for the database and queries it based on the email passed in. 
+     */
     public Document getUserByEmail(String email) {
         BasicDBObject query = new BasicDBObject();
         query.put("email", email);
@@ -467,6 +557,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return iter.next();
     }
 
+    /**
+     * This function checks if the email is already occupied or not if it's not will not show a dialog box. 
+     * @params: Takes in email which is users by their email address. 
+     * @returns: A boolean which is to confirm that the email's taken status or not. 
+     */
     private boolean emailTaken(String email) {
         BasicDBObject searchQuery = new BasicDBObject();
         searchQuery.put("email", email);
@@ -479,8 +574,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return false;
     }
 
-    // Return new user if sign up successful,
-    // Return null if email already taken
+    /**
+     * This function is for signing up for an account to use the application.  
+     * @params: Takes in email, password and the user type based on the User 
+     * @returns: A new user if sign up successful,null if email already taken
+     */
     public User signUp(String email, String password, String type) {
         if (emailTaken(email)) {
             return null;
@@ -509,8 +607,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return null;
     }
 
-    // Return new user if sign up successful,
-    // Return null if email already taken
+    /**
+     * This function is for signing up for an account to use the application. 
+     * @params: Takes in email, password and the user type based on user type, also first name and lastname. 
+     * @returns: A new user if sign up successful,null if email already taken
+     */
     public User signUp(String email, String password, String type, String firstName, String lastName) {
         if (emailTaken(email)) {
             return null;
@@ -539,6 +640,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return null;
     }
 
+    /**
+     * This function is for getting all of the properties in the database and adding them into an arrya list. 
+     * @params: Takes in nothing. 
+     * @returns: An array list of the porperty is returned. 
+     */
     public ArrayList<Property> getAllProperties() {
         ArrayList<Property> propArray = new ArrayList<>(0);
         FindIterable<Document> docIter = propertiesCollection.find();
@@ -549,6 +655,12 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         return propArray;
     }
 
+    /**
+     * This function is for getting the object based on what the collection equals to.
+     * We also query the database based on the field.   
+     * @params: Takes in the field, content, and the collection. 
+     * @returns: A collection is returned from the datbase based on the colleciton. 
+     */
     public Document getFirstObject(String field, String content, String collection) {
         BasicDBObject query = new BasicDBObject();
         query.put(field, content);
@@ -570,10 +682,21 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         }
     }
 
+    /**
+     * This function is for saving the perfecnes form based on the user type and will notify them later
+     * based on their choices they want to be alerted for. 
+     * @params: Takes in preference form and the user object. 
+     * @returns: Nothing.
+     */
     public void savePreference(PreferenceForm preferenceForm, User user) {
 
     }
 
+    /**
+     * This gets the current period from the fee collection which can be alterted by the manager and be adjusted. 
+     * @params: Takes in nothing. 
+     * @returns: double period value which is for the user. 
+     */
     public double getCurrentPeriod() {
 		FindIterable<Document> docIter = feeCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
@@ -581,6 +704,11 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 		return val;
 	}
 
+       /**
+     * This sets the current period from the fee collection which can be alterted by the manager and be adjusted. 
+     * @params: Takes in the changed period for the property. 
+     * @returns: Nothing just interfacing with the database. 
+     */
 	public void setCurrentPeriod(Double changedPeriod) {
 		Bson updates = Updates.combine(
 				Updates.set("period", changedPeriod));

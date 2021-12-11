@@ -13,10 +13,18 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.eventListeners;
+/**
+ * The import statements used in order for the code to work. 
+ */
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -26,6 +34,7 @@ import ensf480.group14.dbcontrol.DatabaseSubject;
 import ensf480.group14.dbcontrol.LandlordDBControl;
 import ensf480.group14.dbcontrol.ManagerDBController;
 import ensf480.group14.dbcontrol.RegisteredRenterDBController;
+import ensf480.group14.dbcontrol.Report;
 import ensf480.group14.external.Email;
 import ensf480.group14.external.Property;
 import ensf480.group14.forms.ContactForm;
@@ -43,8 +52,15 @@ import ensf480.group14.users.User;
 import ensf480.group14.views.HomePage;
 import ensf480.group14.views.Inbox;
 import ensf480.group14.views.*;
-
+/**
+ * For the class which basically interacts with the views and the controllers and connect them together and 
+ * completes the functionality also implements the ActionListerner. Responsible for handling all 
+ * action events such as when the user clicks on a component.
+ */
 public class Listener implements ActionListener {
+    /**
+     * Objects and variables being created here but not initalized. 
+     */
     String pageToShow;
     User user;
     ArrayList<Property> properties;
@@ -70,12 +86,17 @@ public class Listener implements ActionListener {
     JFrame frame;
     PayInfoForm paymentForm;
     EditPropertyView editPropertyView;
-
+    ReportSettings reportSettings;
+    /**
+     * Default constructor for our listener class which initializes them. 
+     * @params: Takes in all of the events which can occur and the forms as well. 
+     * @returns: Nothing. 
+     */
     public Listener(RenterSignUpForm signUpForm,
             ContactForm contactForm, PreferenceForm preferenceForm, Search searchForm,
             PropertyApplication propertyAppForm, Inbox inbox, HomePage homePage, PropertyPage propertyPage,
             JFrame frame, LandlordSignUpForm landlordSignUpForm, PayInfoForm paymentForm,
-            EditPropertyView editProperty) {
+            EditPropertyView editProperty, ReportSettings reportSettings) {
         this.renterController = new RegisteredRenterDBController();
         this.signUpForm = signUpForm;
         this.contactForm = contactForm;
@@ -90,14 +111,27 @@ public class Listener implements ActionListener {
         this.paymentForm = paymentForm;
         this.pageToShow = "LoginPage";
         this.editPropertyView = editProperty;
+        this.reportSettings = reportSettings;
         this.refresh = false;
     }
-
+    
+    /**
+     * Once the application starts it will check for valid payments or not. 
+     * @params: Takes in nothing 
+     * @returns: Nothing.  
+     */
     public void startUpRoutine(){
         renterController.checkPayments();
     }
 
-    public void actionPerformed(ActionEvent e) {
+    /**
+     * Actions being performed by the user and based on the users choices taken the pages switch and display
+     * the correct output on the action commanded being passed in the button. 
+     * Bunch of else if statements due to the events which are being done in the application. 
+     * @params: Takes in the action event e. 
+     * @returns: Displaying the proper page. 
+     */
+    public void actionPerformed(ActionEvent e){
         System.out.println(e.getSource()); // test this
         if (e.getActionCommand().equals("Or Sign Up")) {
             setPageToShow("SignUpPage");
@@ -280,7 +314,7 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Save Changes")) {
-            landlordController.editProperty(editPropertyView);
+            landlordController.editProperty(editPropertyView,property);
             getLandlordsProperties();
             setPageToShow("ManagePropertiesPage");
         }
@@ -305,10 +339,29 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Generate Report")){
+            setPageToShow("ReportSettingsPage");
+        }
 
+        else if (e.getActionCommand().equals("Get Report")){
+            String start = reportSettings.getStartYear() + "-" + reportSettings.getStartMonth() + "-" + reportSettings.getStartDay();
+            String end = reportSettings.getEndYear()+"-"+reportSettings.getEndMonth()+"-"+reportSettings.getEndDay();
+            
+            try{
+                Report report = new Report(start, end);
+                JOptionPane.showMessageDialog(frame, "Report Generated");
+            }
+            catch(IOException error){
+                JOptionPane.showMessageDialog(frame, "Report Could Not Be Generated");
+            }
+            setPageToShow("HomePage");
         }
     }
 
+    /**
+     * Gets all of 
+     * @params: Takes in the action event e. 
+     * @returns: Displaying the proper page. 
+     */
     public ArrayList<User> getUsers() {
         return users;
     }

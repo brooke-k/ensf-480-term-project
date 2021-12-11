@@ -61,9 +61,10 @@ public class Driver {
         EditPropertyView editProperty = new EditPropertyView();
         EmailView emailPage = new EmailView();
         AllUserView allUserPage = new AllUserView();
+        ReportSettings reportSettingsPage = new ReportSettings();
 
         Listener listener = new Listener(signUp, contact, preferenceForm, searchForm, propertyApp, inbox, homePage,
-                propertyPage, mainFrame, landlordSignUpForm, paymentForm, editProperty);
+                propertyPage, mainFrame, landlordSignUpForm, paymentForm, editProperty, reportSettingsPage);
 
         listener.startUpRoutine();
 
@@ -84,6 +85,8 @@ public class Driver {
         JPanel editPropertyPanel = editProperty.display(listener.getProperty(), listener);
         mainPanel.add(editPropertyPanel);
 
+        JPanel reportSettingsPanel = reportSettingsPage.display(listener);
+        mainPanel.add(reportSettingsPanel, "reportSettingPage");
         JPanel emailJPanel = emailPage.display(listener.getEmail(), listener);
         mainPanel.add(emailJPanel, "emailPage");
         JPanel homePagePanel = homePage.display(new RegisteredRenter(69), listener);
@@ -235,6 +238,13 @@ public class Driver {
                 allUserPagePanel = allUserPage.display(listener.getUsers(), listener);
                 mainPanel.add(allUserPagePanel, "UserAccessPage");
                 cardLayout.show(mainPanel,"UserAccessPage");
+            }
+
+            else if (page.equals("ReportSettingsPage")){
+                mainPanel.remove(reportSettingsPanel);
+                reportSettingsPanel = reportSettingsPage.display(listener);
+                mainPanel.add(reportSettingsPanel, "reportSettingPage");
+                cardLayout.show(mainPanel, "reportSettingPage");
             }
 
 

@@ -104,6 +104,12 @@ public class Property {
 		this.dateLastPaid = "";
 	}
 
+	public Property(String landlordName, String landlordEmail, String address){
+		this.landlordName = landlordName;
+		this.landlordEmail = landlordEmail;
+		this.address = address;
+	}
+
 	public static Property getProperty(Document propertyDoc) {
 		Property returnProp = new Property();
 		returnProp.address = propertyDoc.get("address", String.class);

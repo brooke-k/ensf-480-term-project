@@ -21,6 +21,7 @@ package ensf480.group14.dbcontrol;
  * The import statements used in order for the code to work. 
  */
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -266,24 +267,38 @@ public class ManagerDBController extends LandlordDBControl {
 	 * Retrieves the properties from the database which are in the preference collection, checks if there is a property like this 
 	 * or not, based on the user liking which they fill out in the preference form. 
 	 * @params: Takes in two parameters which are startDate and endDate to get in a range. 
-	 * @returns: Returns the arraylist of the propeties in the database within a start date and end date. 
+	 * @returns: Returns the integer value of the number of properties in the database within a start date and end date. 
 	 */
-	public ArrayList<Property> getPropertiesListedWithin(String startDate, String endDate) {
-		FindIterable<Document> docIter = preferenceCollection.find();
+	public static int getNumProeprtiesListedWithin(String startDate, String endDate) {
+		FindIterable<Document> docIter = logCollection.find(new Document("type", "listed"));
 		MongoCursor<Document> iter = docIter.iterator();
 		if (!iter.hasNext()) {
-			return null;
+			return 0;
 		}
-		ArrayList<Property> arr = new ArrayList<>(0);
-		Property temp;
+		String startYear = startDate.split("-")[0];
+		String startMonth = startDate.split("-")[1];
+		String startDay = startDate.split("-")[2];
+		String endYear = endDate.split("-")[0];
+		String endMonth = endDate.split("-")[1];
+		String endDay = endDate.split("-")[2];
+
+		int num = 0;
 		while (iter.hasNext()) {
-			temp = Property.getProperty(iter.next());
-			if (temp.getDateLastListed().compareTo(startDate) >= 0
-					&& temp.getDateLastListed().compareTo(endDate) <= 0) {
-				arr.add(temp);
+			Document res = iter.next();
+			String currYear = res.get("date").toString().split("-")[0];
+            String currMonth = res.get("date").toString().split("-")[1];
+            String currDay = res.get("date").toString().split("-")[2];
+
+			Date start = new Date(Integer.parseInt(startYear)-1900, Integer.parseInt(startMonth)-1, Integer.parseInt(startDay));
+			Date end = new Date(Integer.parseInt(endYear)-1900, Integer.parseInt(endMonth)-1, Integer.parseInt(endDay));
+			Date curr = new Date(Integer.parseInt(currYear)-1900, Integer.parseInt(currMonth)-1, Integer.parseInt(currDay));
+
+			if(((end.getTime()/86400000) - (curr.getTime()/86400000)) > 0 && ((curr.getTime()/86400000) - (start.getTime()/86400000)) > 0){
+				num++;
 			}
 		}
-		return arr;
+
+		return num;
 	}
 
 	/**
@@ -292,21 +307,34 @@ public class ManagerDBController extends LandlordDBControl {
 	 * @params: Takes in two parameters which are startDate and endDate to get in a range. 
 	 * @returns: Returns the arraylist of the propeties in the database within a start date and end date. 
 	 */
-	public ArrayList<Property> getPropertiesRentedWithin(String startDate, String endDate) {
-		FindIterable<Document> docIter = propertiesCollection.find();
+	public static ArrayList<Property> getPropertiesRentedWithin(String startDate, String endDate) {
+		FindIterable<Document> docIter = logCollection.find(new Document("type", "rental"));
 		MongoCursor<Document> iter = docIter.iterator();
 		if (!iter.hasNext()) {
 			return null;
 		}
+		String startYear = startDate.split("-")[0];
+		String startMonth = startDate.split("-")[1];
+		String startDay = startDate.split("-")[2];
+		String endYear = endDate.split("-")[0];
+		String endMonth = endDate.split("-")[1];
+		String endDay = endDate.split("-")[2];
 		ArrayList<Property> arr = new ArrayList<>(0);
-		Property temp;
 		while (iter.hasNext()) {
-			temp = Property.getProperty(iter.next());
-			if (temp.getDateRented().compareTo(startDate) >= 0
-					&& temp.getDateRented().compareTo(endDate) <= 0) {
-				arr.add(temp);
+			Document res = iter.next();
+			String currYear = res.get("date").toString().split("-")[0];
+            String currMonth = res.get("date").toString().split("-")[1];
+            String currDay = res.get("date").toString().split("-")[2];
+
+			Date start = new Date(Integer.parseInt(startYear)-1900, Integer.parseInt(startMonth)-1, Integer.parseInt(startDay));
+			Date end = new Date(Integer.parseInt(endYear)-1900, Integer.parseInt(endMonth)-1, Integer.parseInt(endDay));
+			Date curr = new Date(Integer.parseInt(currYear)-1900, Integer.parseInt(currMonth)-1, Integer.parseInt(currDay));
+
+			if(((end.getTime()/86400000) - (curr.getTime()/86400000)) > 0 && ((curr.getTime()/86400000) - (start.getTime()/86400000)) > 0){
+				arr.add(new Property(res.get("landlord_name").toString(), res.get("landlord_email").toString(), res.get("address").toString()));
 			}
 		}
+
 		return arr;
 	}
 	/**
@@ -316,7 +344,7 @@ public class ManagerDBController extends LandlordDBControl {
 	 * @params: Takes in nothing.
 	 * @returns: Returns the arraylist of the propeties with rental state active which means to us that they are listed and payed. 
 	 */
-	public ArrayList<Property> getActiveProperties() {
+	public static ArrayList<Property> getActiveProperties() {
 		FindIterable<Document> docIter = propertiesCollection.find();
 		MongoCursor<Document> iter = docIter.iterator();
 		if (!iter.hasNext()) {

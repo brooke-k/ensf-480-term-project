@@ -113,7 +113,11 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 
 		resultCursor.close();
 
-		propertiesCollection.insertOne(Property.toDocument(property));
+		propertiesCollection.insertOne(Property.toDocument(property)); //add prop same addy
+		logCollection.insertOne(new Document()
+			.append("date", java.time.LocalDate.now())
+			.append("type", "listing")
+		);
 	}
 
 	
@@ -124,7 +128,9 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 	 * @params: The property which already exists in the database and belongs to the landlord. 
 	 * @returns: Nothing just interfaces with the database. 
 	 */
-	public void editProperty(EditPropertyView prop) {
+	public void editProperty(EditPropertyView prop, Property property) {
+		boolean wasRented = property.isRented();
+		
 		Bson updates = Updates.combine(
 				Updates.set("bathrooms", prop.getNumBath()),
 				Updates.set("bedrooms", prop.getNumBed()),
@@ -134,6 +140,16 @@ public class LandlordDBControl extends RegisteredRenterDBController {
 				Updates.set("rental_state", prop.isRented() ? "rented" : "active"),
 				Updates.set("rented", prop.isRented()));
 
+		if(!wasRented && prop.isRented()){
+			logCollection.insertOne(new Document()
+				.append("_id", new ObjectId())
+				.append("type", "rental")
+				.append("date", java.time.LocalDate.now().toString())
+				.append("landlord_name", property.getLandlordName())
+				.append("address", property.getAddress())
+				.append("landlord_email", property.getLandlordEmail())
+			);
+		}
 
 		propertiesCollection.updateOne(new Document("address", prop.getAddress()), updates,
 				new UpdateOptions().upsert(true));
