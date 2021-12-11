@@ -257,59 +257,109 @@ public class PropertyApplication implements Form {
     }
 
     /**
-	 * Gets the address of the property. 
+	 * Gets the address of the property from the property application. 
 	 * @params: Takes in Nothing. 
-	 * @returns: Returns the address of the property.  
+	 * @returns: Returns the address of the property from the property application. 
 	 */
     public String getAddress() {
         return addr;
     }
 
     /**
-	 * Sets the address of the property. 
-	 * @params: Takes in the address of the property. 
+	 * Sets the address of the property from the property application. 
+	 * @params: Takes in the address of the property from the property application. 
 	 * @returns: Returns Nothing. 
 	 */
     public void setAddress(String address) {
         this.addr = address;
     }
 
+    /**
+	 * Gets the how many bedrooms of the property from the property application. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the number of bedrooms of the property from the property application. 
+	 */
     public int getNumBed() {
         return numBed;
     }
 
+    /**
+	 * Sets how many bedrooms of the property from the property application. 
+	 * @params: Takes in how many bedrooms of the property from the property application. 
+	 * @returns: Returns Nothing. 
+	 */
     public void setNumBed(int numBed) {
         this.numBed = numBed;
     }
 
+    /**
+	 * Gets the how many bathrooms of the property from the property application. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the number of bathrooms of the property from the property application. 
+	 */
     public double getNumBath() {
         return numBath;
     }
-
+    
+    /**
+	 * Sets how many bathrooms of the property from the property application. 
+	 * @params: Takes in how many bathrooms of the property from the property application. 
+	 * @returns: Returns Nothing. 
+	 */
     public void setNumBath(double numBath) {
         this.numBath = numBath;
     }
 
+    /**
+	  * Checks if it's furnished or not from the property application. 
+	  * @params: Takes in nothing 
+	  * @returns: Gives a boolean about the flag back from the property application.
+	  */
     public boolean isFurnished() {
         return furnish;
     }
 
+    /**
+	 * Sets the furnsihed boolean from the property application. 
+	 * @params: Takes in the furnsihed boolean from the property application. 
+	 * @returns: Returns Nothing. 
+	 */
     public void setFurnish(boolean furnish) {
         this.furnish = furnish;
     }
 
+    /**
+	 * Gets the quadarant from the property application. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the quadarant from the property application. 
+	 */
     public String getCityQuad() {
         return cityQuad;
     }
 
+     /**
+	 * Sets the quadarant from the property application. 
+	 * @params: Takes in the quadarant from the property application. 
+	 * @returns: Returns Nothing.
+	 */
     public void setCityQuad(String cityQuad) {
         this.cityQuad = cityQuad;
     }
 
+    /**
+	 * Gets the price from the property application. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the price from the property application. 
+	 */
     public double getPrice() {
         return price;
     }
 
+    /**
+	 * Sets the price from the property application. 
+	 * @params: Takes inthe price from the property application. 
+	 * @returns: Returns 
+	 */
     public void setPrice(double price) {
         this.price = price;
     }
