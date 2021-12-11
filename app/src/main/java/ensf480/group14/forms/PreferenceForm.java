@@ -13,7 +13,13 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.forms;
+/**
+ * The import statements used in order for the code to work. 
+ */
 
 import java.awt.GridLayout;
 import java.awt.Color;
@@ -39,28 +45,46 @@ import org.bson.types.ObjectId;
 
 import ensf480.group14.eventListeners.Listener;
 
+/**
+ * This class basically creates a form which is based of the form class and is for creating the preference form which the user can basically save their search results. 
+ * It is similar to search but does a different functionality insteads notifies the user if the property like this is in the database. 
+ * Also has the attributes of the property which can be seen here. 
+ * This class mostly just builds from using the frontend(JavaSwing effects which are being used to make it display nicely)
+ * To make the GUI this is where the components are located in. 
+ */
 public class PreferenceForm implements Form {
 	private String buildingType;
 	private String cityQuadrant;
 	private ObjectId renterID;
-	private Integer numOfBedrooms;
-	private Double numOfBathrooms;
-	private Boolean furnished;
-	private Double maxPrice;
-	private Double minPrice;
+	private int numOfBedrooms;
+	private double numOfBathrooms;
+	private boolean furnished;
+	private double maxPrice;
+	private double minPrice;
 	private ObjectId iD;
 
+	/**
+	 * Default constructor which intializes the attributes to null as a starting point. 
+     * @params: Nothing. 
+	 * @returns: Nothing. 
+	 */
 	public PreferenceForm() {
 		buildingType = null;
 		cityQuadrant = null;
 		renterID = null;
-		numOfBedrooms = null;
-		numOfBathrooms = null;
-		furnished = null;
-		maxPrice = null;
-		minPrice = null;
+		numOfBedrooms = 0;
+		numOfBathrooms = 0;
+		furnished = false;
+		maxPrice = 0;
+		minPrice = 0;
 	}
 
+	/**
+	 * Is for adding the users choices into the database by using the preference form values which are stored their. 
+	 * Basically updates it in the database by adding these in the following order. 
+	 * @params: A preference form for the user is passed in. 
+	 * @returns: A document/collection which is in the database. 
+	 */
 	public static Document toDocument(PreferenceForm preferenceForm) {
 		Document prefDoc = new Document("_id", preferenceForm.getID());
 		prefDoc.append("building_type", preferenceForm.getBuildingType());
@@ -74,13 +98,19 @@ public class PreferenceForm implements Form {
 		return prefDoc;
 	}
 
+	/**
+	 * Is for retrieveing the values from the pereference form the user has inputted in the user text fields and storing them 
+	 * so in the other function we can add them to the database. 
+	 * @params: A document/collection which is in the database. 
+	 * @returns: A preference form for the user is returned.  
+	 */
 	public static PreferenceForm getPreferenceForm(Document pfDoc) {
 		PreferenceForm return_pf = new PreferenceForm();
 		return_pf.buildingType = pfDoc.get("building_type", String.class);
 		return_pf.iD = pfDoc.get("_id", ObjectId.class);
 		return_pf.cityQuadrant = pfDoc.get("city_quad", String.class);
-		return_pf.numOfBathrooms = pfDoc.get("bedrooms", Double.class);
-		return_pf.numOfBedrooms = pfDoc.get("bathrooms", Integer.class);
+		return_pf.numOfBedrooms = pfDoc.get("bedrooms", Integer.class);
+		return_pf.numOfBathrooms = pfDoc.get("bathrooms", Double.class);
 		return_pf.furnished = pfDoc.get("furnished", Boolean.class);
 		return_pf.maxPrice = pfDoc.get("max_price", Double.class);
 		return_pf.minPrice = pfDoc.get("min_price", Double.class);
@@ -88,9 +118,21 @@ public class PreferenceForm implements Form {
 		return return_pf;
 	}
 
+	/**
+    * Diplaying the panels, and the layouts which were learnt in the JavaSwing slides in the lectures for a brief amount of 
+    * of time. Takes in a listener to watch for an components being pressed by the user on this page. 
+    * @params: The listener which is going with the user. 
+    * @returns: A panel which can be displayed which contains all of these components. 
+    */
 	public JPanel display(Listener listener) {
 		JPanel panel = new JPanel();
-
+		buildingType = "House";
+		cityQuadrant = "NW";
+		numOfBedrooms = 0;
+		numOfBathrooms = 0;
+		furnished = false;
+		maxPrice = 0;
+		minPrice = 0;
 		panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
 		panel.setLayout(new GridLayout(0, 1));
 		panel.setBackground(Color.GRAY);
@@ -102,7 +144,7 @@ public class PreferenceForm implements Form {
 		panel.add(loginLabel);
 
 		panel.add(new JLabel("Building Type"));
-		String buildingTypes[] = { "House", "Apartment", "TownHouse" };
+		String buildingTypes[] = {"", "House", "Apartment", "TownHouse" };
 		JComboBox buildingTypeField = new JComboBox<String>(buildingTypes);
 		buildingTypeField.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
@@ -155,7 +197,7 @@ public class PreferenceForm implements Form {
 		panel.add(furnishedField);
 
 		panel.add(new JLabel("City Quadrant"));
-		String cityQuadrants[] = { "NW", "NE", "SW", "SE" };
+		String cityQuadrants[] = { "","NW", "NE", "SW", "SE" };
 		JComboBox cityQuadrantField = new JComboBox<String>(cityQuadrants);
 		cityQuadrantField.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
@@ -201,93 +243,194 @@ public class PreferenceForm implements Form {
 		submitButton.addActionListener(listener);
 		panel.add(submitButton);
 
+		
+
+
 		return panel;
 	}
 
-	// For testing
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		PreferenceForm form = new PreferenceForm();
-		// frame.add(form.display());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-	}
-
+		/**
+	 * Gets the type of the property from the preference form. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the type of the property from the preference form. 
+	 */
 	public String getBuildingType() {
 		return buildingType;
 	}
-
+	/**
+	 * Sets the type of the property from the preference form. 
+	 * @params: Takes in the type of the property from the preference form. 
+	 * @returns: Returns Nothing.
+	 */
 	public void setBuildingType(String buildingType) {
 		this.buildingType = buildingType;
 	}
 
+	/**
+	 * Gets the how many bedrooms of the property from the preference form. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the number of bedrooms of the property from the preference form.  
+	 */
 	public Integer getNumOfBedrooms() {
 		return numOfBedrooms;
 	}
 
+	/**
+	 * Sets how many bedrooms of the property from the preference form.  
+	 * @params: Takes in how many bedrooms of the property from the preference form. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setNumOfBedrooms(Integer numOfBedrooms) {
 		this.numOfBedrooms = numOfBedrooms;
 	}
 
+	/**
+	 * Gets the how many bathrooms of the property from the preference form. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the number of bathrooms of the property from the preference form.  
+	 */
 	public Double getNumOfBathrooms() {
 		return numOfBathrooms;
 	}
 
+	/**
+	 * Sets how many bathrooms of the property from the preference form.  
+	 * @params: Takes in how many bathrooms of the property from the preference form. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setNumOfBathrooms(Double numOfBathrooms) {
 		this.numOfBathrooms = numOfBathrooms;
 	}
 
+		/**
+	  * Checks if it's furnished or not the property from the preference form based on the user. 
+	  * @params: Takes in nothing 
+	  * @returns: Gives a boolean about the flag back. 
+	  */
 	public Boolean isFurnished() {
 		return furnished;
 	}
 
+	/**
+	 * Sets the furnsihed boolean from the preference form based on the user.
+	 * @params: Takes in the furnsihed boolean and sets it from the preference form based on the user.
+	 * @returns: Returns Nothing. 
+	 */
 	public void setFurnished(Boolean furnished) {
 		this.furnished = furnished;
 	}
 
+	/**
+	 * Gets the quadarant from the preference form based on the user. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the quadarant from the preference form based on the user. 
+	 */
 	public String getCityQuadrant() {
 		return cityQuadrant;
 	}
 
+	/**
+	 * Sets the quadarant preference form based on the user. 
+	 * @params: Takes in the quadarant preference form based on the user. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setCityQuadrant(String cityQuadrant) {
 		this.cityQuadrant = cityQuadrant;
 	}
 
+	/**
+	 * Gets the max price from the preference form based on the user. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the max price from the preference form based on the user. 
+	 */
 	public Double getMaxPrice() {
 		return maxPrice;
 	}
 
+	/**
+	 * Sets the max price from the preference form based on the user. 
+	 * @params: Takes in the max price from the preference form based on the user. 
+	 * @returns: Nothing
+	 */
 	public void setMaxPrice(Double maxPrice) {
 		this.maxPrice = maxPrice;
 	}
 
+	/**
+	 * Gets the min price from the preference form based on the user. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the min price from the preference form based on the user. 
+	 */
 	public Double getMinPrice() {
 		return minPrice;
 	}
 
+	/**
+	 * Sets the min price from the preference form based on the user. 
+	 * @params: Takes in the min price from the preference form based on the user. 
+	 * @returns: Nothing
+	 */
 	public void setMinPrice(Double minPrice) {
 		this.minPrice = minPrice;
 	}
-
+	/**
+	 * Used for printing the preference form.
+	 * @params: Nothing.
+	 * @returns: Noting. 
+	 */
 	public void print() {
 		System.out.println();
 		System.out.println(PreferenceForm.toDocument(this).toString());
 	}
 
+	/**
+	 * Sets the renter ID from the as an objectid.
+	 * @params: Takes in the renter ID from the as an objectid.
+	 * @returns: Nothing. 
+	 */
 	public void setRenterID(ObjectId renterID) {
 		this.renterID = renterID;
 	}
 
+	/**
+	 * Sets the id of the objectid type. 
+	 * @params: Takes in the id of the objectid type. 
+	 * @returns: Nothing.
+	 */
 	public void setiD(ObjectId iD) {
 		this.iD = iD;
 	}
 
+	/**
+	 * Gets the renter ID from the as an objectid.
+	 * @params: Takes in nothing. 
+	 * @returns: The object id which is for the renter. 
+	 */
 	public ObjectId getRenterID() {
 		return renterID;
 	}
 
+	/**
+	 * Gets the id of the objectid type. 
+	 * @params: Takes in nothing. 
+	 * @returns: The object id which is for the user.
+	 */
 	public ObjectId getID() {
 		return iD;
 	}
+
+	
+	/**
+    * This is how we were testing the forms sepeartely when the whole application was still building. 
+    */
+	
+	// For testing
+	// public static void main(String[] args) {
+	// 	JFrame frame = new JFrame();
+	// 	PreferenceForm form = new PreferenceForm();
+	// 	// frame.add(form.display());
+	// 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	// 	frame.pack();
+	// 	frame.setVisible(true);
+	// }
 }

@@ -26,7 +26,7 @@ import ensf480.group14.external.Property;
 import ensf480.group14.forms.PreferenceForm;
 
 public class RegisteredRenter extends User {
-
+	String lastLogin;
 	String emailAddress;
 	RegisteredRenterDBController dbcontroller;
 	PreferenceForm prefs;
@@ -68,8 +68,8 @@ public class RegisteredRenter extends User {
 		newRenter.setType(renterDoc.get("type").toString());
 		newRenter.setDbcontroller(new RegisteredRenterDBController());
 		newRenter.setiD((ObjectId) renterDoc.get("_id"));
+		newRenter.setLastLogin(renterDoc.get("last_login").toString());
 		return newRenter;
-
 	}
 
 	public static Document toDocument(RegisteredRenter rRenter) {
@@ -102,6 +102,7 @@ public class RegisteredRenter extends User {
 		this.prefs = prefs;
 	}
 
+	/*
 	public void addPreference(PreferenceForm prefForm) {
 		if (this.iD == null) {
 			return;
@@ -111,6 +112,7 @@ public class RegisteredRenter extends User {
 		dbcontroller.addPreferenceFormToDatabase(prefForm);
 
 	}
+	*/
 
 	public boolean owns(String address) {
 		return false;
@@ -155,6 +157,16 @@ public class RegisteredRenter extends User {
 
 	@Override
 	public void setOwnedAddresses(HashSet<String> address) {
+	}
+
+	@Override
+	public String getLastLogin() {
+		return this.lastLogin;
+	}
+
+	@Override
+	public void setLastLogin(String lastLogin) {
+		this.lastLogin = lastLogin;
 	}
 
 }

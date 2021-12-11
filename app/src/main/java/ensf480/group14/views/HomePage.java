@@ -84,6 +84,16 @@ public class HomePage {
 			JButton preferenceButton = new JButton("Notifications Settings"); // open preference form
 			preferenceButton.addActionListener(listener);
 			panel.add(preferenceButton);
+
+			panel.add(Box.createRigidArea(new Dimension(1, 5)));
+			JButton unsubButton = new JButton("Unsubscribe from preferences");
+			unsubButton.addActionListener(listener);
+			panel.add(unsubButton);
+
+			panel.add(Box.createRigidArea(new Dimension(1, 5)));
+			JButton inboxButton = new JButton("Notifications"); // Open Inbox page needs array of emails addressed to user
+			inboxButton.addActionListener(listener);
+			panel.add(inboxButton);
 		}
 		if (user.getType().equals("manager")) {
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
@@ -118,18 +128,19 @@ public class HomePage {
 																				// that the landlord owns
 			managePropertyButton.addActionListener(listener);
 			panel.add(managePropertyButton);
+
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
 			JButton addPropertyButton = new JButton("New Property Application"); // Open Property Application
 			addPropertyButton.addActionListener(listener);
 			panel.add(addPropertyButton);
 
-		}
-		if (user.getType().equals("landlord") || user.getType().equals("registered_renter")) {
 			panel.add(Box.createRigidArea(new Dimension(1, 5)));
 			JButton inboxButton = new JButton("Inbox"); // Open Inbox page needs array of emails addressed to user
 			inboxButton.addActionListener(listener);
 			panel.add(inboxButton);
+
 		}
+		
 		return panel;
 	}
 

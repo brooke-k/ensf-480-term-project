@@ -129,4 +129,16 @@ public class Manager extends User {
     public void setOwnedAddresses(HashSet<String> address) {
     }
 
+    @Override
+    public String getLastLogin() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setLastLogin(String lastLogin) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

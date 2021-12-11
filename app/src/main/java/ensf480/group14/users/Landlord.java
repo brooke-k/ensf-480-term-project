@@ -124,4 +124,16 @@ public class Landlord extends User {
 	public void removeOwnedAddress(String addressToRemove) {
 		ownedAddresses.remove(addressToRemove);
 	}
+
+	@Override
+	public String getLastLogin() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setLastLogin(String lastLogin) {
+		// TODO Auto-generated method stub
+		
+	}
 }

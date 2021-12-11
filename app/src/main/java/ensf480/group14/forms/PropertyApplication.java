@@ -13,7 +13,13 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.forms;
+/**
+ * The import statements used in order for the code to work. 
+ */
 
 import java.awt.Color;
 import java.awt.Component;
@@ -37,6 +43,12 @@ import javax.swing.JTextField;
 
 import ensf480.group14.eventListeners.Listener;
 
+/**
+ * This class basically creates a form which is based of the form class and is for creating the property application form for the user 
+ * landlord to create his proerty to be rented which also has attributes of the properties and the landlord enters the information. 
+ * This class mostly just builds from using the frontend(JavaSwing effects which are being used to make it display nicely)
+ * To make the GUI this is where the components are located in. 
+ */
 public class PropertyApplication implements Form {
     // private String userEmailAddress;
     // private String message;
@@ -54,6 +66,12 @@ public class PropertyApplication implements Form {
     Pattern patBed;
     boolean notNumerical;
 
+    /**
+     * Using regex to make sure the landlord does not input something funky which messes the output, error checking component is here. 
+     * Also sets the default type and city quadarant. 
+     * @params: Nothing.
+     * @returns: Nothing. 
+     */
     public PropertyApplication() {
         pat = Pattern.compile("[^0-9.]");
         patBed = Pattern.compile("[^0-9]");
@@ -62,6 +80,12 @@ public class PropertyApplication implements Form {
         cityQuad = "NW";
     }
     
+    /**
+    * Diplaying the panels, and the layouts which were learnt in the JavaSwing slides in the lectures for a brief amount of 
+    * of time. Takes in a listener to watch for an components being pressed by the user on this page. 
+    * @params: The listener which is going with the user. 
+    * @returns: A panel which can be displayed which contains all of these components. 
+    */
     public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
@@ -214,18 +238,38 @@ public class PropertyApplication implements Form {
         return panel;
     }
 
+    /**
+	 * Gets the id of the objectid type. 
+	 * @params: Takes in nothing. 
+	 * @returns: The object id which is for the user.
+	 */
     public int getId() {
         return id;
     }
 
+    /**
+	 * Sets the id of the objectid type. 
+	 * @params: Takes in the id of the objectid type. 
+	 * @returns: Nothing.
+	 */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+	 * Gets the address of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the address of the property.  
+	 */
     public String getAddress() {
         return addr;
     }
 
+    /**
+	 * Sets the address of the property. 
+	 * @params: Takes in the address of the property. 
+	 * @returns: Returns Nothing. 
+	 */
     public void setAddress(String address) {
         this.addr = address;
     }

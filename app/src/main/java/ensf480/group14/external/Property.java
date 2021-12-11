@@ -109,6 +109,11 @@ public class Property {
 
 	}
 
+	/**
+	 * Constructor which instanties the property attributes based on the rentalState. 
+	 * @params: Takes in the attributes for the property which are associated with the property. 
+	 * @returns: Nothing. 
+	 */
 	public Property(String address, String cityQuad, int numBed,
 			double numBath, boolean furnished, double price, String type) {
 		this.address = address;
@@ -126,12 +131,22 @@ public class Property {
 		this.dateLastPaid = "";
 	}
 
+	/**
+	 * Constructor which instanties the for the landlord. 
+	 * @params: Takes in the attributes for the landlordName and id, and address for the property. 
+	 * @returns: Nothing. 
+	 */
 	public Property(String landlordName, ObjectId id, String address){
 		this.landlordName = landlordName;
 		this.iD = id;
 		this.address = address;
 	}
 
+	/**
+	 * Gets the property specifically based on the document of the property, 
+	 * @params: Takes in the collection of property. 
+	 * @returns: Returns the property which matches all of these attributes. 
+	 */
 	public static Property getProperty(Document propertyDoc) {
 		Property returnProp = new Property();
 		returnProp.address = propertyDoc.get("address", String.class);
@@ -154,7 +169,12 @@ public class Property {
 		return returnProp;
 
 	}
-
+	
+	/**
+	 * Adds the property information into the Property object. 
+	 * @params: Takes in the property object which is used. 
+	 * @returns: Returns the collection of the property. 
+	 */
 	public static Document toDocument(Property prop) {
 		Document propDoc = new Document("address", prop.getAddress());
 		if (prop.getiD() != null) {
@@ -178,102 +198,227 @@ public class Property {
 		return propDoc;
 	}
 
+	/**
+	 * Gets the id of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the id of the property.  
+	 */
 	public ObjectId getiD() {
 		return iD;
 	}
 
+	/**
+	 * Sets the id of the property. 
+	 * @params: Takes in the id of the property. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setiD(ObjectId iD) {
 		this.iD = iD;
 	}
 
+	/**
+	 * Gets the address of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the address of the property.  
+	 */
 	public String getAddress() {
 		return address;
 	}
-
+	
+	/**
+	 * Sets the address of the property. 
+	 * @params: Takes in the address of the property. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setAddress(String address) {
 		this.address = address;
 	}
 
+	/**
+	 * Gets the quadarant in which it is in of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the quadarant of the property.  
+	 */
 	public String getCityQuad() {
 		return cityQuad;
 	}
 
+	/**
+	 * Sets the quadarant in which it is in of the property. 
+	 * @params: Takes in the quadarant in which it is in of the property. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setCityQuad(String cityQuad) {
 		this.cityQuad = cityQuad;
 	}
 
+	/**
+	 * Gets the rental state of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the rental state of the property.  
+	 */
 	public String getRentalState() {
 		return rentalState;
 	}
 
+	/**
+	 * Sets the rental state of the property. 
+	 * @params: Takes in the rental state of the property. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setRentalState(String rentalState) {
 		this.rentalState = rentalState;
 	}
 
+	/**
+	 * Gets the landlordname of the landlord.
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the landlordname of the landlord.  
+	 */
 	public String getLandlordName() {
 		return landlordName;
 	}
 
+	/**
+	 * Sets the landlordname of the landlord. 
+	 * @params: Takes in landlordname of the landlord. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setLandlordName(String landlordName) {
 		this.landlordName = landlordName;
 	}
 
+	/**
+	 * Gets the date listed of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the date listed of the property.  
+	 */
 	public String getDateLastListed() {
 		return dateLastListed;
 	}
 
+	/**
+	 * Sets the date listed of the property. 
+	 * @params: Takes in the date listed of the property. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setDateLastListed(String dateLastListed) {
 		this.dateLastListed = dateLastListed;
 	}
 
+	/**
+	 * Gets the date when the property is rented.
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the date when the property is rented.
+	 */
 	public String getDateRented() {
 		return dateRented;
 	}
 
+	/**
+	 * Sets the date when the property is rented.
+	 * @params: Takes in the date when the property is rented.
+	 * @returns: Returns Nothing. 
+	 */
 	public void setDateRented(String dateRented) {
 		this.dateRented = dateRented;
 	}
 
+	/**
+	 * Gets the how many bedrooms of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the number of bedrooms of the property.  
+	 */
 	public Integer getNumBedrooms() {
 		return numBedrooms;
 	}
 
+	/**
+	 * Sets how many bedrooms of the property. 
+	 * @params: Takes in how many bedrooms of the property. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setNumBedrooms(Integer numBedrooms) {
 		this.numBedrooms = numBedrooms;
 	}
 
+	/**
+	 * Gets the how many bathrooms of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the number of bathrooms of the property.  
+	 */
 	public Double getNumBathrooms() {
 		return numBathrooms;
 	}
 
+	/**
+	 * Sets how many bathrooms of the property.  
+	 * @params: Takes in how many bathrooms of the property.  
+	 * @returns: Returns Nothing. 
+	 */
 	public void setNumBathrooms(Double numBathrooms) {
 		this.numBathrooms = numBathrooms;
 	}
 
+	/**
+	 * Gets the landlordid of the landlord
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the landlordid of landlord.  
+	 */
 	public ObjectId getLandlordID() {
 		return landlordID;
 	}
 
+	/**
+	 * Sets the landlordid of the landlord.
+	 * @params: Takes in the landlordid of the landlord.,
+	 * @returns: Returns Nothing. 
+	 */
 	public void setLandlordID(ObjectId landlordID) {
 		this.landlordID = landlordID;
 	}
 
+	/**
+	 * Gets the rental cost of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the rental cost of the property.  
+	 */
 	public Double getRentCost() {
 		return rentCost;
 	}
 
+	/**
+	 * Sets the rental cost of the property. 
+	 * @params: Takes in the rental cost of the property. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setRentCost(Double rentCost) {
 		this.rentCost = rentCost;
 	}
 
+ 	/**
+	  * Checks if it's visible to renters or not. 
+	  * @params: Takes in nothing 
+	  * @returns: Gives a boolean about the flag back. 
+	  */
 	public Boolean isVisibleToRenters() {
 		return visibleToRenters;
 	}
 
+	/**
+	 * Sets the visible renters boolean. 
+	 * @params: Takes in the visible renters boolean and sets it. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setVisibleToRenters(Boolean visibleToRenters) {
 		this.visibleToRenters = visibleToRenters;
 	}
 
+	/**
+	 * Just converting the strings into appending for showing in the views. 
+	 * @params: Takes nothing. 
+	 * @returns: A string. 
+	 */
 	public String toString() {
 		String asString = "\n\r";
 		asString = asString + "    Name of landlord: " + landlordName + "\n\r";
@@ -282,46 +427,101 @@ public class Property {
 
 		return asString;
 	}
-
+	/**
+	 * Used for printing when debugging. 
+	 * @params: Nothing.
+	 * @returns: Nothing. 
+	 */
 	public void print() {
 		System.out.println(this.toString());
 	}
 
+	/**
+	  * Checks if it's furnished or not the property. 
+	  * @params: Takes in nothing 
+	  * @returns: Gives a boolean about the flag back. 
+	  */
 	public Boolean isFurnished() {
 		return furnished.booleanValue();
 	}
 
+	/**
+	 * Sets the furnsihed boolean. 
+	 * @params: Takes in the furnsihed boolean and sets it. 
+	 * @returns: Returns Nothing. 
+	 */
 	public void setFurnished(boolean furnished) {
 		this.furnished = Boolean.valueOf(furnished);
 	}
 
+	/**
+	 * Gets the landlord's email. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the landlordemail. 
+	 */
 	public String getLandlordEmail() {
 		return landlordEmail;
 	}
 
+	/**
+	 * Sets the landlord's email. 
+	 * @params: Takes in the landlord's email. 
+	 * @returns: Returns Nothing.
+	 */
 	public void setLandlordEmail(String landlordEmail) {
 		this.landlordEmail = landlordEmail;
 	}
 
+	/**
+	 * Gets the type of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the type of the property.  
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * Sets the type of the property. 
+	 * @params: Takes in the type of the property. 
+	 * @returns: Returns Nothing.
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
+	/**
+	  * Checks if it's rented or not the property. 
+	  * @params: Takes in nothing 
+	  * @returns: Gives a boolean about the flag back. 
+	  */
 	public boolean isRented() {
 		return rented;
 	}
 
+	/**
+	  * Sets if it's rented or not the property. 
+	  * @params: Takes in the rented boolean to set it.
+	  * @returns: Returns Nothing. 
+	  */
 	public void setRented(boolean rented) {
 		this.rented = rented;
 	}
+
+	/**
+	 * Gets the date last paid of the property. 
+	 * @params: Takes in Nothing. 
+	 * @returns: Returns the date last paid of property.  
+	 */
 	public String getDateLastPaid() {
 		return dateLastPaid;
 	}
 
+	/**
+	 * Sets the date last paid of the property. 
+	 * @params: Takes in the date last paid of the property. 
+	 * @returns: Returns Nothing.
+	 */
 	public void setDateLastPaid(String dateLastPaid) {
 		this.dateLastPaid = dateLastPaid;
 	}

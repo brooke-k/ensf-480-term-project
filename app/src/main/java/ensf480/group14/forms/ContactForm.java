@@ -13,8 +13,13 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.forms;
-
+/**
+ * The import statements used in order for the code to work. 
+ */
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -38,18 +43,21 @@ import ensf480.group14.eventListeners.Listener;
 import ensf480.group14.external.Email;
 
 /**
- * Form to send email to a landlord
- *
+ * This class basically creates a form which is based of the form class and is for when the user wants to contact
+ * another user it will input the email address and the message which needs to be inputted by the user. 
+ * This class mostly just builds from using the frontend(JavaSwing effects which are being used to make it display nicely)
+ * To make the GUI this is where the components are located in. 
  */
-
 public class ContactForm implements Form {
     private String sendEmailAddress;
     private String message;
 
-    /**
-     * display form to contact the landlord of the property you are viewing
-     *
-     */
+   /**
+    * Diplaying the panels, and the layouts which were learnt in the JavaSwing slides in the lectures for a brief amount of 
+    * of time. Takes in a listener to watch for an components being pressed by the user on this page. 
+    * @params: The listener which is going with the user. 
+    * @returns: A panel which can be displayed which contains all of these components. 
+    */
     public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
@@ -114,41 +122,66 @@ public class ContactForm implements Form {
         return panel;
     }
 
-    /**
-     * parses email to a landlord
-     *
+     /**
+     * This is basically a function for parsing the email to the landlord. 
+     * @params: Takes in the body and sender email address
+     * @returns: An email object is returned. 
      */
     Email parseEmail(String body, String sendAddr) {
         Email mail = new Email(body, sendAddr);
         return mail;
     }
-    
+    /**
+     * This is for getting the sender their email address. 
+     * @params: Takes in nothing. 
+     * @returns: Gives back a string which is the sender of the email. 
+     */
     public String getSenderEmailAddress() {
         return sendEmailAddress;
     }
 
+     /**
+     * This is for setting the sender their email address. 
+     * @params: Takes in the sender their email address. 
+     * @returns: Returns Nothing. 
+     */
     public void setSenderEmailAddress(String senderEmail) {
         this.sendEmailAddress = senderEmail;
     }
 
+    /**
+     * This is for getting the message of the email.  
+     * @params: Takes in nothing. 
+     * @returns: Returns the message of the email. 
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * This is for setting the message of the email.  
+     * @params: Takes in the message of the email.   
+     * @returns: Returns Nothing. 
+     */
     public void setMessage(String message) {
         this.message = message;
     }
 
-    // For testing
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        ContactForm form = new ContactForm();
-        // frame.add(form.display());
-        frame.setPreferredSize(new Dimension(524, 368));
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+   /**
+    * This is how we were testing the forms sepeartely when the whole application was still building. 
+    */
+
+    // // For testing
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     ContactForm form = new ContactForm();
+    //     // frame.add(form.display());
+    //     frame.setPreferredSize(new Dimension(524, 368));
+
+    //     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     frame.pack();
+    //     frame.setLocationRelativeTo(null);
+    //     frame.setVisible(true);
+    // }
 }

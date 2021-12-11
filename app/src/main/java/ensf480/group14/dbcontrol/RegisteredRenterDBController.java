@@ -185,7 +185,7 @@ public class RegisteredRenterDBController implements DatabaseSubject {
         resultCursor.close();
         Document newUser = new Document("email", email);
         emailCollection.insertOne(newUser);
-        newUser.append("password", password).append("type", userType);
+        newUser.append("password", password).append("type", userType).append("last_login", java.time.LocalDate.now().toString());
         usersCollection.insertOne(newUser);
         System.out.println("User with email \"" + email + "\" added to the database.");
         return true;
@@ -230,37 +230,25 @@ public class RegisteredRenterDBController implements DatabaseSubject {
      * @params: Takes in the preference form which is displayed ot user. 
      * @returns: Nothing just for interfacing with the database.
      */
-    public void addPreferenceFormToDatabase(PreferenceForm pf) {
-        if (pf.getID() != null) {
-            BasicDBObject searchQuery = new BasicDBObject();
-            searchQuery.put("_id", pf.getID());
-            FindIterable<Document> findIter = propertiesCollection.find(searchQuery);
-            MongoCursor<Document> resultCursor = findIter.iterator();
-            if (resultCursor.hasNext()) { // Meaning the preference form already exists in the
-                                          // database and should not be added as a duplicate
-                System.out.println("A preference form with the address \"" + pf.getID() +
-                        "\" already exists.");
-                System.out.println(
-                        "The preference form with address \"" + pf.getID() + "\" was not added to the database.");
-                resultCursor.close();
-                return;
-            }
-            resultCursor.close();
-        }
+    public void addPreferenceFormToDatabase(PreferenceForm pf, ObjectId id) {	
+        Bson updates = Updates.combine(
+            Updates.set("bathrooms", pf.getNumOfBathrooms()),
+            Updates.set("bedrooms", pf.getNumOfBedrooms()),
+            Updates.set("furnished", pf.isFurnished()),
+            Updates.set("city_quad", pf.getCityQuadrant()),
+            Updates.set("max_price", pf.getMaxPrice()),
+            Updates.set("min_price", pf.getMinPrice()),
+            Updates.set("renter_id", id)
+        );
 
-        Document newPreference = new Document("building_type", pf.getBuildingType());
-        newPreference.append("bedrooms", pf.getNumOfBathrooms());
-        newPreference.append("bathrooms", pf.getNumOfBathrooms());
-        newPreference.append("furnished", (pf.isFurnished()));
-        newPreference.append("city_quad", pf.getCityQuadrant());
-        newPreference.append("max_price", pf.getMaxPrice());
-        newPreference.append("min_price", pf.getMinPrice());
-        newPreference.append("renter_id", pf.getRenterID());
 
-        preferenceCollection.insertOne(newPreference);
-
+		preferenceCollection.updateOne(new Document("renter_id", id), updates,
+				new UpdateOptions().upsert(true));
     }
 
+    public void deletePreferenceForm(ObjectId id) {	
+		preferenceCollection.deleteOne(new Document("renter_id", id));
+    }
     // public ArrayList<Property> getMatchingProperties(Search searchInfo) {
     // return null;
     // }
@@ -402,6 +390,48 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 
         return resultArray;
     }
+
+    public ArrayList<Property> searchProperties(PreferenceForm prefForm) {
+        BasicDBObject criteria = new BasicDBObject();
+        if(prefForm.getBuildingType() != null && !prefForm.getBuildingType().equals("")){
+            criteria.append("type", prefForm.getBuildingType());
+            
+        }
+        if(prefForm.getNumOfBedrooms() != 0){
+            criteria.append("bedrooms", prefForm.getNumOfBedrooms());
+        }
+        if(prefForm.getNumOfBathrooms() != 0){
+            criteria.append("bathrooms", prefForm.getNumOfBathrooms());
+        }
+        if(prefForm.getCityQuadrant() != null  && !prefForm.getCityQuadrant().equals("")){
+            criteria.append("city_quad", prefForm.getCityQuadrant());
+        }
+        
+        criteria.append("visible_to_renters", true);
+        criteria.append("rental_state", "active");
+        if(!prefForm.isFurnished().equals("")){
+            criteria.append("furnished", prefForm.isFurnished().equals("Furnished") ? true : false);   
+        }
+      
+        ArrayList<Property> resultArray = new ArrayList<Property>(0);
+        FindIterable<Document> findIter = propertiesCollection.find(criteria);
+        MongoCursor<Document> resultCursor = findIter.iterator();
+        while (resultCursor.hasNext()) {
+            resultArray.add(Property.getProperty(resultCursor.next()));   
+        }
+
+        if(prefForm.getMaxPrice() > 0){
+            resultArray.removeIf(s -> s.getRentCost() > prefForm.getMaxPrice());
+        }
+        resultArray.removeIf(s -> s.getRentCost() < prefForm.getMinPrice());
+
+        // for(int i = 0;i<resultArray.size();i++){
+        //     if(re)
+        // }
+
+        return resultArray;
+    }
+
 
     /**
      * This is for sending an email when the user wants to contact the landlord about the property for instance. 
@@ -683,13 +713,13 @@ public class RegisteredRenterDBController implements DatabaseSubject {
     }
 
     /**
-     * This function is for saving the perfecnes form based on the user type and will notify them later
+     * This function is for saving the preferences form based on the user type and will notify them later
      * based on their choices they want to be alerted for. 
      * @params: Takes in preference form and the user object. 
      * @returns: Nothing.
      */
     public void savePreference(PreferenceForm preferenceForm, User user) {
-
+        
     }
 
     /**
@@ -713,5 +743,50 @@ public class RegisteredRenterDBController implements DatabaseSubject {
 		Bson updates = Updates.combine(
 				Updates.set("period", changedPeriod));
 		feeCollection.updateOne(new Document(), updates, new UpdateOptions().upsert(true));
+	}
+
+	public ArrayList<Email> getNotifications(ObjectId id, String lastLogin) {        
+        FindIterable<Document> docIter = preferenceCollection.find(new Document("renter_id", id));
+		MongoCursor<Document> iter = docIter.iterator();
+        if(!iter.hasNext()){
+            return null;
+        }
+		PreferenceForm form = PreferenceForm.getPreferenceForm(iter.next());
+
+        ArrayList<Property> props = searchProperties(form);
+        
+        String lastYear = lastLogin.split("-")[0];
+        String lastMonth = lastLogin.split("-")[1];
+        String lastDay = lastLogin.split("-")[2];
+
+        Date last = new Date(Integer.parseInt(lastYear)-1900, Integer.parseInt(lastMonth)-1, Integer.parseInt(lastDay));
+
+        ArrayList<Email> em = new ArrayList<>(0);
+        for(Property prop : props){
+            
+            String listYear = prop.getDateLastListed().split("-")[0];
+            String listMonth = prop.getDateLastListed().split("-")[1];
+            String listDay = prop.getDateLastListed().split("-")[2];
+            Date list = new Date(Integer.parseInt(listYear)-1900, Integer.parseInt(listMonth)-1, Integer.parseInt(listDay));
+
+            if(list.after(last)){
+            Email a = new Email("New property at: " + prop.getAddress() + " has matched!", "property.notification@no-reply.com");
+            a.setId(prop.getiD());
+            a.setSubject("New Property");
+            em.add(a);
+                
+            }
+        }
+
+        return em;
+	}
+	public void updateUserLogin(User user) {
+
+        Bson update = Updates.combine(
+            Updates.set("last_login", user.getLastLogin())
+        );
+
+
+        usersCollection.updateOne(new Document("_id", user.getId()), update);
 	}
 }

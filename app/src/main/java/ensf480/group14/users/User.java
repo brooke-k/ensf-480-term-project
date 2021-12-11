@@ -65,4 +65,8 @@ public abstract class User {
 	
 	abstract public void setOwnedAddresses(HashSet<String> address);
 
+	abstract public String getLastLogin();
+
+	abstract public void setLastLogin(String lastLogin);
+
 };

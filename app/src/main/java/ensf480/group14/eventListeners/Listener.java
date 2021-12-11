@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.bson.types.ObjectId;
+
 import ensf480.group14.dbcontrol.DatabaseSubject;
 import ensf480.group14.dbcontrol.LandlordDBControl;
 import ensf480.group14.dbcontrol.ManagerDBController;
@@ -142,6 +144,9 @@ public class Listener implements ActionListener {
             user = renterController.checkLogin(login.getUsername(), login.getPassword());
             if (user instanceof RegisteredRenter) {
                 renterController = new RegisteredRenterDBController();
+                mail = renterController.getNotifications(user.getId(),user.getLastLogin());
+                user.setLastLogin(java.time.LocalDate.now().toString());
+                renterController.updateUserLogin(user);
             } else if (user instanceof Landlord) {
                 landlordController = new LandlordDBControl();
             } else {
@@ -157,7 +162,7 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Continue without Logging in")) {
-            user = new RegisteredRenter(69);
+            user = new RegisteredRenter(1);
             setPageToShow("HomePage");
         }
 
@@ -273,7 +278,7 @@ public class Listener implements ActionListener {
         }
 
         else if (e.getActionCommand().equals("Save Preference")) {
-            renterController.savePreference(preferenceForm, user);
+            renterController.addPreferenceFormToDatabase(preferenceForm, user.getId());
             JOptionPane.showMessageDialog(frame, "Preferences Saved.");
             setPageToShow("HomePage");
             // Saves preference form
@@ -371,6 +376,17 @@ public class Listener implements ActionListener {
             }
             setPageToShow("HomePage");
             }
+        }
+
+        else if (e.getActionCommand().equals("Unsubscribe from preferences")){
+            renterController.deletePreferenceForm(user.getId());
+            JOptionPane.showMessageDialog(frame, "You will no longer receive notifications.");
+            setPageToShow("HomePage");
+        }
+
+        
+        else if (e.getActionCommand().equals("Notifications")){
+            setPageToShow("InboxPage");
         }
     }
 

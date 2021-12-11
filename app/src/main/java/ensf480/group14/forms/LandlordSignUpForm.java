@@ -13,7 +13,13 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.forms;
+/**
+ * The import statements used in order for the code to work. 
+ */
 
 import java.awt.Color;
 import java.awt.Component;
@@ -36,8 +42,10 @@ import javax.swing.JTextField;
 import ensf480.group14.eventListeners.Listener;
 
 /**
- * landlord form to signup as a landlord
- *
+ * This class basically creates a form which is based of the form class and is for when the landlord wants to sign up 
+ * to use the application and has the attributes of the landlordsign up form. 
+ * This class mostly just builds from using the frontend(JavaSwing effects which are being used to make it display nicely)
+ * To make the GUI this is where the components are located in. 
  */
 public class LandlordSignUpForm implements Form {
     private String username;
@@ -47,9 +55,11 @@ public class LandlordSignUpForm implements Form {
     private String lastName;
 
     /**
-     * displays form for land lord to sign up
-     *
-     */
+    * Diplaying the panels, and the layouts which were learnt in the JavaSwing slides in the lectures for a brief amount of 
+    * of time. Takes in a listener to watch for an components being pressed by the user on this page. 
+    * @params: The listener which is going with the user. 
+    * @returns: A panel which can be displayed which contains all of these components. 
+    */
     public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
@@ -156,50 +166,98 @@ public class LandlordSignUpForm implements Form {
      * }
      */
 
+    /**
+     * Default Constructor
+     * @params: Takes Nothing.
+     * @returns: Nothing. 
+     */
     public LandlordSignUpForm() {
 
     };
 
-    
+    /** Gets the first name of the landlord 
+     * @params: Takes in nothing. 
+     * @returns: A string in the firstname. 
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /** Sets the first name of the landlord 
+     * @params: Takes in a string in the first name. 
+     * @returns: Nothing. 
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /** Gets the last name of the landlord 
+     * @params: Takes in nothing. 
+     * @returns: A string in the last name. 
+     */
     public String getLastName() {
         return lastName;
     }
-
+    
+     /** Sets the last name of the landlord 
+     * @params: Takes in a string in the last name. 
+     * @returns: Nothing. 
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /** Gets the user name of the landlord 
+     * @params: Takes in nothing. 
+     * @returns: A string which is the username.
+     */
     public String getUsername() {
         return username;
     }
 
+    /** Sets the user name of the landlord 
+     * @params: Takes a string which is the username.
+     * @returns: Nothing.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /** Gets the password of the landlord 
+     * @params: Takes in nothing. 
+     * @returns: A string which is the password.
+     */
     public String getPassword() {
         return password;
     }
 
+    /** Sets the password of the landlord 
+     * @params: Takes in a string which is the password. 
+     * @returns: Nothing.
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /** Gets the confirmed password of the landlord 
+     * @params: Takes in nothing. 
+     * @returns: A string which is the confirmed password.
+     */
     public String getConfirmPassword() {
         return confirmPassword;
     }
 
+    /** Sets the confirmed password of the landlord 
+     * @params: Takes in a string which is the confirmed password. 
+     * @returns: Nothing.
+     */
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
+    /**
+    * This is how we were testing the forms sepeartely when the whole application was still building. 
+    */
 
     // For testing
     // public static void main(String[] args) {

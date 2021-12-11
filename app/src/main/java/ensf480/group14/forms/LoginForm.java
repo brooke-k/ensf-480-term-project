@@ -13,7 +13,13 @@
  * @version 1.0
  */
 
+/**
+ *  The folder which the class lies in the project. 
+ */
 package ensf480.group14.forms;
+/**
+ * The import statements used in order for the code to work. 
+ */
 
 import java.awt.Color;
 import java.awt.Component;
@@ -36,8 +42,10 @@ import javax.swing.JTextField;
 import ensf480.group14.eventListeners.Listener;
 
 /**
- * Creates a
- * login page for the users to login in with their credentials
+ * This class basically creates a form which is based of the form class and is for creating a login page for the user to put 
+ * their credentials in and using the textfield to get these values. 
+ * This class mostly just builds from using the frontend(JavaSwing effects which are being used to make it display nicely)
+ * To make the GUI this is where the components are located in. 
  */
 public class LoginForm implements Form {
     private static LoginForm onlyInstance;
@@ -46,7 +54,9 @@ public class LoginForm implements Form {
     private ActionListener listener;
 
     /**
-     * Default constructor with no parameters
+     * Default constructor with no parameters or returns nothing. 
+     * @params: Nothing. 
+     * @returns: Nothing.
      */
     public LoginForm() {
         username = new String();
@@ -56,6 +66,8 @@ public class LoginForm implements Form {
 
     /**
      * Takes in the listener for the LoginForm constructor
+     * @params: Takes the listener for which the user can enter the information in the text field
+     * @returns: Nothing. 
      */
     public LoginForm(Listener listen) {
         username = new String();
@@ -65,6 +77,8 @@ public class LoginForm implements Form {
 
     /**
      * Unique login form listener is being returned here
+     * @params: A listener which is suited for the login 
+     * @returns: The login form based on the sucessful information. 
      */
     public static LoginForm getOnlyInstance(Listener loginListener) {
         if (onlyInstance == null) {
@@ -74,9 +88,11 @@ public class LoginForm implements Form {
     }
 
     /**
-     * @param: Takes in the action listener
-     * @returns: Returns a form with the login options
-     */
+    * Diplaying the panels, and the layouts which were learnt in the JavaSwing slides in the lectures for a brief amount of 
+    * of time. Takes in a listener to watch for an components being pressed by the user on this page. 
+    * @params: The listener which is going with the user. 
+    * @returns: A panel which can be displayed which contains all of these components. 
+    */
     public JPanel display(Listener listener) {
         JPanel panel = new JPanel();
         Dimension expectDimension = new Dimension(300, 300);
@@ -148,26 +164,49 @@ public class LoginForm implements Form {
         return panel;
     }
 
+    /**
+     * Default Constructor  
+     */
     public void login() {
-        // This should query the db to verify password, ideally in the db controller?
     }
-
+    
+    /** Gets the user name of the user
+     * @params: Takes in nothing. 
+     * @returns: A string which is the username.
+     */
     public String getUsername() {
         return username;
     }
 
+    /** Sets the user name of the user 
+     * @params: Takes a string which is the username.
+     * @returns: Nothing.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /** Gets the password of the user 
+     * @params: Takes in nothing. 
+     * @returns: A string which is the password.
+     */
     public String getPassword() {
         return password;
     }
 
+    /** Sets the password of the user 
+     * @params: Takes in a string which is the password. 
+     * @returns: Nothing.
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+
+    /**
+    * This is how we were testing the forms sepeartely when the whole application was still building. 
+    */
+    
     // For testing
 
     // public static void main(String[] args) {
