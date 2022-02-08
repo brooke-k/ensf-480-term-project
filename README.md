@@ -14,3 +14,5 @@ Group Members:
 - <a href="brooke.kindleman@ucalgary.ca">Brooke Kindleman</a>
 - <a href="nicholas.knapton@ucalgary.ca">Nicholas Knapton</a>
 - <a href="brian.kramer@ucalgary.ca">Brian Kramer</a>
+
+> This project has been archived
